@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🤖 ROBOT - FREEZE & DRAW</title>
+    <title>🤖 ROBOT - FREEZE & DRAW + FOLLOW</title>
     <style>
         * {
             margin: 0;
@@ -30,13 +30,20 @@
             text-align: center;
             color: #667eea;
             margin-bottom: 15px;
+            font-size: 22px;
+        }
+        
+        h3 {
+            margin-bottom: 10px;
+            color: #4a5568;
+            font-size: 16px;
         }
         
         /* Camera Container */
         .camera-box {
             position: relative;
             width: 100%;
-            height: 400px;
+            height: 350px;
             background: black;
             border-radius: 15px;
             overflow: hidden;
@@ -83,12 +90,18 @@
             font-size: 14px;
             cursor: pointer;
             min-width: 70px;
+            transition: 0.2s;
+        }
+        
+        button:active {
+            transform: scale(0.95);
         }
         
         .blue { background: #667eea; color: white; }
         .green { background: #48bb78; color: white; }
         .red { background: #f56565; color: white; }
         .orange { background: #ed8936; color: white; }
+        .purple { background: #9f7aea; color: white; }
         .gray { background: #e2e8f0; color: black; }
         
         .active {
@@ -104,19 +117,19 @@
             border-radius: 12px;
             margin: 10px 0;
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 10px;
             text-align: center;
         }
         
         .info div span {
             display: block;
-            font-size: 12px;
+            font-size: 11px;
             color: #718096;
         }
         
         .info div b {
-            font-size: 18px;
+            font-size: 16px;
             color: #667eea;
         }
         
@@ -132,6 +145,7 @@
             padding: 12px;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
+            font-size: 14px;
         }
         
         #connectBtn {
@@ -140,6 +154,7 @@
             color: white;
             border: none;
             border-radius: 10px;
+            font-weight: bold;
         }
         
         #connectionStatus {
@@ -158,7 +173,7 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
-            margin: 15px 0;
+            margin: 10px 0;
         }
         
         .pad-btn {
@@ -168,6 +183,11 @@
             border: none;
             border-radius: 12px;
             cursor: pointer;
+        }
+        
+        .pad-btn:active {
+            background: #667eea;
+            color: white;
         }
         
         /* Progress */
@@ -186,15 +206,75 @@
             width: 0%;
             transition: width 0.3s;
         }
+        
+        /* Sensor Cards */
+        .sensor-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 10px 0;
+        }
+        
+        .sensor-card {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .sensor-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #667eea;
+            margin-top: 5px;
+        }
+        
+        /* Follow Mode */
+        .follow-box {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #9f7aea;
+        }
+        
+        .rssi-bar {
+            width: 100%;
+            height: 30px;
+            background: #e2e8f0;
+            border-radius: 15px;
+            margin: 10px 0;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .rssi-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #f56565, #ed8936, #48bb78);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .rssi-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px black;
+            z-index: 2;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🤖 FREEZE & DRAW ROBOT</h1>
+        <h1>🤖 ROBOT CONTROLLER + FOLLOW</h1>
         
         <!-- ESP Connection -->
         <div class="conn-row">
-            <input type="text" id="espIp" value="192.168.4.1">
+            <input type="text" id="espIp" value="192.168.4.1" placeholder="ESP IP">
             <button id="connectBtn" onclick="connectESP()">CONNECT</button>
         </div>
         <div id="connectionStatus" class="disconnected">🔴 DISCONNECTED</div>
@@ -211,7 +291,7 @@
             <button class="orange" onclick="freezeImage()" id="freezeBtn">❄️ FREEZE</button>
         </div>
         
-        <!-- DRAWING MODES - ONLY WORK WHEN FROZEN -->
+        <!-- DRAWING MODES -->
         <div class="row">
             <button class="gray" onclick="setMode('robot')" id="robotBtn">🤖 MARK ROBOT</button>
             <button class="gray" onclick="setMode('draw')" id="drawBtn">✏️ DRAW PATH</button>
@@ -225,8 +305,12 @@
                 <b id="robotStatus">NOT SET</b>
             </div>
             <div>
-                <span>PATH POINTS</span>
+                <span>POINTS</span>
                 <b id="pointCount">0</b>
+            </div>
+            <div>
+                <span>MODE</span>
+                <b id="modeDisplay">DRAW</b>
             </div>
         </div>
         
@@ -247,9 +331,55 @@
             <button class="red" style="flex:1" onclick="emergencyStop()">⏹️ STOP</button>
         </div>
         
+        <!-- SENSORS -->
+        <div style="background:#f8f9fa; border-radius:15px; padding:12px; margin:15px 0;">
+            <h3>📡 SENSORS</h3>
+            <div class="sensor-grid">
+                <div class="sensor-card">
+                    <div>ULTRASONIC</div>
+                    <div class="sensor-value" id="ultrasonic">-- cm</div>
+                    <div id="obstacleWarning" style="color:#f56565; font-size:12px;"></div>
+                </div>
+                <div class="sensor-card">
+                    <div>IR SENSOR</div>
+                    <div class="sensor-value" id="irSensor">⚪ WHITE</div>
+                    <div id="goalWarning" style="color:#48bb78; font-size:12px;"></div>
+                </div>
+            </div>
+            <button class="blue" style="width:100%;" onclick="startSensors()">🔄 READ SENSORS</button>
+        </div>
+        
+        <!-- FOLLOW MODE - NEW FEATURE -->
+        <div class="follow-box">
+            <h3 style="display:flex; align-items:center; gap:5px;">📱 WI-FI FOLLOW MODE</h3>
+            <p style="font-size:12px; color:#718096; margin-bottom:10px;">Robot will follow your phone based on signal strength</p>
+            
+            <div class="row">
+                <button class="purple" style="flex:2;" onclick="toggleFollow()" id="followBtn">▶️ START FOLLOWING</button>
+                <button class="red" style="flex:1;" onclick="stopFollow()">⏹️ STOP</button>
+            </div>
+            
+            <div style="position:relative; margin:15px 0;">
+                <div class="rssi-bar">
+                    <div class="rssi-fill" id="rssiFill"></div>
+                    <div class="rssi-text" id="rssiValue">-- dBm</div>
+                </div>
+            </div>
+            
+            <div style="display:flex; justify-content:space-between; font-size:12px;">
+                <span>📱 PHONE FAR</span>
+                <span>⚖️ BALANCE</span>
+                <span>📱 PHONE NEAR</span>
+            </div>
+            
+            <div style="margin-top:10px; padding:8px; background:#edf2f7; border-radius:8px; text-align:center; font-size:13px;" id="followStatus">
+                ⏸️ Follow mode: OFF
+            </div>
+        </div>
+        
         <!-- MANUAL CONTROL -->
         <div style="background:#f8f9fa; border-radius:15px; padding:12px; margin-top:15px;">
-            <h3 style="margin-bottom:10px;">🎮 MANUAL</h3>
+            <h3>🎮 MANUAL CONTROL</h3>
             <div class="pad">
                 <div></div>
                 <button class="pad-btn" ontouchstart="sendCommand('forward')" ontouchend="sendCommand('stop')" onmousedown="sendCommand('forward')" onmouseup="sendCommand('stop')">⬆️</button>
@@ -279,6 +409,11 @@
         let espIP = '192.168.4.1';
         let espConnected = false;
         let movementCommands = [];
+        
+        // Follow mode variables
+        let isFollowing = false;
+        let followInterval = null;
+        let sensorInterval = null;
         
         // ========== CAMERA ==========
         async function startLive() {
@@ -310,7 +445,6 @@
                 alert('Start live first!');
                 return;
             }
-            // Draw video frame to canvas
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             isLive = false;
             
@@ -318,7 +452,7 @@
             document.getElementById('liveBtn').style.background = '#667eea';
         }
         
-        // ========== DRAWING (ONLY WHEN FROZEN) ==========
+        // ========== DRAWING ==========
         function setMode(mode) {
             if (isLive) {
                 alert('FREEZE the camera first!');
@@ -331,12 +465,13 @@
             
             if (mode === 'robot') {
                 document.getElementById('robotBtn').classList.add('active');
+                document.getElementById('modeDisplay').innerText = 'ROBOT';
             } else {
                 document.getElementById('drawBtn').classList.add('active');
+                document.getElementById('modeDisplay').innerText = 'DRAW';
             }
         }
         
-        // Canvas events
         canvas.addEventListener('mousedown', (e) => {
             e.preventDefault();
             if (isLive) {
@@ -355,7 +490,6 @@
         canvas.addEventListener('mouseup', () => isDrawing = false);
         canvas.addEventListener('mouseleave', () => isDrawing = false);
         
-        // Touch events
         canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
             if (isLive) {
@@ -390,12 +524,10 @@
             }
             
             if (currentMode === 'robot') {
-                // Mark robot
                 robotPosition = {x, y};
                 drawRobot(x, y);
                 document.getElementById('robotStatus').innerText = 'SET';
             } else {
-                // Draw path
                 if (!robotPosition) {
                     alert('Mark robot first!');
                     isDrawing = false;
@@ -473,7 +605,7 @@
                 const dx = p2.x - p1.x;
                 const dy = p2.y - p1.y;
                 const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-                const dist = Math.sqrt(dx*dx + dy*dy) * 0.5; // cm
+                const dist = Math.sqrt(dx*dx + dy*dy) * 0.5;
                 
                 totalDist += dist;
                 
@@ -507,6 +639,7 @@
                 alert('Calculate first!');
                 return;
             }
+            if (isFollowing) stopFollow();
             executeCommand(0);
         }
         
@@ -542,6 +675,7 @@
                     }
                 })
                 .catch(() => {
+                    espConnected = false;
                     document.getElementById('connectionStatus').className = 'disconnected';
                     document.getElementById('connectionStatus').innerText = '🔴 DISCONNECTED';
                 });
@@ -557,7 +691,128 @@
         
         function emergencyStop() {
             sendCommand('stop');
+            if (isFollowing) stopFollow();
+            if (sensorInterval) clearInterval(sensorInterval);
             document.getElementById('progressFill').style.width = '0%';
+        }
+        
+        // ========== SENSORS ==========
+        function startSensors() {
+            if (!espConnected) {
+                alert('Connect ESP first!');
+                return;
+            }
+            
+            if (sensorInterval) clearInterval(sensorInterval);
+            
+            sensorInterval = setInterval(() => {
+                fetch(`http://${espIP}/sensors`)
+                    .then(r => r.json())
+                    .then(data => {
+                        document.getElementById('ultrasonic').innerText = data.ultrasonic + ' cm';
+                        document.getElementById('irSensor').innerText = data.ir ? '⚫ BLACK' : '⚪ WHITE';
+                        
+                        if (data.ultrasonic < 20) {
+                            document.getElementById('obstacleWarning').innerText = '⚠️ OBSTACLE!';
+                            if (isFollowing) stopFollow();
+                        } else {
+                            document.getElementById('obstacleWarning').innerText = '';
+                        }
+                        
+                        if (data.ir) {
+                            document.getElementById('goalWarning').innerText = '🎯 GOAL REACHED!';
+                            if (isFollowing) stopFollow();
+                        } else {
+                            document.getElementById('goalWarning').innerText = '';
+                        }
+                    });
+            }, 500);
+        }
+        
+        // ========== FOLLOW MODE - RSSI BASED ==========
+        function toggleFollow() {
+            if (!espConnected) {
+                alert('Connect ESP first!');
+                return;
+            }
+            
+            if (isFollowing) {
+                stopFollow();
+            } else {
+                startFollow();
+            }
+        }
+        
+        function startFollow() {
+            isFollowing = true;
+            document.getElementById('followBtn').innerHTML = '⏸️ STOP FOLLOWING';
+            document.getElementById('followBtn').style.background = '#f56565';
+            document.getElementById('followStatus').innerHTML = '🔵 FOLLOW MODE: ACTIVE - Robot will follow your phone';
+            
+            // Clear any existing interval
+            if (followInterval) clearInterval(followInterval);
+            
+            // Start following
+            followInterval = setInterval(() => {
+                fetch(`http://${espIP}/rssi`)
+                    .then(r => r.text())
+                    .then(rssi => {
+                        const rssiVal = parseInt(rssi);
+                        
+                        // Update display
+                        document.getElementById('rssiValue').innerText = rssiVal + ' dBm';
+                        
+                        // Update bar (RSSI range: -30 to -90)
+                        let percent = 100 - ((rssiVal + 90) * 100 / 60);
+                        if (percent < 0) percent = 0;
+                        if (percent > 100) percent = 100;
+                        document.getElementById('rssiFill').style.width = percent + '%';
+                        
+                        // FOLLOWING LOGIC:
+                        // RSSI closer to 0 = stronger signal = phone is near
+                        // RSSI more negative = weaker signal = phone is far
+                        
+                        if (rssiVal > -50) {
+                            // Phone is very close - stop
+                            sendCommand('stop');
+                            document.getElementById('followStatus').innerHTML = '📱 PHONE NEAR - Stopped';
+                        } 
+                        else if (rssiVal > -65) {
+                            // Phone is close - move slowly
+                            sendCommand('forward');
+                            document.getElementById('followStatus').innerHTML = '🚶 FOLLOWING - Moving slowly';
+                        }
+                        else if (rssiVal > -75) {
+                            // Phone is medium distance - move normal
+                            sendCommand('forward');
+                            document.getElementById('followStatus').innerHTML = '🏃 FOLLOWING - Moving normal';
+                        }
+                        else {
+                            // Phone is far - move fast
+                            sendCommand('forward');
+                            document.getElementById('followStatus').innerHTML = '⚡ FOLLOWING - Moving fast';
+                        }
+                    })
+                    .catch(() => {
+                        stopFollow();
+                        alert('Lost connection to ESP!');
+                    });
+            }, 500);
+        }
+        
+        function stopFollow() {
+            isFollowing = false;
+            if (followInterval) {
+                clearInterval(followInterval);
+                followInterval = null;
+            }
+            sendCommand('stop');
+            
+            document.getElementById('followBtn').innerHTML = '▶️ START FOLLOWING';
+            document.getElementById('followBtn').style.background = '#9f7aea';
+            document.getElementById('followStatus').innerHTML = '⏸️ Follow mode: OFF';
+            document.getElementById('rssiFill').style.width = '0%';
+            document.getElementById('rssiValue').innerText = '-- dBm';
         }
         
         // Start live on load
