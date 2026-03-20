@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🤖 Robot Path Planner - FIXED</title>
+    <title>🤖 ROBOT - FREEZE & DRAW</title>
     <style>
         * {
-            box-sizing: border-box;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            user-select: none;
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            background: #1a202c;
+            font-family: Arial, sans-serif;
             padding: 10px;
-            color: white;
         }
         
         .container {
@@ -25,158 +24,104 @@
             background: white;
             border-radius: 20px;
             padding: 15px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
         }
         
         h1 {
             text-align: center;
             color: #667eea;
             margin-bottom: 15px;
-            font-size: 22px;
-        }
-        
-        .section {
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 12px;
-            margin-bottom: 15px;
-            border-left: 4px solid #667eea;
-        }
-        
-        .section h2 {
-            font-size: 16px;
-            margin-bottom: 10px;
-            color: #667eea;
         }
         
         /* Camera Container */
-        .camera-container {
+        .camera-box {
             position: relative;
             width: 100%;
-            height: 350px;
-            background: #2d3748;
-            border-radius: 12px;
+            height: 400px;
+            background: black;
+            border-radius: 15px;
             overflow: hidden;
-            margin-bottom: 10px;
-            border: 2px solid #667eea;
+            border: 3px solid #667eea;
+            margin-bottom: 15px;
         }
         
-        #video, #canvas {
+        #video {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-        }
-        
-        #video {
-            z-index: 1;
-            transform: scaleX(-1);
-            background: #1a202c;
+            display: block;
         }
         
         #canvas {
-            z-index: 2;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 10;
             cursor: crosshair;
-            transform: scaleX(-1);
             background: transparent;
+            display: block;
         }
         
-        .camera-controls {
+        /* Buttons */
+        .row {
             display: flex;
             gap: 8px;
-            margin: 10px 0;
+            margin-bottom: 10px;
             flex-wrap: wrap;
         }
         
-        .btn {
-            padding: 12px 16px;
+        button {
+            flex: 1;
+            padding: 14px;
             border: none;
             border-radius: 50px;
             font-weight: bold;
-            cursor: pointer;
-            transition: all 0.2s;
-            flex: 1;
-            min-width: 70px;
             font-size: 14px;
-            background: #e2e8f0;
-            color: #2d3748;
+            cursor: pointer;
+            min-width: 70px;
         }
         
-        .btn.primary {
-            background: #667eea;
-            color: white;
+        .blue { background: #667eea; color: white; }
+        .green { background: #48bb78; color: white; }
+        .red { background: #f56565; color: white; }
+        .orange { background: #ed8936; color: white; }
+        .gray { background: #e2e8f0; color: black; }
+        
+        .active {
+            background: #667eea !important;
+            color: white !important;
+            border: 2px solid white;
         }
         
-        .btn.success {
-            background: #48bb78;
-            color: white;
-        }
-        
-        .btn.danger {
-            background: #f56565;
-            color: white;
-        }
-        
-        .btn.warning {
-            background: #ed8936;
-            color: white;
-        }
-        
-        .btn.active {
-            background: #667eea;
-            color: white;
-            transform: scale(1.02);
-        }
-        
-        .info-bar {
-            display: flex;
-            gap: 10px;
-            margin: 10px 0;
-            padding: 10px;
+        /* Info Panel */
+        .info {
             background: #edf2f7;
-            border-radius: 10px;
-        }
-        
-        .info-item {
-            flex: 1;
+            padding: 12px;
+            border-radius: 12px;
+            margin: 10px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
             text-align: center;
         }
         
-        .info-label {
-            font-size: 11px;
+        .info div span {
+            display: block;
+            font-size: 12px;
             color: #718096;
         }
         
-        .info-value {
-            font-size: 14px;
-            font-weight: bold;
+        .info div b {
+            font-size: 18px;
             color: #667eea;
         }
         
-        .control-pad {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin: 10px 0;
-        }
-        
-        .pad-btn {
-            aspect-ratio: 1;
-            font-size: 20px;
-            background: #e2e8f0;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-        
-        .pad-btn:active {
-            background: #667eea;
-            color: white;
-        }
-        
-        .connection-box {
+        /* Connection */
+        .conn-row {
             display: flex;
             gap: 8px;
             margin-bottom: 10px;
@@ -184,61 +129,55 @@
         
         #espIp {
             flex: 3;
-            padding: 10px;
+            padding: 12px;
             border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 10px;
         }
         
         #connectBtn {
             flex: 1;
-            padding: 10px;
             background: #667eea;
             color: white;
             border: none;
-            border-radius: 8px;
-            font-weight: bold;
+            border-radius: 10px;
         }
         
         #connectionStatus {
-            padding: 8px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: 10px;
             text-align: center;
             font-weight: bold;
+            margin-bottom: 15px;
         }
         
-        .connected {
-            background: #48bb78;
-            color: white;
-        }
+        .connected { background: #48bb78; color: white; }
+        .disconnected { background: #f56565; color: white; }
         
-        .disconnected {
-            background: #f56565;
-            color: white;
-        }
-        
-        .sensor-grid {
+        /* Control Pad */
+        .pad {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 10px 0;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 15px 0;
         }
         
-        .sensor-card {
-            background: white;
-            border-radius: 10px;
-            padding: 12px;
-            text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        .pad-btn {
+            aspect-ratio: 1;
+            font-size: 24px;
+            background: #e2e8f0;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
         }
         
-        .progress-bar {
+        /* Progress */
+        .progress {
             width: 100%;
             height: 10px;
             background: #e2e8f0;
             border-radius: 5px;
-            overflow: hidden;
             margin: 10px 0;
+            overflow: hidden;
         }
         
         .progress-fill {
@@ -247,85 +186,71 @@
             width: 0%;
             transition: width 0.3s;
         }
-        
-        .status-text {
-            font-size: 12px;
-            color: #718096;
-            text-align: center;
-            margin-top: 5px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🤖 Robot Path Planner</h1>
+        <h1>🤖 FREEZE & DRAW ROBOT</h1>
         
         <!-- ESP Connection -->
-        <div class="section">
-            <h2>📶 1. Connection</h2>
-            <div class="connection-box">
-                <input type="text" id="espIp" placeholder="ESP IP" value="192.168.4.1">
-                <button id="connectBtn" onclick="connectESP()">Connect</button>
-            </div>
-            <div id="connectionStatus" class="disconnected">🔴 Disconnected</div>
+        <div class="conn-row">
+            <input type="text" id="espIp" value="192.168.4.1">
+            <button id="connectBtn" onclick="connectESP()">CONNECT</button>
+        </div>
+        <div id="connectionStatus" class="disconnected">🔴 DISCONNECTED</div>
+        
+        <!-- CAMERA SECTION -->
+        <div class="camera-box">
+            <video id="video" autoplay playsinline></video>
+            <canvas id="canvas"></canvas>
         </div>
         
-        <!-- Camera Section -->
-        <div class="section">
-            <h2>📸 2. Camera & Drawing</h2>
-            
-            <div class="camera-container">
-                <video id="video" autoplay playsinline></video>
-                <canvas id="canvas"></canvas>
+        <!-- CAMERA CONTROLS -->
+        <div class="row">
+            <button class="green" onclick="startLive()" id="liveBtn">📷 LIVE</button>
+            <button class="orange" onclick="freezeImage()" id="freezeBtn">❄️ FREEZE</button>
+        </div>
+        
+        <!-- DRAWING MODES - ONLY WORK WHEN FROZEN -->
+        <div class="row">
+            <button class="gray" onclick="setMode('robot')" id="robotBtn">🤖 MARK ROBOT</button>
+            <button class="gray" onclick="setMode('draw')" id="drawBtn">✏️ DRAW PATH</button>
+            <button class="red" onclick="clearAll()">🗑️ CLEAR</button>
+        </div>
+        
+        <!-- INFO -->
+        <div class="info">
+            <div>
+                <span>ROBOT</span>
+                <b id="robotStatus">NOT SET</b>
             </div>
-            
-            <div class="camera-controls">
-                <button class="btn primary" onclick="startCamera()" id="startCameraBtn">📷 Start Camera</button>
-                <button class="btn warning" onclick="stopCamera()" id="stopCameraBtn">⏹️ Stop</button>
-                <button class="btn success" onclick="freezeFrame()">📸 Freeze</button>
-            </div>
-            
-            <div class="camera-controls">
-                <button class="btn" onclick="setMode('robot')" id="modeRobotBtn">🤖 Mark Robot</button>
-                <button class="btn active" onclick="setMode('draw')" id="modeDrawBtn">✏️ Draw Path</button>
-                <button class="btn danger" onclick="clearCanvas()">🗑️ Clear</button>
-            </div>
-            
-            <div class="info-bar">
-                <div class="info-item">
-                    <div class="info-label">Robot</div>
-                    <div class="info-value" id="robotStatus">⚪ Not set</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Points</div>
-                    <div class="info-value" id="pointCount">0</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-label">Mode</div>
-                    <div class="info-value" id="currentMode">Draw</div>
-                </div>
-            </div>
-            
-            <div style="display: flex; gap: 8px;">
-                <button class="btn primary" style="flex: 2;" onclick="calculatePath()">🧮 Calculate</button>
-                <button class="btn success" style="flex: 1;" onclick="sendPath()">📤 Send</button>
+            <div>
+                <span>PATH POINTS</span>
+                <b id="pointCount">0</b>
             </div>
         </div>
         
-        <!-- Movement -->
-        <div class="section">
-            <h2>🚀 3. Movement</h2>
-            
-            <div class="progress-bar">
-                <div class="progress-fill" id="progressFill"></div>
-            </div>
-            
-            <div style="display: flex; gap: 8px;">
-                <button class="btn success" style="flex: 2;" onclick="startMovement()">▶️ Start</button>
-                <button class="btn danger" style="flex: 1;" onclick="emergencyStop()">🛑 STOP</button>
-            </div>
-            
-            <div class="control-pad">
+        <!-- PATH ACTIONS -->
+        <div class="row">
+            <button class="blue" style="flex:2" onclick="calculatePath()">📐 CALCULATE</button>
+            <button class="green" style="flex:1" onclick="sendToESP()">📤 SEND</button>
+        </div>
+        
+        <!-- PROGRESS -->
+        <div class="progress">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <!-- MOVEMENT -->
+        <div class="row">
+            <button class="green" style="flex:2" onclick="startMovement()">▶️ START</button>
+            <button class="red" style="flex:1" onclick="emergencyStop()">⏹️ STOP</button>
+        </div>
+        
+        <!-- MANUAL CONTROL -->
+        <div style="background:#f8f9fa; border-radius:15px; padding:12px; margin-top:15px;">
+            <h3 style="margin-bottom:10px;">🎮 MANUAL</h3>
+            <div class="pad">
                 <div></div>
                 <button class="pad-btn" ontouchstart="sendCommand('forward')" ontouchend="sendCommand('stop')" onmousedown="sendCommand('forward')" onmouseup="sendCommand('stop')">⬆️</button>
                 <div></div>
@@ -337,228 +262,161 @@
                 <div></div>
             </div>
         </div>
-        
-        <!-- Sensors -->
-        <div class="section">
-            <h2>📊 4. Sensors</h2>
-            <div class="sensor-grid">
-                <div class="sensor-card">
-                    <div>📡 Distance</div>
-                    <div style="font-size: 24px; color: #667eea;" id="ultrasonicValue">-- cm</div>
-                </div>
-                <div class="sensor-card">
-                    <div>⚫ IR Sensor</div>
-                    <div style="font-size: 24px; color: #667eea;" id="irValue">--</div>
-                </div>
-            </div>
-            <button class="btn primary" style="width: 100%;" onclick="startSensors()">🔄 Read Sensors</button>
-        </div>
-        
-        <!-- Follow Mode -->
-        <div class="section">
-            <h2>📱 5. Follow Mode</h2>
-            <button class="btn warning" style="width: 100%;" onclick="toggleFollow()" id="followBtn">▶️ Follow Phone</button>
-            <div class="status-text" id="rssiValue">Signal: -- dBm</div>
-        </div>
     </div>
 
     <script>
-        // ========== GLOBAL VARIABLES ==========
-        let espIP = '192.168.4.1';
-        let espConnected = false;
-        
-        // Camera
+        // ========== VARIABLES ==========
         let video = document.getElementById('video');
         let canvas = document.getElementById('canvas');
         let ctx = canvas.getContext('2d');
-        let cameraStream = null;
-        let isCameraOn = false;
         
-        // Drawing
-        let currentMode = 'draw'; // 'robot' or 'draw'
+        let isLive = true;
+        let currentMode = 'draw';
         let robotPosition = null;
         let pathPoints = [];
         let isDrawing = false;
         
-        // Path
+        let espIP = '192.168.4.1';
+        let espConnected = false;
         let movementCommands = [];
         
-        // Sensors
-        let sensorInterval = null;
-        let followInterval = null;
-        let isFollowing = false;
-        
-        // ========== CAMERA FUNCTIONS ==========
-        async function startCamera() {
+        // ========== CAMERA ==========
+        async function startLive() {
             try {
-                const constraints = {
-                    video: {
-                        facingMode: 'environment',
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
-                    }
-                };
+                if (video.srcObject) {
+                    video.srcObject.getTracks().forEach(t => t.stop());
+                }
+                const stream = await navigator.mediaDevices.getUserMedia({
+                    video: { facingMode: 'environment' }
+                });
+                video.srcObject = stream;
+                isLive = true;
                 
-                cameraStream = await navigator.mediaDevices.getUserMedia(constraints);
-                video.srcObject = cameraStream;
-                
-                video.onloadedmetadata = function() {
+                video.onloadedmetadata = () => {
                     canvas.width = video.videoWidth;
                     canvas.height = video.videoHeight;
-                    console.log('Camera ready:', canvas.width, 'x', canvas.height);
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
                 };
                 
-                isCameraOn = true;
-                document.getElementById('startCameraBtn').style.background = '#48bb78';
-                document.getElementById('startCameraBtn').textContent = '✅ Camera On';
-                
-            } catch (error) {
-                alert('Camera error: ' + error.message);
+                document.getElementById('liveBtn').style.background = '#48bb78';
+                document.getElementById('freezeBtn').style.background = '#ed8936';
+            } catch(e) {
+                alert('Camera error: ' + e.message);
             }
         }
         
-        function stopCamera() {
-            if (cameraStream) {
-                cameraStream.getTracks().forEach(track => track.stop());
-                video.srcObject = null;
-                isCameraOn = false;
-                document.getElementById('startCameraBtn').style.background = '#667eea';
-                document.getElementById('startCameraBtn').textContent = '📷 Start Camera';
-            }
-        }
-        
-        function freezeFrame() {
-            if (!isCameraOn) {
-                alert('Start camera first!');
+        function freezeImage() {
+            if (!video.srcObject) {
+                alert('Start live first!');
                 return;
             }
-            // Draw current video frame to canvas
+            // Draw video frame to canvas
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            // Redraw robot and path if they exist
-            redrawAll();
+            isLive = false;
+            
+            document.getElementById('freezeBtn').style.background = '#48bb78';
+            document.getElementById('liveBtn').style.background = '#667eea';
         }
         
-        // ========== DRAWING FUNCTIONS ==========
+        // ========== DRAWING (ONLY WHEN FROZEN) ==========
         function setMode(mode) {
+            if (isLive) {
+                alert('FREEZE the camera first!');
+                return;
+            }
+            
             currentMode = mode;
-            document.getElementById('modeRobotBtn').classList.remove('active');
-            document.getElementById('modeDrawBtn').classList.remove('active');
+            document.getElementById('robotBtn').classList.remove('active');
+            document.getElementById('drawBtn').classList.remove('active');
             
             if (mode === 'robot') {
-                document.getElementById('modeRobotBtn').classList.add('active');
-                document.getElementById('currentMode').textContent = 'Robot';
+                document.getElementById('robotBtn').classList.add('active');
             } else {
-                document.getElementById('modeDrawBtn').classList.add('active');
-                document.getElementById('currentMode').textContent = 'Draw';
+                document.getElementById('drawBtn').classList.add('active');
             }
         }
         
-        // Canvas event listeners
-        canvas.addEventListener('mousedown', function(e) {
+        // Canvas events
+        canvas.addEventListener('mousedown', (e) => {
             e.preventDefault();
-            if (!isCameraOn) {
-                alert('Start camera first!');
+            if (isLive) {
+                alert('FREEZE the camera first!');
                 return;
             }
             isDrawing = true;
             handleDraw(e);
         });
         
-        canvas.addEventListener('mousemove', function(e) {
+        canvas.addEventListener('mousemove', (e) => {
             e.preventDefault();
-            if (isDrawing) {
-                handleDraw(e);
-            }
+            if (isDrawing && !isLive) handleDraw(e);
         });
         
-        canvas.addEventListener('mouseup', function() {
-            isDrawing = false;
-        });
-        
-        canvas.addEventListener('mouseleave', function() {
-            isDrawing = false;
-        });
+        canvas.addEventListener('mouseup', () => isDrawing = false);
+        canvas.addEventListener('mouseleave', () => isDrawing = false);
         
         // Touch events
-        canvas.addEventListener('touchstart', function(e) {
+        canvas.addEventListener('touchstart', (e) => {
             e.preventDefault();
-            if (!isCameraOn) {
-                alert('Start camera first!');
+            if (isLive) {
+                alert('FREEZE the camera first!');
                 return;
             }
             isDrawing = true;
             handleDraw(e);
         });
         
-        canvas.addEventListener('touchmove', function(e) {
+        canvas.addEventListener('touchmove', (e) => {
             e.preventDefault();
-            if (isDrawing) {
-                handleDraw(e);
-            }
+            if (isDrawing && !isLive) handleDraw(e);
         });
         
-        canvas.addEventListener('touchend', function() {
-            isDrawing = false;
-        });
+        canvas.addEventListener('touchend', () => isDrawing = false);
         
         function handleDraw(e) {
             e.preventDefault();
             
-            // Get coordinates
             const rect = canvas.getBoundingClientRect();
             const scaleX = canvas.width / rect.width;
             const scaleY = canvas.height / rect.height;
             
-            let clientX, clientY;
+            let x, y;
             if (e.touches) {
-                clientX = e.touches[0].clientX;
-                clientY = e.touches[0].clientY;
+                x = (e.touches[0].clientX - rect.left) * scaleX;
+                y = (e.touches[0].clientY - rect.top) * scaleY;
             } else {
-                clientX = e.clientX;
-                clientY = e.clientY;
+                x = (e.clientX - rect.left) * scaleX;
+                y = (e.clientY - rect.top) * scaleY;
             }
             
-            const x = (clientX - rect.left) * scaleX;
-            const y = (clientY - rect.top) * scaleY;
-            
             if (currentMode === 'robot') {
-                // Set robot position
+                // Mark robot
                 robotPosition = {x, y};
-                clearCanvas();
                 drawRobot(x, y);
-                document.getElementById('robotStatus').textContent = '✅ Set';
-                updatePointCount();
-                setMode('draw'); // Switch to draw mode automatically
+                document.getElementById('robotStatus').innerText = 'SET';
             } else {
                 // Draw path
                 if (!robotPosition) {
-                    alert('Mark robot position first!');
+                    alert('Mark robot first!');
                     isDrawing = false;
                     return;
                 }
                 
-                // Start path from robot if empty
                 if (pathPoints.length === 0) {
                     pathPoints.push(robotPosition);
-                    drawPoint(robotPosition.x, robotPosition.y, '#48bb78');
                 }
                 
-                // Add point
                 pathPoints.push({x, y});
-                
-                // Draw line from last point
-                const last = pathPoints[pathPoints.length - 2];
-                drawLine(last.x, last.y, x, y, '#f56565');
+                drawLine(pathPoints[pathPoints.length-2], {x, y}, '#f56565');
                 drawPoint(x, y, '#f56565');
-                
-                updatePointCount();
+                document.getElementById('pointCount').innerText = pathPoints.length - 1;
             }
         }
         
         function drawRobot(x, y) {
             ctx.fillStyle = '#48bb78';
             ctx.beginPath();
-            ctx.arc(x, y, 12, 0, 2 * Math.PI);
+            ctx.arc(x, y, 12, 0, 2*Math.PI);
             ctx.fill();
             ctx.strokeStyle = 'white';
             ctx.lineWidth = 3;
@@ -574,107 +432,85 @@
         function drawPoint(x, y, color) {
             ctx.fillStyle = color;
             ctx.beginPath();
-            ctx.arc(x, y, 5, 0, 2 * Math.PI);
+            ctx.arc(x, y, 5, 0, 2*Math.PI);
             ctx.fill();
             ctx.strokeStyle = 'white';
             ctx.lineWidth = 2;
             ctx.stroke();
         }
         
-        function drawLine(x1, y1, x2, y2, color) {
+        function drawLine(p1, p2, color) {
             ctx.beginPath();
             ctx.strokeStyle = color;
             ctx.lineWidth = 4;
-            ctx.moveTo(x1, y1);
-            ctx.lineTo(x2, y2);
+            ctx.moveTo(p1.x, p1.y);
+            ctx.lineTo(p2.x, p2.y);
             ctx.stroke();
         }
         
-        function clearCanvas() {
+        function clearAll() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             robotPosition = null;
             pathPoints = [];
-            document.getElementById('robotStatus').textContent = '⚪ Not set';
-            updatePointCount();
-        }
-        
-        function redrawAll() {
-            if (robotPosition) {
-                drawRobot(robotPosition.x, robotPosition.y);
-            }
-            
-            for (let i = 1; i < pathPoints.length; i++) {
-                drawLine(
-                    pathPoints[i-1].x, pathPoints[i-1].y,
-                    pathPoints[i].x, pathPoints[i].y,
-                    '#f56565'
-                );
-                drawPoint(pathPoints[i].x, pathPoints[i].y, '#f56565');
-            }
-        }
-        
-        function updatePointCount() {
-            document.getElementById('pointCount').textContent = pathPoints.length;
+            document.getElementById('robotStatus').innerText = 'NOT SET';
+            document.getElementById('pointCount').innerText = '0';
         }
         
         // ========== PATH CALCULATION ==========
         function calculatePath() {
             if (!robotPosition || pathPoints.length < 2) {
-                alert('Mark robot and draw path first!');
+                alert('Mark robot and draw path!');
                 return;
             }
             
-            // Calculate total distance
-            let totalPixels = 0;
-            for (let i = 1; i < pathPoints.length; i++) {
-                const dx = pathPoints[i].x - pathPoints[i-1].x;
-                const dy = pathPoints[i].y - pathPoints[i-1].y;
-                totalPixels += Math.sqrt(dx*dx + dy*dy);
-            }
-            
-            const totalCm = totalPixels * 0.5; // 0.5 cm per pixel
-            alert(`Path calculated: ${totalCm.toFixed(1)} cm`);
-            
-            // Create movement commands
             movementCommands = [];
+            let totalDist = 0;
+            
             for (let i = 1; i < pathPoints.length; i++) {
-                const dx = pathPoints[i].x - pathPoints[i-1].x;
-                const dy = pathPoints[i].y - pathPoints[i-1].y;
+                const p1 = pathPoints[i-1];
+                const p2 = pathPoints[i];
+                
+                const dx = p2.x - p1.x;
+                const dy = p2.y - p1.y;
                 const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-                const distance = Math.sqrt(dx*dx + dy*dy) * 0.5;
+                const dist = Math.sqrt(dx*dx + dy*dy) * 0.5; // cm
+                
+                totalDist += dist;
                 
                 if (Math.abs(angle) > 5) {
                     movementCommands.push({
                         type: 'turn',
                         dir: angle > 0 ? 'right' : 'left',
-                        duration: Math.abs(angle) * 10
+                        time: Math.abs(angle) * 10
                     });
                 }
                 
                 movementCommands.push({
                     type: 'forward',
-                    duration: distance * 100 // 100ms per cm
+                    time: dist * 100
                 });
             }
+            
+            alert(`Path calculated: ${totalDist.toFixed(1)} cm`);
         }
         
-        function sendPath() {
+        function sendToESP() {
             if (movementCommands.length === 0) {
-                alert('Calculate path first!');
+                alert('Calculate first!');
                 return;
             }
-            alert('Path ready to execute!');
+            alert('Path sent to ESP!');
         }
         
         function startMovement() {
             if (movementCommands.length === 0) {
-                alert('Calculate path first!');
+                alert('Calculate first!');
                 return;
             }
-            executeCommands(0);
+            executeCommand(0);
         }
         
-        function executeCommands(index) {
+        function executeCommand(index) {
             if (index >= movementCommands.length) {
                 sendCommand('stop');
                 document.getElementById('progressFill').style.width = '0%';
@@ -682,47 +518,38 @@
             }
             
             const cmd = movementCommands[index];
-            if (cmd.type === 'turn') {
-                sendCommand(cmd.dir);
-            } else {
-                sendCommand('forward');
-            }
+            sendCommand(cmd.type === 'turn' ? cmd.dir : 'forward');
             
             const progress = ((index + 1) / movementCommands.length) * 100;
             document.getElementById('progressFill').style.width = progress + '%';
             
             setTimeout(() => {
                 sendCommand('stop');
-                setTimeout(() => {
-                    executeCommands(index + 1);
-                }, 200);
-            }, cmd.duration);
+                setTimeout(() => executeCommand(index + 1), 200);
+            }, cmd.time);
         }
         
         // ========== ESP COMMANDS ==========
         function connectESP() {
             espIP = document.getElementById('espIp').value;
-            const status = document.getElementById('connectionStatus');
-            
             fetch(`http://${espIP}/ping`)
-                .then(response => response.text())
-                .then(data => {
-                    if (data === 'pong') {
+                .then(r => r.text())
+                .then(d => {
+                    if (d === 'pong') {
                         espConnected = true;
-                        status.className = 'connected';
-                        status.innerHTML = '🟢 Connected';
+                        document.getElementById('connectionStatus').className = 'connected';
+                        document.getElementById('connectionStatus').innerText = '🟢 CONNECTED';
                     }
                 })
                 .catch(() => {
-                    espConnected = false;
-                    status.className = 'disconnected';
-                    status.innerHTML = '🔴 Disconnected';
+                    document.getElementById('connectionStatus').className = 'disconnected';
+                    document.getElementById('connectionStatus').innerText = '🔴 DISCONNECTED';
                 });
         }
         
         function sendCommand(cmd) {
             if (!espConnected) {
-                console.log('ESP not connected, command:', cmd);
+                console.log('Command:', cmd);
                 return;
             }
             fetch(`http://${espIP}/move?dir=${cmd}`).catch(() => {});
@@ -730,72 +557,11 @@
         
         function emergencyStop() {
             sendCommand('stop');
-            if (sensorInterval) clearInterval(sensorInterval);
-            if (followInterval) clearInterval(followInterval);
             document.getElementById('progressFill').style.width = '0%';
         }
         
-        // ========== SENSORS ==========
-        function startSensors() {
-            if (!espConnected) {
-                alert('Connect ESP first!');
-                return;
-            }
-            
-            if (sensorInterval) clearInterval(sensorInterval);
-            
-            sensorInterval = setInterval(() => {
-                fetch(`http://${espIP}/sensors`)
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('ultrasonicValue').textContent = data.ultrasonic + ' cm';
-                        document.getElementById('irValue').textContent = data.ir ? '⚫ Black' : '⚪ White';
-                        
-                        if (data.ultrasonic < 20) {
-                            emergencyStop();
-                        }
-                    });
-            }, 500);
-        }
-        
-        // ========== FOLLOW MODE ==========
-        function toggleFollow() {
-            if (!espConnected) {
-                alert('Connect ESP first!');
-                return;
-            }
-            
-            isFollowing = !isFollowing;
-            const btn = document.getElementById('followBtn');
-            
-            if (isFollowing) {
-                btn.textContent = '⏹️ Stop Following';
-                btn.style.background = '#f56565';
-                
-                followInterval = setInterval(() => {
-                    fetch(`http://${espIP}/rssi`)
-                        .then(response => response.text())
-                        .then(rssi => {
-                            document.getElementById('rssiValue').textContent = 'Signal: ' + rssi + ' dBm';
-                            if (parseInt(rssi) < -65) {
-                                sendCommand('forward');
-                            } else {
-                                sendCommand('stop');
-                            }
-                        });
-                }, 1000);
-            } else {
-                btn.textContent = '▶️ Follow Phone';
-                btn.style.background = '#ed8936';
-                if (followInterval) clearInterval(followInterval);
-                sendCommand('stop');
-            }
-        }
-        
-        // Auto-start camera when page loads
-        window.onload = function() {
-            startCamera();
-        };
+        // Start live on load
+        window.onload = () => startLive();
     </script>
 </body>
 </html>
