@@ -761,11 +761,7 @@ function redrawCanvas() {
 //  CLEAR
 // ═══════════════════════════════════════════════════
 function clearAll() {
-    // Restore frozen image
-    if (!isLive && video.srcObject) {
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-    } else {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+     ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
 
     robotFront = null; robotBack = null;
