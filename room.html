@@ -3,15 +3,15 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>🤖 ROBOT CONTROLLER FINAL</title>
+<title>🤖 ROBOT CONTROLLER</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@400;700;900&display=swap');
-:root {
-  --bg:#0a0e1a; --panel:#111827; --border:#1e3a5f;
-  --accent:#00d4ff; --accent2:#ff6b35;
-  --green:#00ff88; --red:#ff3b3b;
-  --purple:#a855f7; --yellow:#ffd600;
-  --text:#e2e8f0; --muted:#64748b;
+:root{
+  --bg:#0a0e1a;--panel:#111827;--border:#1e3a5f;
+  --accent:#00d4ff;--accent2:#ff6b35;
+  --green:#00ff88;--red:#ff3b3b;
+  --purple:#a855f7;--yellow:#ffd600;
+  --text:#e2e8f0;--muted:#64748b;
 }
 *{margin:0;padding:0;box-sizing:border-box;user-select:none;}
 body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--text);padding:10px;
@@ -26,119 +26,111 @@ h1{font-family:'Share Tech Mono',monospace;font-size:16px;color:var(--accent);
 .panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,transparent,var(--accent),transparent);
   border-radius:12px 12px 0 0;}
-.panel-title{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--accent);
-             letter-spacing:2px;margin-bottom:10px;text-transform:uppercase;}
+.pt{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--accent);
+    letter-spacing:2px;margin-bottom:10px;text-transform:uppercase;}
 .conn-row{display:flex;gap:8px;margin-bottom:8px;}
 #espIp{flex:3;padding:10px 14px;background:#0d1117;border:1px solid var(--border);
        border-radius:8px;color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:14px;}
 #connectBtn{flex:1;background:var(--accent);color:#000;border:none;border-radius:8px;
             font-weight:900;font-size:12px;cursor:pointer;}
-#connectionStatus{padding:8px 14px;border-radius:8px;text-align:center;
-                  font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:1px;}
+#cStatus{padding:8px 14px;border-radius:8px;text-align:center;
+         font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:1px;}
 .connected{background:rgba(0,255,136,0.15);color:var(--green);border:1px solid var(--green);}
 .disconnected{background:rgba(255,59,59,0.15);color:var(--red);border:1px solid var(--red);}
-.tabs{display:flex;gap:5px;margin-bottom:10px;flex-wrap:wrap;}
+.tabs{display:flex;gap:5px;margin-bottom:10px;}
 .tab{flex:1;padding:8px 4px;background:#0d1117;border:1px solid var(--border);border-radius:8px;
      color:var(--muted);font-size:9px;font-family:'Share Tech Mono',monospace;
-     letter-spacing:0.5px;cursor:pointer;text-align:center;transition:all 0.15s;min-width:60px;}
+     cursor:pointer;text-align:center;transition:all 0.15s;}
 .tab.active{background:rgba(0,212,255,0.15);color:var(--accent);border-color:var(--accent);}
-.tab-content{display:none;}.tab-content.active{display:block;}
-.camera-box{position:relative;width:100%;height:280px;background:#000;
-            border-radius:10px;overflow:hidden;border:1px solid var(--border);margin-bottom:10px;}
+.tc{display:none;}.tc.active{display:block;}
+.cam{position:relative;width:100%;height:280px;background:#000;
+     border-radius:10px;overflow:hidden;border:1px solid var(--border);margin-bottom:10px;}
 #video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;}
 #canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:10;cursor:crosshair;}
-.calib-badge{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.75);
-             border:1px solid var(--yellow);border-radius:6px;padding:4px 10px;
-             font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--yellow);
-             z-index:20;pointer-events:none;}
+.cbadge{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.75);
+        border:1px solid var(--yellow);border-radius:6px;padding:4px 10px;
+        font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--yellow);
+        z-index:20;pointer-events:none;}
 .row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
 button{flex:1;padding:11px;border:none;border-radius:8px;font-weight:700;font-size:12px;
-       cursor:pointer;min-width:50px;font-family:'Exo 2',sans-serif;letter-spacing:0.5px;transition:all 0.15s;}
+       cursor:pointer;min-width:50px;font-family:'Exo 2',sans-serif;transition:all 0.15s;}
 button:active{transform:scale(0.96);}
-.btn-cyan{background:rgba(0,212,255,0.15);color:var(--accent);border:1px solid var(--accent);}
-.btn-green{background:rgba(0,255,136,0.15);color:var(--green);border:1px solid var(--green);}
-.btn-red{background:rgba(255,59,59,0.15);color:var(--red);border:1px solid var(--red);}
-.btn-yellow{background:rgba(255,214,0,0.15);color:var(--yellow);border:1px solid var(--yellow);}
-.btn-purple{background:rgba(168,85,247,0.15);color:var(--purple);border:1px solid var(--purple);}
-.btn-orange{background:rgba(255,107,53,0.15);color:var(--accent2);border:1px solid var(--accent2);}
-.btn-solid-green{background:var(--green);color:#000;border:none;}
-.btn-solid-red{background:var(--red);color:#fff;border:none;}
-.btn-solid-cyan{background:var(--accent);color:#000;border:none;}
-.btn-solid-orange{background:var(--accent2);color:#fff;border:none;}
-.btn-solid-yellow{background:var(--yellow);color:#000;border:none;}
-.btn-active{background:var(--accent)!important;color:#000!important;border-color:var(--accent)!important;}
-.info-bar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin:8px 0;}
-.info-cell{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:6px;text-align:center;}
-.info-cell span{display:block;font-size:9px;color:var(--muted);font-family:'Share Tech Mono',monospace;}
-.info-cell b{font-size:13px;color:var(--accent);font-family:'Share Tech Mono',monospace;}
-.info-cell.calib-ok b{color:var(--green);}
-.progress{width:100%;height:6px;background:#0d1117;border-radius:3px;margin:8px 0;
-          overflow:hidden;border:1px solid var(--border);}
-.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));
-               width:0%;transition:width 0.3s;}
+.bc{background:rgba(0,212,255,0.15);color:var(--accent);border:1px solid var(--accent);}
+.bg{background:rgba(0,255,136,0.15);color:var(--green);border:1px solid var(--green);}
+.br{background:rgba(255,59,59,0.15);color:var(--red);border:1px solid var(--red);}
+.by{background:rgba(255,214,0,0.15);color:var(--yellow);border:1px solid var(--yellow);}
+.bp{background:rgba(168,85,247,0.15);color:var(--purple);border:1px solid var(--purple);}
+.bo{background:rgba(255,107,53,0.15);color:var(--accent2);border:1px solid var(--accent2);}
+.bsg{background:var(--green);color:#000;border:none;}
+.bsr{background:var(--red);color:#fff;border:none;}
+.bsc{background:var(--accent);color:#000;border:none;}
+.bso{background:var(--accent2);color:#fff;border:none;}
+.bsy{background:var(--yellow);color:#000;border:none;}
+.ba{background:var(--accent)!important;color:#000!important;border-color:var(--accent)!important;}
+.ibar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin:8px 0;}
+.ic{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:6px;text-align:center;}
+.ic span{display:block;font-size:9px;color:var(--muted);font-family:'Share Tech Mono',monospace;}
+.ic b{font-size:13px;color:var(--accent);font-family:'Share Tech Mono',monospace;}
+.ic.ok b{color:var(--green);}
+.prog{width:100%;height:6px;background:#0d1117;border-radius:3px;margin:8px 0;
+      overflow:hidden;border:1px solid var(--border);}
+.pf{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));width:0%;transition:width 0.3s;}
 .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.pad-btn{aspect-ratio:1;font-size:22px;background:#0d1117;border:1px solid var(--border)!important;
-         border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.pad-btn:active{background:rgba(0,212,255,0.2)!important;border-color:var(--accent)!important;transform:scale(0.93);}
-.sensor-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.sensor-card{background:#0d1117;border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;}
-.sensor-label{font-size:10px;color:var(--muted);font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
-.sensor-value{font-size:20px;font-weight:900;color:var(--accent);margin:6px 0;font-family:'Share Tech Mono',monospace;}
-#pathLog{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:10px;
-         font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);
-         max-height:90px;overflow-y:auto;margin-top:8px;}
-#pathLog .ok{color:var(--green);}#pathLog .warn{color:var(--yellow);}
-#pathLog .err{color:var(--red);}#pathLog .info{color:var(--accent);}
-.step-guide{background:#0d1117;border:1px solid var(--yellow);border-radius:8px;
-            padding:10px;margin-bottom:10px;font-family:'Share Tech Mono',monospace;font-size:11px;}
-.step-guide .step{padding:3px 0;}
-.step-guide .step.done{color:var(--green);}
-.step-guide .step.active{color:var(--yellow);}
-.step-guide .step.pending{color:var(--muted);}
-.rssi-bar{width:100%;height:22px;background:#0d1117;border-radius:11px;margin:8px 0;
-          overflow:hidden;position:relative;border:1px solid var(--border);}
-.rssi-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--accent2),var(--green));
-           width:0%;transition:width 0.3s;}
-.rssi-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-           color:white;font-weight:bold;font-size:11px;font-family:'Share Tech Mono',monospace;
-           text-shadow:1px 1px 3px black;z-index:2;}
-.status-box{background:#0d1117;border:1px solid var(--border);border-radius:8px;
-            padding:10px 14px;font-family:'Share Tech Mono',monospace;font-size:12px;
-            color:var(--muted);margin-top:8px;text-align:center;}
-.robot-len-row{display:flex;gap:8px;align-items:center;margin-bottom:10px;}
-.robot-len-row label{font-family:'Share Tech Mono',monospace;font-size:11px;
-                     color:var(--muted);white-space:nowrap;}
-.num-input{flex:1;padding:8px 12px;background:#0d1117;border:1px solid var(--border);
-           border-radius:8px;color:var(--yellow);font-family:'Share Tech Mono',monospace;
-           font-size:14px;text-align:center;}
-
-/* LDR gauge */
-.ldr-gauge-wrap{margin:12px 0;}
-.ldr-bar{width:100%;height:28px;background:#0d1117;border-radius:14px;
-         overflow:hidden;position:relative;border:1px solid var(--border);}
-.ldr-fill{height:100%;background:linear-gradient(90deg,#1a0d2e,#ffd600,#ffffff);
-          transition:width 0.4s;width:0%;}
-.ldr-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-          font-family:'Share Tech Mono',monospace;font-size:12px;font-weight:bold;
-          color:white;text-shadow:1px 1px 3px black;z-index:2;}
-
-/* Scan radar */
-#scanCanvas{display:block;margin:10px auto;border-radius:50%;
-            border:1px solid var(--border);}
+.pb{aspect-ratio:1;font-size:22px;background:#0d1117;border:1px solid var(--border)!important;
+    border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.pb:active{background:rgba(0,212,255,0.2)!important;border-color:var(--accent)!important;transform:scale(0.93);}
+.sg{background:#0d1117;border:1px solid var(--yellow);border-radius:8px;
+    padding:10px;margin-bottom:10px;font-family:'Share Tech Mono',monospace;font-size:11px;}
+.sg .s{padding:3px 0;}
+.sg .s.done{color:var(--green);}
+.sg .s.act{color:var(--yellow);}
+.sg .s.pend{color:var(--muted);}
+.scard{background:#0d1117;border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;}
+.slabel{font-size:10px;color:var(--muted);font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
+.sval{font-size:20px;font-weight:900;color:var(--accent);margin:6px 0;font-family:'Share Tech Mono',monospace;}
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+#plog{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:10px;
+      font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);
+      max-height:90px;overflow-y:auto;margin-top:8px;}
+#plog .ok{color:var(--green);}#plog .w{color:var(--yellow);}
+#plog .e{color:var(--red);}#plog .i{color:var(--accent);}
+.rbar{width:100%;height:22px;background:#0d1117;border-radius:11px;margin:8px 0;
+      overflow:hidden;position:relative;border:1px solid var(--border);}
+.rf{height:100%;background:linear-gradient(90deg,var(--red),var(--accent2),var(--green));
+    width:0%;transition:width 0.3s;}
+.rt{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    color:white;font-weight:bold;font-size:11px;font-family:'Share Tech Mono',monospace;
+    text-shadow:1px 1px 3px black;z-index:2;}
+.stbox{background:#0d1117;border:1px solid var(--border);border-radius:8px;
+       padding:10px 14px;font-family:'Share Tech Mono',monospace;font-size:12px;
+       color:var(--muted);margin-top:8px;text-align:center;}
+.ninput{flex:1;padding:8px 12px;background:#0d1117;border:1px solid var(--border);
+        border-radius:8px;color:var(--yellow);font-family:'Share Tech Mono',monospace;
+        font-size:14px;text-align:center;}
+.lrow{display:flex;gap:8px;align-items:center;margin-bottom:10px;}
+.lrow label{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);white-space:nowrap;}
+.lbar{width:100%;height:28px;background:#0d1117;border-radius:14px;overflow:hidden;
+      position:relative;border:1px solid var(--border);margin:8px 0;}
+.lfill{height:100%;background:linear-gradient(90deg,#1a0d2e,#ffd600,#fff);
+       transition:width 0.4s;width:0%;}
+.ltext{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+       color:white;font-weight:bold;font-size:12px;font-family:'Share Tech Mono',monospace;
+       text-shadow:1px 1px 3px black;z-index:2;}
+#scanCanvas{display:block;margin:10px auto;border-radius:50%;border:1px solid var(--border);}
 </style>
 </head>
 <body>
 <div class="container">
-<h1>⟨ ROBOT CONTROLLER FINAL ⟩</h1>
+<h1>⟨ ROBOT CONTROLLER ⟩</h1>
 
 <!-- CONNECTION -->
 <div class="panel">
-  <div class="panel-title">◈ ESP CONNECTION</div>
+  <div class="pt">◈ ESP CONNECTION</div>
   <div class="conn-row">
     <input type="text" id="espIp" value="192.168.43.1" placeholder="ESP IP">
     <button id="connectBtn" onclick="connectESP()">LINK</button>
   </div>
-  <div id="connectionStatus" class="disconnected">◉ DISCONNECTED</div>
+  <div id="cStatus" class="disconnected">◉ DISCONNECTED</div>
 </div>
 
 <!-- TABS -->
@@ -150,816 +142,617 @@ button:active{transform:scale(0.96);}
   <div class="tab" onclick="switchTab('sensors')">📡 SENSORS</div>
 </div>
 
-<!-- ══════ TAB: MANUAL ══════ -->
-<div id="tab-manual" class="tab-content active">
-  <div class="panel">
-    <div class="panel-title">◈ MANUAL CONTROL</div>
-    <div class="pad">
-      <div></div>
-      <button class="pad-btn" ontouchstart="pressCmd('F')" ontouchend="pressCmd('S')" onmousedown="pressCmd('F')" onmouseup="pressCmd('S')">⬆️</button>
-      <div></div>
-      <button class="pad-btn" ontouchstart="pressCmd('L')" ontouchend="pressCmd('S')" onmousedown="pressCmd('L')" onmouseup="pressCmd('S')">⬅️</button>
-      <button class="pad-btn" onclick="pressCmd('S')">⏹️</button>
-      <button class="pad-btn" ontouchstart="pressCmd('R')" ontouchend="pressCmd('S')" onmousedown="pressCmd('R')" onmouseup="pressCmd('S')">➡️</button>
-      <div></div>
-      <button class="pad-btn" ontouchstart="pressCmd('B')" ontouchend="pressCmd('S')" onmousedown="pressCmd('B')" onmouseup="pressCmd('S')">⬇️</button>
-      <div></div>
-    </div>
-    <div style="margin-top:10px;display:flex;gap:8px;">
-      <button class="btn-solid-green" style="flex:2" onclick="pressCmd('G')">↖ L+FWD</button>
-      <button class="btn-solid-cyan"  style="flex:2" onclick="pressCmd('I')">↗ R+FWD</button>
-      <button class="btn-solid-red"   style="flex:1" onclick="pressCmd('S')">■ STOP</button>
-    </div>
+<!-- ══ MANUAL ══ -->
+<div id="tab-manual" class="tc active">
+<div class="panel">
+  <div class="pt">◈ MANUAL CONTROL</div>
+  <div class="pad">
+    <div></div>
+    <button class="pb" ontouchstart="pc('F')" ontouchend="pc('S')" onmousedown="pc('F')" onmouseup="pc('S')">⬆️</button>
+    <div></div>
+    <button class="pb" ontouchstart="pc('L')" ontouchend="pc('S')" onmousedown="pc('L')" onmouseup="pc('S')">⬅️</button>
+    <button class="pb" onclick="pc('S')">⏹️</button>
+    <button class="pb" ontouchstart="pc('R')" ontouchend="pc('S')" onmousedown="pc('R')" onmouseup="pc('S')">➡️</button>
+    <div></div>
+    <button class="pb" ontouchstart="pc('B')" ontouchend="pc('S')" onmousedown="pc('B')" onmouseup="pc('S')">⬇️</button>
+    <div></div>
+  </div>
+  <div style="margin-top:10px;display:flex;gap:8px;">
+    <button class="bsg" style="flex:2" onclick="pc('G')">↖ L+FWD</button>
+    <button class="bsc" style="flex:2" onclick="pc('I')">↗ R+FWD</button>
+    <button class="bsr" style="flex:1" onclick="pc('S')">■ STOP</button>
   </div>
 </div>
+</div>
 
-<!-- ══════ TAB: AI PATH ══════ -->
-<div id="tab-ai" class="tab-content">
-  <div class="panel">
-    <div class="panel-title">◈ AI PATH — AUTO CALIBRATION</div>
-    <div class="robot-len-row">
-      <label>ROBOT LENGTH (cm):</label>
-      <input type="number" class="num-input" id="robotLengthInput" value="15" min="5" max="100">
-      <button class="btn-yellow" style="flex:0;padding:8px 12px;" onclick="updateRobotLength()">SET</button>
-    </div>
-    <div class="step-guide">
-      <div class="step active"  id="sg1">① LIVE → FREEZE photo</div>
-      <div class="step pending" id="sg2">② 🔴 FRONT → tap front</div>
-      <div class="step pending" id="sg3">③ 🔵 BACK → tap back</div>
-      <div class="step pending" id="sg4">④ ✏️ PATH → draw path</div>
-      <div class="step pending" id="sg5">⑤ CALCULATE → EXECUTE</div>
-    </div>
-    <div class="camera-box">
-      <video id="video" autoplay playsinline muted></video>
-      <canvas id="canvas"></canvas>
-      <div class="calib-badge" id="calibBadge">📏 NOT CALIBRATED</div>
-    </div>
-    <div class="row">
-      <button class="btn-green"  onclick="startLive()"   id="liveBtn">📷 LIVE</button>
-      <button class="btn-orange" onclick="freezeImage()" id="freezeBtn">❄️ FREEZE</button>
-      <button class="btn-red"    onclick="clearAll()">🗑️ CLEAR</button>
-    </div>
-    <div class="row">
-      <button class="btn-yellow" onclick="setMode('robot_front')" id="frontBtn">🔴 FRONT</button>
-      <button class="btn-yellow" onclick="setMode('robot_back')"  id="backBtn">🔵 BACK</button>
-      <button class="btn-cyan"   onclick="setMode('draw')"        id="drawBtn">✏️ PATH</button>
-    </div>
-    <div class="info-bar">
-      <div class="info-cell" id="cellCalib"><span>CALIB</span><b id="calibStatus">--</b></div>
-      <div class="info-cell"><span>PX/CM</span><b id="pxPerCm">--</b></div>
-      <div class="info-cell"><span>POINTS</span><b id="pointCount">0</b></div>
-      <div class="info-cell"><span>MODE</span><b id="modeDisplay">--</b></div>
-    </div>
-    <div class="row">
-      <button class="btn-solid-cyan"  style="flex:2" onclick="calculatePath()">📐 CALCULATE</button>
-      <button class="btn-solid-green" style="flex:2" onclick="executePathNow()">▶️ EXECUTE</button>
-      <button class="btn-solid-red"   style="flex:1" onclick="emergencyStop()">⏹</button>
-    </div>
-    <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
-    <div id="pathLog"><span class="info">// LIVE → FREEZE → mark robot → draw path</span></div>
+<!-- ══ AI PATH ══ -->
+<div id="tab-ai" class="tc">
+<div class="panel">
+  <div class="pt">◈ AI PATH — AUTO CALIBRATION</div>
+  <div class="lrow">
+    <label>ROBOT LENGTH (cm):</label>
+    <input type="number" class="ninput" id="rlInput" value="15" min="5" max="100">
+    <button class="by" style="flex:0;padding:8px 12px;" onclick="updateRL()">SET</button>
   </div>
-</div>
-
-<!-- ══════ TAB: LIGHT SEEKER ══════ -->
-<div id="tab-light" class="tab-content">
-  <div class="panel">
-    <div class="panel-title">◈ LIGHT SEEKER MODE — LDR</div>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:12px;line-height:1.6;">
-      Robot scans 360° to find the darkest area then moves toward it.
-      Place black paper goal anywhere — robot will find it automatically!
-    </p>
-
-    <!-- LDR live reading -->
-    <div class="panel-title" style="margin-top:4px;">◈ LIVE LDR READING</div>
-    <div class="ldr-gauge-wrap">
-      <div class="ldr-bar">
-        <div class="ldr-fill" id="ldrFill"></div>
-        <div class="ldr-text" id="ldrText">-- / 1023</div>
-      </div>
-    </div>
-    <div style="display:flex;justify-content:space-between;font-size:10px;
-                color:var(--muted);font-family:'Share Tech Mono',monospace;margin-bottom:10px;">
-      <span>⬛ DARK (goal)</span><span>░░░ MEDIUM</span><span>⬜ BRIGHT</span>
-    </div>
-
-    <!-- Threshold setting -->
-    <div class="robot-len-row">
-      <label>DARK THRESHOLD:</label>
-      <input type="number" class="num-input" id="threshInput" value="300" min="0" max="1023">
-      <button class="btn-yellow" style="flex:0;padding:8px 12px;" onclick="setThreshold()">SET</button>
-    </div>
-    <div style="font-size:11px;color:var(--muted);font-family:'Share Tech Mono',monospace;
-                margin-bottom:10px;">
-      If LDR &lt; threshold → goal found. Point LDR at black paper and read value above, then set threshold slightly higher.
-    </div>
-
-    <!-- Scan radar display -->
-    <div class="panel-title">◈ 360° SCAN RESULT</div>
-    <canvas id="scanCanvas" width="220" height="220"></canvas>
-    <div id="scanResult" class="status-box">⏸ Press SCAN to find darkest direction</div>
-
-    <!-- Controls -->
-    <div class="row" style="margin-top:10px;">
-      <button class="btn-solid-yellow" style="flex:2" onclick="doScan()" id="scanBtn">🔄 SCAN 360°</button>
-      <button class="btn-solid-red"    style="flex:1" onclick="emergencyStop()">⏹ STOP</button>
-    </div>
-    <div class="row">
-      <button class="btn-solid-green" style="flex:2" onclick="startLightSeek()" id="seekBtn">🔦 START SEEKING</button>
-      <button class="btn-solid-red"   style="flex:1" onclick="stopLightSeek()">⏹ STOP</button>
-    </div>
-    <div class="status-box" id="seekStatus">⏸ Light seeker: OFF</div>
+  <div class="sg">
+    <div class="s act"  id="sg1">① LIVE → FREEZE photo</div>
+    <div class="s pend" id="sg2">② 🔴 FRONT → tap front of robot</div>
+    <div class="s pend" id="sg3">③ 🔵 BACK → tap back of robot</div>
+    <div class="s pend" id="sg4">④ ✏️ PATH → draw path to goal</div>
+    <div class="s pend" id="sg5">⑤ CALCULATE → EXECUTE</div>
   </div>
-</div>
-
-<!-- ══════ TAB: EXPLORE ══════ -->
-<div id="tab-explore" class="tab-content">
-  <div class="panel">
-    <div class="panel-title">◈ AUTO EXPLORE</div>
-    <p style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5;">
-      Random movement with obstacle avoidance via ultrasonic sensor.
-    </p>
-    <div class="row">
-      <button class="btn-solid-green" style="flex:2" onclick="startExplore()" id="exploreBtn">▶️ START</button>
-      <button class="btn-solid-red"   style="flex:1" onclick="stopExplore()">⏹ STOP</button>
-    </div>
-    <div class="status-box" id="exploreStatus">⏸ Explore: OFF</div>
-
-    <div style="margin-top:14px;" class="panel-title">◈ WIFI FOLLOW (RSSI GRADIENT)</div>
-    <p style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.5;">
-      Tests F/L/R directions and moves toward strongest signal.
-    </p>
-    <div class="row">
-      <button class="btn-purple" style="flex:2" onclick="toggleFollow()" id="followBtn">▶️ FOLLOW</button>
-      <button class="btn-red"    style="flex:1" onclick="stopFollow()">⏹</button>
-    </div>
-    <div class="rssi-bar">
-      <div class="rssi-fill" id="rssiFill"></div>
-      <div class="rssi-text" id="rssiValue">-- dBm</div>
-    </div>
-    <div class="status-box" id="followStatus">⏸ Follow: OFF</div>
+  <div class="cam">
+    <video id="video" autoplay playsinline muted></video>
+    <canvas id="canvas"></canvas>
+    <div class="cbadge" id="cbadge">📏 NOT CALIBRATED</div>
   </div>
-</div>
-
-<!-- ══════ TAB: SENSORS ══════ -->
-<div id="tab-sensors" class="tab-content">
-  <div class="panel">
-    <div class="panel-title">◈ LIVE SENSORS</div>
-    <div class="sensor-grid">
-      <div class="sensor-card">
-        <div class="sensor-label">ULTRASONIC</div>
-        <div class="sensor-value" id="ultrasonic">--</div>
-        <div id="obstacleWarning" style="color:var(--red);font-size:11px;min-height:16px;"></div>
-      </div>
-      <div class="sensor-card">
-        <div class="sensor-label">LDR VALUE</div>
-        <div class="sensor-value" id="ldrSensor">--</div>
-        <div id="darkWarning" style="color:var(--yellow);font-size:11px;min-height:16px;"></div>
-      </div>
-    </div>
-    <button class="btn-solid-cyan" style="width:100%;margin-top:10px;" onclick="toggleSensors()" id="sensorBtn">▶ START READING</button>
+  <div class="row">
+    <button class="bg"  onclick="startLive()"   id="liveBtn">📷 LIVE</button>
+    <button class="bo"  onclick="freezeImg()"   id="frzBtn">❄️ FREEZE</button>
+    <button class="br"  onclick="clearAll()">🗑️ CLEAR</button>
   </div>
+  <div class="row">
+    <button class="by"  onclick="setMode('rf')" id="frontBtn">🔴 FRONT</button>
+    <button class="by"  onclick="setMode('rb')" id="backBtn">🔵 BACK</button>
+    <button class="bc"  onclick="setMode('draw')" id="drawBtn">✏️ PATH</button>
+  </div>
+  <div class="ibar">
+    <div class="ic" id="ccell"><span>CALIB</span><b id="caliSt">--</b></div>
+    <div class="ic"><span>PX/CM</span><b id="pxcm">--</b></div>
+    <div class="ic"><span>POINTS</span><b id="ptcnt">0</b></div>
+    <div class="ic"><span>MODE</span><b id="modeSt">--</b></div>
+  </div>
+  <div class="row">
+    <button class="bsc" style="flex:2" onclick="calcPath()">📐 CALCULATE</button>
+    <button class="bsg" style="flex:2" onclick="execPath()">▶️ EXECUTE</button>
+    <button class="bsr" style="flex:1" onclick="eStop()">⏹</button>
+  </div>
+  <div class="prog"><div class="pf" id="pbar"></div></div>
+  <div id="plog"><span class="i">// LIVE → FREEZE → mark robot → draw path</span></div>
+</div>
 </div>
 
+<!-- ══ LIGHT ══ -->
+<div id="tab-light" class="tc">
+<div class="panel">
+  <div class="pt">◈ LIGHT SEEKER — LDR</div>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5;">
+    Robot scans 360° to find the darkest area and moves toward it automatically.
+  </p>
+  <div class="pt" style="margin-top:4px;">◈ LIVE LDR READING</div>
+  <div class="lbar"><div class="lfill" id="ldrFill"></div><div class="ltext" id="ldrTxt">-- / 1023</div></div>
+  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);
+              font-family:'Share Tech Mono',monospace;margin-bottom:10px;">
+    <span>⬛ DARK</span><span>░ MEDIUM</span><span>⬜ BRIGHT</span>
+  </div>
+  <div class="lrow">
+    <label>DARK THRESHOLD:</label>
+    <input type="number" class="ninput" id="thrInput" value="300" min="0" max="1023">
+    <button class="by" style="flex:0;padding:8px 12px;" onclick="setThr()">SET</button>
+  </div>
+  <div style="font-size:11px;color:var(--muted);font-family:'Share Tech Mono',monospace;margin-bottom:10px;">
+    Point LDR at black paper → note value → set threshold slightly above it.
+    Also type lt=XXX in Serial Monitor to save on ESP.
+  </div>
+  <div class="pt">◈ 360° SCAN</div>
+  <canvas id="scanCanvas" width="200" height="200"></canvas>
+  <div id="scanRes" class="stbox">⏸ Press SCAN to find darkest direction</div>
+  <div class="row" style="margin-top:10px;">
+    <button class="bsy" style="flex:2" onclick="doScan()" id="scanBtn">🔄 SCAN 360°</button>
+    <button class="bsr" style="flex:1" onclick="eStop()">⏹ STOP</button>
+  </div>
+  <div class="row">
+    <button class="bsg" style="flex:2" onclick="startSeek()" id="seekBtn">🔦 START SEEKING</button>
+    <button class="bsr" style="flex:1" onclick="stopSeek()">⏹ STOP</button>
+  </div>
+  <div class="stbox" id="seekSt">⏸ Light seeker: OFF</div>
 </div>
+</div>
+
+<!-- ══ EXPLORE ══ -->
+<div id="tab-explore" class="tc">
+<div class="panel">
+  <div class="pt">◈ AUTO EXPLORE</div>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5;">
+    Random movement with obstacle avoidance via ultrasonic sensor.
+  </p>
+  <div class="row">
+    <button class="bsg" style="flex:2" onclick="startExp()" id="expBtn">▶️ START</button>
+    <button class="bsr" style="flex:1" onclick="stopExp()">⏹ STOP</button>
+  </div>
+  <div class="stbox" id="expSt">⏸ Explore: OFF</div>
+  <div style="margin-top:14px;" class="pt">◈ WIFI FOLLOW (RSSI GRADIENT)</div>
+  <p style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.5;">
+    Tests F/L/R directions and moves toward strongest WiFi signal.
+  </p>
+  <div class="row">
+    <button class="bp" style="flex:2" onclick="togFollow()" id="folBtn">▶️ FOLLOW</button>
+    <button class="br" style="flex:1" onclick="stopFollow()">⏹</button>
+  </div>
+  <div class="rbar"><div class="rf" id="rssiF"></div><div class="rt" id="rssiV">-- dBm</div></div>
+  <div class="stbox" id="folSt">⏸ Follow: OFF</div>
+</div>
+</div>
+
+<!-- ══ SENSORS ══ -->
+<div id="tab-sensors" class="tc">
+<div class="panel">
+  <div class="pt">◈ LIVE SENSORS</div>
+  <div class="sgrid">
+    <div class="scard">
+      <div class="slabel">ULTRASONIC</div>
+      <div class="sval" id="usVal">--</div>
+      <div id="obsWarn" style="color:var(--red);font-size:11px;min-height:16px;"></div>
+    </div>
+    <div class="scard">
+      <div class="slabel">LDR VALUE</div>
+      <div class="sval" id="ldrVal">--</div>
+      <div id="darkWarn" style="color:var(--yellow);font-size:11px;min-height:16px;"></div>
+    </div>
+  </div>
+  <button class="bsc" style="width:100%;margin-top:10px;" onclick="togSensors()" id="senBtn">▶ START READING</button>
+</div>
+</div>
+
+</div><!-- container -->
 <script>
 // ═══════════════════════════════════════════════
 //  STATE
 // ═══════════════════════════════════════════════
-let espIP        = '192.168.43.1';
-let espConnected = false;
-let ldrInterval  = null;
-let ldrRunning   = false;
-
-let video  = document.getElementById('video');
-let canvas = document.getElementById('canvas');
-let ctx    = canvas.getContext('2d');
-let scanCtx = document.getElementById('scanCanvas').getContext('2d');
-
-let frozenImageData = null;
-let isLive = false;
-let currentMode = null;
-let isDrawing = false;
-
-let robotFront = null, robotBack = null;
-let ROBOT_REAL_CM = 15;
-let pixelsPerCm = null;
-let rawPoints = [], pathPoints = [], movementCommands = [];
-
-const MS_PER_CM = 80, MS_PER_DEGREE = 12;
-const MIN_POINT_DIST_PX = 15, MIN_ANGLE_DEG = 10;
-
-let isExploring = false, isFollowing = false;
-let followInterval = null, sensorInterval = null, sensorRunning = false;
-let isLightSeeking = false;
-
-// LDR threshold (matches ESP default)
-let ldrThreshold = 300;
+let espIP='192.168.43.1', espConnected=false;
+let video=document.getElementById('video');
+let canvas=document.getElementById('canvas');
+let ctx=canvas.getContext('2d');
+let sctx=document.getElementById('scanCanvas').getContext('2d');
+let frozenImg=null, isLive=false, curMode=null, isDrw=false;
+let rFront=null, rBack=null, RLEN=15, pxcm=null;
+let rawPts=[], pathPts=[], cmds=[];
+const MPC=80, MPD=12, MIN_PX=15, MIN_ANG=15;
+let isExp=false, isFol=false, isSeek=false;
+let folIv=null, senIv=null, senOn=false, ldrIv=null;
+let ldrThr=300;
 
 // ═══════════════════════════════════════════════
 //  TABS
 // ═══════════════════════════════════════════════
-function switchTab(name) {
-  const names = ['manual','ai','light','explore','sensors'];
-  document.querySelectorAll('.tab').forEach((t,i) =>
-    t.classList.toggle('active', names[i] === name));
-  document.querySelectorAll('.tab-content').forEach(c =>
-    c.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-
-  // Start LDR polling when on light tab
-  if (name === 'light' && espConnected) startLDRPolling();
-  else stopLDRPolling();
+function switchTab(n){
+  const ns=['manual','ai','light','explore','sensors'];
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',ns[i]===n));
+  document.querySelectorAll('.tc').forEach(c=>c.classList.remove('active'));
+  document.getElementById('tab-'+n).classList.add('active');
+  if(n==='light'&&espConnected)startLDRP(); else stopLDRP();
 }
 
 // ═══════════════════════════════════════════════
 //  CONNECTION
 // ═══════════════════════════════════════════════
-function connectESP() {
-  espIP = document.getElementById('espIp').value.trim();
-  fetch(`http://${espIP}/ping`, {signal: AbortSignal.timeout(3000)})
-    .then(r => r.text())
-    .then(() => {
-      espConnected = true;
-      setStatus('connected', '◉ CONNECTED — ' + espIP);
-    })
-    .catch(() => {
-      espConnected = false;
-      setStatus('disconnected', '◉ DISCONNECTED — Check IP & WiFi');
-    });
+function connectESP(){
+  espIP=document.getElementById('espIp').value.trim();
+  fetch(`http://${espIP}/ping`,{signal:AbortSignal.timeout(3000)})
+    .then(r=>r.text()).then(()=>{espConnected=true;setSt('connected','◉ CONNECTED — '+espIP);})
+    .catch(()=>{espConnected=false;setSt('disconnected','◉ DISCONNECTED — Check IP & WiFi');});
 }
-
-function setStatus(cls, txt) {
-  const el = document.getElementById('connectionStatus');
-  el.className = cls; el.innerText = txt;
-}
-
-function sendCmd(state) {
-  if (!espConnected) { console.log('CMD:', state); return Promise.resolve(); }
-  return fetch(`http://${espIP}/?State=${state}`).catch(() => {});
-}
-
-function pressCmd(state) { sendCmd(state); }
+function setSt(c,t){const e=document.getElementById('cStatus');e.className=c;e.innerText=t;}
+function sc(s){if(!espConnected){console.log('CMD:',s);return Promise.resolve();}
+  return fetch(`http://${espIP}/?State=${s}`).catch(()=>{});}
+function pc(s){sc(s);}
 
 // ═══════════════════════════════════════════════
-//  LDR LIVE POLLING (light tab)
+//  LDR POLLING (light tab)
 // ═══════════════════════════════════════════════
-function startLDRPolling() {
-  if (ldrRunning) return;
-  ldrRunning = true;
-  ldrInterval = setInterval(async () => {
-    try {
-      const r    = await fetch(`http://${espIP}/sensors`, {signal: AbortSignal.timeout(800)});
-      const data = await r.json();
-      updateLDRDisplay(data.ldr, data.threshold || ldrThreshold);
-
-      // Update sensor tab too
-      document.getElementById('ldrSensor').innerText = data.ldr;
-      document.getElementById('darkWarning').innerText =
-        data.isDark ? '⬛ DARK AREA DETECTED!' : '';
-    } catch(e) {}
-  }, 400);
+function startLDRP(){
+  if(ldrIv)return;
+  ldrIv=setInterval(async()=>{
+    try{const r=await fetch(`http://${espIP}/sensors`,{signal:AbortSignal.timeout(800)});
+      const d=await r.json();updLDR(d.ldr,d.threshold||ldrThr);}catch(e){}
+  },400);
 }
+function stopLDRP(){if(ldrIv){clearInterval(ldrIv);ldrIv=null;}}
 
-function stopLDRPolling() {
-  ldrRunning = false;
-  if (ldrInterval) { clearInterval(ldrInterval); ldrInterval = null; }
-}
-
-function updateLDRDisplay(val, threshold) {
-  // Bar shows brightness (0=dark, 1023=bright)
-  const pct = (val / 1023) * 100;
-  document.getElementById('ldrFill').style.width = pct + '%';
-  document.getElementById('ldrText').innerText = `${val} / 1023`;
-
-  // Color the bar based on threshold
-  const fill = document.getElementById('ldrFill');
-  if (val < threshold) {
-    fill.style.background = 'linear-gradient(90deg,#1a0d2e,#ff6b35)';
-    document.getElementById('ldrText').innerText = `${val} — DARK! ⬛`;
+function updLDR(v,thr){
+  const pct=(v/1023)*100;
+  document.getElementById('ldrFill').style.width=pct+'%';
+  const f=document.getElementById('ldrFill');
+  if(v<thr){
+    f.style.background='linear-gradient(90deg,#1a0d2e,#ff3b3b)';
+    document.getElementById('ldrTxt').innerText=v+' ⬛ DARK!';
   } else {
-    fill.style.background = 'linear-gradient(90deg,#1a0d2e,#ffd600,#ffffff)';
+    f.style.background='linear-gradient(90deg,#1a0d2e,#ffd600,#fff)';
+    document.getElementById('ldrTxt').innerText=v+' / 1023';
   }
 }
 
-function setThreshold() {
-  const val = parseInt(document.getElementById('threshInput').value);
-  if (val >= 0 && val <= 1023) {
-    ldrThreshold = val;
-    // Also tell ESP via serial (user must type lt=XXX in serial monitor)
-    // or we show a reminder
-    document.getElementById('seekStatus').innerText =
-      `// Threshold set to ${val}. Also type lt=${val} in Serial Monitor to save on ESP.`;
-    document.getElementById('seekStatus').style.color = 'var(--yellow)';
+function setThr(){
+  const v=parseInt(document.getElementById('thrInput').value);
+  if(v>=0&&v<=1023){
+    ldrThr=v;
+    document.getElementById('seekSt').innerText=`// Threshold=${v}. Also type lt=${v} in Serial Monitor!`;
+    document.getElementById('seekSt').style.color='var(--yellow)';
   }
 }
 
 // ═══════════════════════════════════════════════
 //  360° SCAN
 // ═══════════════════════════════════════════════
-async function doScan() {
-  if (!espConnected) { alert('Connect to ESP first!'); return; }
-  document.getElementById('scanBtn').innerText = '⏳ SCANNING...';
-  document.getElementById('scanResult').innerText = '// Robot is scanning 360°...';
-  document.getElementById('scanResult').style.color = 'var(--accent)';
-
-  try {
-    // Tell ESP to do scan — this takes ~15 seconds
-    const r    = await fetch(`http://${espIP}/scan`, {signal: AbortSignal.timeout(30000)});
-    const data = await r.json();
-
-    drawScanRadar(data.readings, data.bestAngle);
-
-    document.getElementById('scanResult').innerText =
-      `✅ Best angle: ${data.bestAngle}° | LDR: ${data.bestLight} | Robot is now facing darkest direction!`;
-    document.getElementById('scanResult').style.color = 'var(--green)';
-
-  } catch(e) {
-    document.getElementById('scanResult').innerText = '❌ Scan failed — ' + e.message;
-    document.getElementById('scanResult').style.color = 'var(--red)';
+async function doScan(){
+  if(!espConnected){alert('Connect ESP first!');return;}
+  document.getElementById('scanBtn').innerText='⏳ SCANNING...';
+  document.getElementById('scanRes').innerText='// Robot scanning 360°... (~15 sec)';
+  document.getElementById('scanRes').style.color='var(--accent)';
+  try{
+    const r=await fetch(`http://${espIP}/scan`,{signal:AbortSignal.timeout(35000)});
+    const d=await r.json();
+    drawRadar(d.readings,d.bestAngle);
+    document.getElementById('scanRes').innerText=`✅ Best: ${d.bestAngle}° LDR=${d.bestLight} — Robot facing darkest!`;
+    document.getElementById('scanRes').style.color='var(--green)';
+  }catch(e){
+    document.getElementById('scanRes').innerText='❌ Scan failed: '+e.message;
+    document.getElementById('scanRes').style.color='var(--red)';
   }
-
-  document.getElementById('scanBtn').innerText = '🔄 SCAN 360°';
+  document.getElementById('scanBtn').innerText='🔄 SCAN 360°';
 }
 
-function drawScanRadar(readings, bestAngle) {
-  const c   = document.getElementById('scanCanvas');
-  const cx  = c.width / 2, cy = c.height / 2, r = 90;
-  scanCtx.clearRect(0, 0, c.width, c.height);
-
-  // Background circle
-  scanCtx.fillStyle = '#0d1117';
-  scanCtx.beginPath(); scanCtx.arc(cx, cy, r+10, 0, 2*Math.PI); scanCtx.fill();
-  scanCtx.strokeStyle = '#1e3a5f'; scanCtx.lineWidth = 1;
-  scanCtx.stroke();
-
-  // Grid circles
-  [0.33, 0.66, 1].forEach(f => {
-    scanCtx.beginPath(); scanCtx.arc(cx, cy, r*f, 0, 2*Math.PI);
-    scanCtx.strokeStyle = '#1e3a5f'; scanCtx.lineWidth = 0.5; scanCtx.stroke();
+function drawRadar(readings,best){
+  const c=document.getElementById('scanCanvas');
+  const cx=c.width/2,cy=c.height/2,r=85;
+  sctx.clearRect(0,0,c.width,c.height);
+  sctx.fillStyle='#0d1117';sctx.beginPath();sctx.arc(cx,cy,r+8,0,2*Math.PI);sctx.fill();
+  [0.33,0.66,1].forEach(f=>{
+    sctx.beginPath();sctx.arc(cx,cy,r*f,0,2*Math.PI);
+    sctx.strokeStyle='#1e3a5f';sctx.lineWidth=0.5;sctx.stroke();
   });
-
-  if (!readings || readings.length === 0) return;
-
-  const maxVal = Math.max(...readings);
-  const minVal = Math.min(...readings);
-  const range  = maxVal - minVal || 1;
-  const steps  = readings.length;
-  const degPerStep = 360 / steps;
-
-  // Draw readings as filled polygon
-  scanCtx.beginPath();
-  readings.forEach((val, i) => {
-    const angle  = (i * degPerStep - 90) * Math.PI / 180;
-    // Invert: darker = shorter bar so dark areas pop
-    const norm   = 1 - ((val - minVal) / range);
-    const radius = 20 + norm * (r - 20);
-    const x = cx + radius * Math.cos(angle);
-    const y = cy + radius * Math.sin(angle);
-    i === 0 ? scanCtx.moveTo(x, y) : scanCtx.lineTo(x, y);
+  if(!readings||!readings.length)return;
+  const mx=Math.max(...readings),mn=Math.min(...readings),rng=mx-mn||1;
+  const steps=readings.length,dpS=360/steps;
+  sctx.beginPath();
+  readings.forEach((v,i)=>{
+    const a=(i*dpS-90)*Math.PI/180;
+    const nr=1-((v-mn)/rng);
+    const rd=15+nr*(r-15);
+    const x=cx+rd*Math.cos(a),y=cy+rd*Math.sin(a);
+    i===0?sctx.moveTo(x,y):sctx.lineTo(x,y);
   });
-  scanCtx.closePath();
-  scanCtx.fillStyle   = 'rgba(0,212,255,0.2)';
-  scanCtx.strokeStyle = '#00d4ff';
-  scanCtx.lineWidth   = 1.5;
-  scanCtx.fill(); scanCtx.stroke();
-
-  // Highlight best angle (darkest)
-  const bestIdx   = bestAngle / degPerStep;
-  const bestRad   = (bestIdx * degPerStep - 90) * Math.PI / 180;
-  const bestNorm  = 1 - ((readings[bestIdx] - minVal) / range);
-  const bestR     = 20 + bestNorm * (r - 20);
-  const bx = cx + bestR * Math.cos(bestRad);
-  const by = cy + bestR * Math.sin(bestRad);
-
-  // Line from center to best point
-  scanCtx.beginPath();
-  scanCtx.moveTo(cx, cy); scanCtx.lineTo(bx, by);
-  scanCtx.strokeStyle = '#00ff88'; scanCtx.lineWidth = 2;
-  scanCtx.stroke();
-
-  // Best point dot
-  scanCtx.fillStyle = '#00ff88';
-  scanCtx.beginPath(); scanCtx.arc(bx, by, 6, 0, 2*Math.PI); scanCtx.fill();
-
-  // Robot arrow at center
-  scanCtx.fillStyle = '#ffd600';
-  scanCtx.beginPath(); scanCtx.arc(cx, cy, 8, 0, 2*Math.PI); scanCtx.fill();
-  scanCtx.fillStyle = '#0d1117';
-  scanCtx.font = 'bold 9px monospace';
-  scanCtx.textAlign = 'center'; scanCtx.textBaseline = 'middle';
-  scanCtx.fillText('R', cx, cy);
-
-  // Labels
-  scanCtx.fillStyle   = '#64748b';
-  scanCtx.font        = '9px monospace';
-  scanCtx.textAlign   = 'center';
-  scanCtx.fillText('0°',  cx, cy - r - 4);
-  scanCtx.fillText('180°',cx, cy + r + 12);
-  scanCtx.textAlign = 'right';  scanCtx.fillText('270°', cx - r - 4, cy + 4);
-  scanCtx.textAlign = 'left';   scanCtx.fillText('90°',  cx + r + 4, cy + 4);
+  sctx.closePath();sctx.fillStyle='rgba(0,212,255,0.2)';
+  sctx.strokeStyle='#00d4ff';sctx.lineWidth=1.5;sctx.fill();sctx.stroke();
+  const bi=best/dpS,ba=(bi*dpS-90)*Math.PI/180;
+  const bnr=1-((readings[bi]-mn)/rng);
+  const brd=15+bnr*(r-15);
+  const bx=cx+brd*Math.cos(ba),by=cy+brd*Math.sin(ba);
+  sctx.beginPath();sctx.moveTo(cx,cy);sctx.lineTo(bx,by);
+  sctx.strokeStyle='#00ff88';sctx.lineWidth=2;sctx.stroke();
+  sctx.fillStyle='#00ff88';sctx.beginPath();sctx.arc(bx,by,6,0,2*Math.PI);sctx.fill();
+  sctx.fillStyle='#ffd600';sctx.beginPath();sctx.arc(cx,cy,8,0,2*Math.PI);sctx.fill();
+  sctx.fillStyle='#000';sctx.font='bold 9px monospace';sctx.textAlign='center';sctx.textBaseline='middle';
+  sctx.fillText('R',cx,cy);
+  sctx.fillStyle='#64748b';sctx.font='9px monospace';sctx.textAlign='center';
+  sctx.fillText('0°',cx,cy-r-4);sctx.fillText('180°',cx,cy+r+12);
+  sctx.textAlign='right';sctx.fillText('270°',cx-r-4,cy+4);
+  sctx.textAlign='left';sctx.fillText('90°',cx+r+4,cy+4);
 }
 
 // ═══════════════════════════════════════════════
-//  LIGHT SEEKER CONTROL
+//  LIGHT SEEKER
 // ═══════════════════════════════════════════════
-async function startLightSeek() {
-  if (!espConnected) { alert('Connect to ESP first!'); return; }
-  if (isExploring) stopExplore();
-  if (isFollowing) stopFollow();
-  isLightSeeking = true;
-
-  // Tell ESP to start light seeking
-  await fetch(`http://${espIP}/lightseek?cmd=start`).catch(() => {});
-
-  document.getElementById('seekBtn').innerText = '🔦 SEEKING...';
-  document.getElementById('seekStatus').style.color = 'var(--green)';
-  setSeekStatus('🔦 Seeking darkest area...');
-
-  // Poll sensor to show live status and detect goal found
-  const seekPoll = setInterval(async () => {
-    if (!isLightSeeking) { clearInterval(seekPoll); return; }
-    try {
-      const r    = await fetch(`http://${espIP}/sensors`, {signal: AbortSignal.timeout(800)});
-      const data = await r.json();
-      updateLDRDisplay(data.ldr, ldrThreshold);
-      setSeekStatus(`🔦 LDR: ${data.ldr} | Ultrasonic: ${data.ultrasonic}cm`);
-
-      if (data.isDark) {
-        isLightSeeking = false;
-        clearInterval(seekPoll);
-        document.getElementById('seekBtn').innerText = '🔦 START SEEKING';
-        setSeekStatus('🎯 GOAL FOUND! Dark area reached!');
-        document.getElementById('seekStatus').style.color = 'var(--green)';
+async function startSeek(){
+  if(!espConnected){alert('Connect ESP first!');return;}
+  if(isExp)stopExp();if(isFol)stopFollow();
+  isSeek=true;
+  await fetch(`http://${espIP}/lightseek?cmd=start`).catch(()=>{});
+  document.getElementById('seekBtn').innerText='🔦 SEEKING...';
+  document.getElementById('seekSt').style.color='var(--green)';
+  setSKSt('🔦 Seeking darkest area...');
+  const p=setInterval(async()=>{
+    if(!isSeek){clearInterval(p);return;}
+    try{
+      const r=await fetch(`http://${espIP}/sensors`,{signal:AbortSignal.timeout(800)});
+      const d=await r.json();
+      updLDR(d.ldr,ldrThr);
+      setSKSt(`🔦 LDR:${d.ldr} | Dist:${d.ultrasonic}cm`);
+      if(d.isDark){
+        isSeek=false;clearInterval(p);
+        document.getElementById('seekBtn').innerText='🔦 START SEEKING';
+        setSKSt('🎯 GOAL FOUND! Dark area reached!');
       }
-    } catch(e) {}
-  }, 500);
+    }catch(e){}
+  },500);
 }
 
-async function stopLightSeek() {
-  isLightSeeking = false;
-  await fetch(`http://${espIP}/lightseek?cmd=stop`).catch(() => {});
-  document.getElementById('seekBtn').innerText = '🔦 START SEEKING';
-  setSeekStatus('⏸ Light seeker: OFF');
-  document.getElementById('seekStatus').style.color = 'var(--muted)';
+async function stopSeek(){
+  isSeek=false;
+  await fetch(`http://${espIP}/lightseek?cmd=stop`).catch(()=>{});
+  document.getElementById('seekBtn').innerText='🔦 START SEEKING';
+  setSKSt('⏸ Light seeker: OFF');
+  document.getElementById('seekSt').style.color='var(--muted)';
 }
 
-function setSeekStatus(txt) {
-  document.getElementById('seekStatus').innerText = txt;
-}
+function setSKSt(t){document.getElementById('seekSt').innerText=t;}
 
 // ═══════════════════════════════════════════════
 //  CAMERA
 // ═══════════════════════════════════════════════
-async function startLive() {
-  try {
-    if (video.srcObject) video.srcObject.getTracks().forEach(t => t.stop());
-    const stream = await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
-    video.srcObject = stream;
-    isLive = true; frozenImageData = null;
-    video.onloadedmetadata = () => {
-      canvas.width = video.videoWidth; canvas.height = video.videoHeight;
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-    };
-    document.getElementById('liveBtn').classList.add('btn-active');
-    document.getElementById('freezeBtn').classList.remove('btn-active');
-    updateStepGuide(1);
-    logPath('// Camera started. Press FREEZE.','info');
-  } catch(e) { alert('Camera: '+e.message); }
+async function startLive(){
+  try{
+    if(video.srcObject)video.srcObject.getTracks().forEach(t=>t.stop());
+    const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+    video.srcObject=s;isLive=true;frozenImg=null;
+    video.onloadedmetadata=()=>{canvas.width=video.videoWidth;canvas.height=video.videoHeight;ctx.clearRect(0,0,canvas.width,canvas.height);};
+    document.getElementById('liveBtn').classList.add('ba');
+    document.getElementById('frzBtn').classList.remove('ba');
+    sg(1);log('// Camera ready. Press FREEZE.','i');
+  }catch(e){alert('Camera: '+e.message);}
 }
 
-function freezeImage() {
-  if (!video.srcObject) { alert('Press LIVE first!'); return; }
+function freezeImg(){
+  if(!video.srcObject){alert('Press LIVE first!');return;}
   ctx.drawImage(video,0,0,canvas.width,canvas.height);
-  frozenImageData = ctx.getImageData(0,0,canvas.width,canvas.height);
+  frozenImg=ctx.getImageData(0,0,canvas.width,canvas.height);
   video.srcObject.getTracks().forEach(t=>t.stop());
-  video.srcObject = null; isLive = false;
-  document.getElementById('freezeBtn').classList.add('btn-active');
-  document.getElementById('liveBtn').classList.remove('btn-active');
-  updateStepGuide(2);
-  logPath('// Frozen! Tap 🔴 FRONT.','info');
-  setMode('robot_front');
+  video.srcObject=null;isLive=false;
+  document.getElementById('frzBtn').classList.add('ba');
+  document.getElementById('liveBtn').classList.remove('ba');
+  sg(2);log('// Frozen! Tap 🔴 FRONT then tap front of robot.','i');
+  setMode('rf');
 }
 
 // ═══════════════════════════════════════════════
-//  MODE / CANVAS
+//  MODE & CANVAS
 // ═══════════════════════════════════════════════
-function setMode(mode) {
-  if (isLive){alert('Freeze first!');return;}
-  if (!frozenImageData&&mode!==null){alert('LIVE then FREEZE first!');return;}
-  currentMode=mode;
-  document.getElementById('frontBtn').classList.toggle('btn-active',mode==='robot_front');
-  document.getElementById('backBtn').classList.toggle('btn-active', mode==='robot_back');
-  document.getElementById('drawBtn').classList.toggle('btn-active', mode==='draw');
-  const labels={robot_front:'FRONT',robot_back:'BACK',draw:'DRAW'};
-  document.getElementById('modeDisplay').innerText=labels[mode]||'--';
+function setMode(m){
+  if(isLive){alert('Freeze first!');return;}
+  if(!frozenImg&&m!==null){alert('LIVE then FREEZE first!');return;}
+  curMode=m;
+  document.getElementById('frontBtn').classList.toggle('ba',m==='rf');
+  document.getElementById('backBtn').classList.toggle('ba',m==='rb');
+  document.getElementById('drawBtn').classList.toggle('ba',m==='draw');
+  const lb={rf:'FRONT',rb:'BACK',draw:'DRAW'};
+  document.getElementById('modeSt').innerText=lb[m]||'--';
 }
 
-function getPos(e){
+function gp(e){
   const rect=canvas.getBoundingClientRect();
   const sx=canvas.width/rect.width,sy=canvas.height/rect.height;
-  if(e.touches) return{x:(e.touches[0].clientX-rect.left)*sx,y:(e.touches[0].clientY-rect.top)*sy};
+  if(e.touches)return{x:(e.touches[0].clientX-rect.left)*sx,y:(e.touches[0].clientY-rect.top)*sy};
   return{x:(e.clientX-rect.left)*sx,y:(e.clientY-rect.top)*sy};
 }
+function dist(a,b){const dx=b.x-a.x,dy=b.y-a.y;return Math.sqrt(dx*dx+dy*dy);}
 
-function distBetween(p1,p2){const dx=p2.x-p1.x,dy=p2.y-p1.y;return Math.sqrt(dx*dx+dy*dy);}
+canvas.addEventListener('mousedown',e=>{e.preventDefault();if(isLive)return;isDrw=true;tap(e);});
+canvas.addEventListener('mousemove',e=>{e.preventDefault();if(isDrw&&!isLive&&curMode==='draw')drawMove(e);});
+canvas.addEventListener('mouseup',()=>{isDrw=false;if(curMode==='draw')finPath();});
+canvas.addEventListener('mouseleave',()=>{isDrw=false;});
+canvas.addEventListener('touchstart',e=>{e.preventDefault();e.stopPropagation();if(isLive)return;isDrw=true;tap(e);},{passive:false});
+canvas.addEventListener('touchmove',e=>{e.preventDefault();e.stopPropagation();if(isDrw&&!isLive&&curMode==='draw')drawMove(e);},{passive:false});
+canvas.addEventListener('touchend',e=>{e.stopPropagation();isDrw=false;if(curMode==='draw')finPath();},{passive:false});
 
-canvas.addEventListener('mousedown', e=>{e.preventDefault();if(isLive)return;isDrawing=true;handleTap(e);});
-canvas.addEventListener('mousemove', e=>{e.preventDefault();if(isDrawing&&!isLive&&currentMode==='draw')handleDrawMove(e);});
-canvas.addEventListener('mouseup',   ()=>{isDrawing=false;if(currentMode==='draw')finalizePath();});
-canvas.addEventListener('mouseleave',()=>{isDrawing=false;});
-canvas.addEventListener('touchstart',e=>{e.preventDefault();e.stopPropagation();if(isLive)return;isDrawing=true;handleTap(e);},{passive:false});
-canvas.addEventListener('touchmove', e=>{e.preventDefault();e.stopPropagation();if(isDrawing&&!isLive&&currentMode==='draw')handleDrawMove(e);},{passive:false});
-canvas.addEventListener('touchend',  e=>{e.stopPropagation();isDrawing=false;if(currentMode==='draw')finalizePath();},{passive:false});
-
-function handleTap(e){
-  const{x,y}=getPos(e);
-  if(currentMode==='robot_front'){robotFront={x,y};redrawCanvas();logPath('// FRONT marked! Tap 🔵 BACK.','info');updateStepGuide(3);setMode('robot_back');}
-  else if(currentMode==='robot_back'){robotBack={x,y};computeCalibration();redrawCanvas();logPath('// Calibrated! Tap ✏️ PATH.','ok');updateStepGuide(4);setMode('draw');}
-  else if(currentMode==='draw'){if(!pixelsPerCm){alert('Calibrate first!');return;}rawPoints=[robotFront,{x,y}];redrawCanvas();}
+function tap(e){
+  const{x,y}=gp(e);
+  if(curMode==='rf'){rFront={x,y};redraw();log('// FRONT marked! Tap 🔵 BACK.','i');sg(3);setMode('rb');}
+  else if(curMode==='rb'){rBack={x,y};doCalib();redraw();log('// Calibrated! Tap ✏️ PATH.','ok');sg(4);setMode('draw');}
+  else if(curMode==='draw'){if(!pxcm){alert('Calibrate first!');return;}rawPts=[rFront,{x,y}];redraw();}
 }
 
-function handleDrawMove(e){
-  if(!pixelsPerCm)return;
-  const{x,y}=getPos(e);
-  const last=rawPoints[rawPoints.length-1];
-  if(distBetween(last,{x,y})>=MIN_POINT_DIST_PX){rawPoints.push({x,y});redrawCanvas();document.getElementById('pointCount').innerText=rawPoints.length-1;}
+function drawMove(e){
+  if(!pxcm)return;
+  const{x,y}=gp(e);
+  const last=rawPts[rawPts.length-1];
+  if(dist(last,{x,y})>=MIN_PX){rawPts.push({x,y});redraw();document.getElementById('ptcnt').innerText=rawPts.length-1;}
 }
 
-function finalizePath(){
-  if(rawPoints.length<2)return;
-  pathPoints=simplifyPath(rawPoints);
-  redrawCanvas();
-  logPath(`// ${rawPoints.length} raw → ${pathPoints.length} points`,'ok');
-  document.getElementById('pointCount').innerText=pathPoints.length-1;
+function finPath(){
+  if(rawPts.length<2)return;
+  pathPts=simplify(rawPts);redraw();
+  log(`// ${rawPts.length} raw → ${pathPts.length} simplified`,'ok');
+  document.getElementById('ptcnt').innerText=pathPts.length-1;
 }
 
-function simplifyPath(pts,eps=8){
+function simplify(pts,eps=8){
   if(pts.length<=2)return pts;
-  let maxD=0,maxI=0;
+  let md=0,mi=0;
   const s=pts[0],e=pts[pts.length-1];
-  for(let i=1;i<pts.length-1;i++){const d=ptLineDist(pts[i],s,e);if(d>maxD){maxD=d;maxI=i;}}
-  if(maxD>eps){const l=simplifyPath(pts.slice(0,maxI+1),eps),r=simplifyPath(pts.slice(maxI),eps);return[...l.slice(0,-1),...r];}
+  for(let i=1;i<pts.length-1;i++){const d=ptld(pts[i],s,e);if(d>md){md=d;mi=i;}}
+  if(md>eps){const l=simplify(pts.slice(0,mi+1),eps),r=simplify(pts.slice(mi),eps);return[...l.slice(0,-1),...r];}
   return[s,e];
 }
-
-function ptLineDist(p,a,b){
+function ptld(p,a,b){
   const dx=b.x-a.x,dy=b.y-a.y,len=Math.sqrt(dx*dx+dy*dy);
-  if(len===0)return distBetween(p,a);
+  if(len===0)return dist(p,a);
   return Math.abs(dy*p.x-dx*p.y+b.x*a.y-b.y*a.x)/len;
 }
 
-function updateRobotLength(){
-  const v=parseFloat(document.getElementById('robotLengthInput').value);
-  if(v>0&&v<300){ROBOT_REAL_CM=v;logPath(`// Robot: ${v}cm`,'info');if(robotFront&&robotBack)computeCalibration();}
+function updateRL(){const v=parseFloat(document.getElementById('rlInput').value);if(v>0&&v<300){RLEN=v;log(`// Robot: ${v}cm`,'i');if(rFront&&rBack)doCalib();}}
+
+function doCalib(){
+  if(!rFront||!rBack)return;
+  const dx=rBack.x-rFront.x,dy=rBack.y-rFront.y;
+  const pl=Math.sqrt(dx*dx+dy*dy);
+  pxcm=pl/RLEN;
+  document.getElementById('pxcm').innerText=pxcm.toFixed(2);
+  document.getElementById('caliSt').innerText='OK';
+  document.getElementById('ccell').className='ic ok';
+  document.getElementById('cbadge').innerText=`📏 ${pxcm.toFixed(2)} px/cm`;
+  document.getElementById('cbadge').style.borderColor='var(--green)';
+  document.getElementById('cbadge').style.color='var(--green)';
+  log(`// Calibrated: ${pl.toFixed(0)}px=${RLEN}cm → ${pxcm.toFixed(2)}px/cm`,'ok');
 }
 
-function computeCalibration(){
-  if(!robotFront||!robotBack)return;
-  const dx=robotBack.x-robotFront.x,dy=robotBack.y-robotFront.y;
-  const pxLen=Math.sqrt(dx*dx+dy*dy);
-  pixelsPerCm=pxLen/ROBOT_REAL_CM;
-  document.getElementById('pxPerCm').innerText=pixelsPerCm.toFixed(2);
-  document.getElementById('calibStatus').innerText='OK';
-  document.getElementById('cellCalib').className='info-cell calib-ok';
-  document.getElementById('calibBadge').innerText=`📏 ${pixelsPerCm.toFixed(2)} px/cm`;
-  document.getElementById('calibBadge').style.borderColor='var(--green)';
-  document.getElementById('calibBadge').style.color='var(--green)';
-  logPath(`// Calibrated: ${pxLen.toFixed(0)}px=${ROBOT_REAL_CM}cm`,'ok');
-}
-
-function redrawCanvas(){
+function redraw(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
-  if(frozenImageData)ctx.putImageData(frozenImageData,0,0);
-  if(rawPoints.length>1&&currentMode==='draw'){
+  if(frozenImg)ctx.putImageData(frozenImg,0,0);
+  if(rawPts.length>1&&curMode==='draw'){
     ctx.strokeStyle='rgba(255,107,53,0.3)';ctx.lineWidth=2;ctx.setLineDash([3,3]);
-    ctx.beginPath();rawPoints.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
+    ctx.beginPath();rawPts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
     ctx.stroke();ctx.setLineDash([]);
   }
-  const pts=pathPoints.length>1?pathPoints:rawPoints;
+  const pts=pathPts.length>1?pathPts:rawPts;
   if(pts.length>1){
     ctx.strokeStyle='#ff6b35';ctx.lineWidth=3;ctx.setLineDash([8,4]);
     ctx.beginPath();pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
     ctx.stroke();ctx.setLineDash([]);
     for(let i=1;i<pts.length;i++){ctx.fillStyle=i===pts.length-1?'#00ff88':'#ff6b35';ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,5,0,2*Math.PI);ctx.fill();}
   }
-  if(robotFront){
-    ctx.fillStyle='#ff3b3b';ctx.beginPath();ctx.arc(robotFront.x,robotFront.y,9,0,2*Math.PI);ctx.fill();
-    ctx.strokeStyle='white';ctx.lineWidth=2;ctx.stroke();
-    ctx.fillStyle='white';ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText('F',robotFront.x,robotFront.y);
-  }
-  if(robotBack){
-    ctx.fillStyle='#00d4ff';ctx.beginPath();ctx.arc(robotBack.x,robotBack.y,9,0,2*Math.PI);ctx.fill();
-    ctx.strokeStyle='white';ctx.lineWidth=2;ctx.stroke();
-    ctx.fillStyle='white';ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.textBaseline='middle';
-    ctx.fillText('B',robotBack.x,robotBack.y);
-  }
-  if(robotFront&&robotBack){
-    ctx.strokeStyle='#ffd600';ctx.lineWidth=1.5;ctx.setLineDash([4,4]);
-    ctx.beginPath();ctx.moveTo(robotFront.x,robotFront.y);ctx.lineTo(robotBack.x,robotBack.y);
-    ctx.stroke();ctx.setLineDash([]);
-    const mx=(robotFront.x+robotBack.x)/2,my=(robotFront.y+robotBack.y)/2;
-    ctx.fillStyle='#ffd600';ctx.font='bold 11px monospace';ctx.textAlign='center';ctx.textBaseline='bottom';
-    ctx.fillText(`${ROBOT_REAL_CM}cm`,mx,my-4);
-  }
+  if(rFront){ctx.fillStyle='#ff3b3b';ctx.beginPath();ctx.arc(rFront.x,rFront.y,9,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='white';ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('F',rFront.x,rFront.y);}
+  if(rBack){ctx.fillStyle='#00d4ff';ctx.beginPath();ctx.arc(rBack.x,rBack.y,9,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='white';ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('B',rBack.x,rBack.y);}
+  if(rFront&&rBack){ctx.strokeStyle='#ffd600';ctx.lineWidth=1.5;ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(rFront.x,rFront.y);ctx.lineTo(rBack.x,rBack.y);ctx.stroke();ctx.setLineDash([]);const mx=(rFront.x+rBack.x)/2,my=(rFront.y+rBack.y)/2;ctx.fillStyle='#ffd600';ctx.font='bold 11px monospace';ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText(`${RLEN}cm`,mx,my-4);}
 }
 
 function clearAll(){
-  frozenImageData=null;ctx.clearRect(0,0,canvas.width,canvas.height);
-  robotFront=null;robotBack=null;pixelsPerCm=null;rawPoints=[];pathPoints=[];movementCommands=[];currentMode=null;
-  ['calibStatus','pxPerCm','pointCount','modeDisplay'].forEach(id=>document.getElementById(id).innerText='--');
-  document.getElementById('cellCalib').className='info-cell';
-  document.getElementById('calibBadge').innerText='📏 NOT CALIBRATED';
-  document.getElementById('calibBadge').style.borderColor='var(--yellow)';
-  document.getElementById('calibBadge').style.color='var(--yellow)';
-  document.getElementById('progressFill').style.width='0%';
-  ['frontBtn','backBtn','drawBtn','freezeBtn','liveBtn'].forEach(id=>document.getElementById(id).classList.remove('btn-active'));
-  updateStepGuide(1);
-  logPath('// Cleared. LIVE → FREEZE to restart.','warn');
+  frozenImg=null;ctx.clearRect(0,0,canvas.width,canvas.height);
+  rFront=null;rBack=null;pxcm=null;rawPts=[];pathPts=[];cmds=[];curMode=null;
+  ['caliSt','pxcm','ptcnt','modeSt'].forEach(id=>document.getElementById(id).innerText='--');
+  document.getElementById('ccell').className='ic';
+  document.getElementById('cbadge').innerText='📏 NOT CALIBRATED';
+  document.getElementById('cbadge').style.borderColor='var(--yellow)';
+  document.getElementById('cbadge').style.color='var(--yellow)';
+  document.getElementById('pbar').style.width='0%';
+  ['frontBtn','backBtn','drawBtn','frzBtn','liveBtn'].forEach(id=>document.getElementById(id).classList.remove('ba'));
+  sg(1);log('// Cleared. LIVE → FREEZE to restart.','w');
 }
 
-function updateStepGuide(a){
-  for(let i=1;i<=5;i++){const el=document.getElementById('sg'+i);el.className=i<a?'step done':i===a?'step active':'step pending';}
-}
+function sg(a){for(let i=1;i<=5;i++){const e=document.getElementById('sg'+i);e.className=i<a?'s done':i===a?'s act':'s pend';}}
 
 // ═══════════════════════════════════════════════
 //  PATH CALC & EXECUTE
 // ═══════════════════════════════════════════════
-function calculatePath(){
-  if(!pixelsPerCm){alert('Calibrate first!');return;}
-  const pts=pathPoints.length>1?pathPoints:rawPoints;
+function calcPath(){
+  if(!pxcm){alert('Calibrate first!');return;}
+  const pts=pathPts.length>1?pathPts:rawPts;
   if(pts.length<2){alert('Draw path first!');return;}
-  movementCommands=[];let totalCm=0,prevAngle=null;
+  cmds=[];let tot=0,prev=null;
   for(let i=1;i<pts.length;i++){
     const p1=pts[i-1],p2=pts[i];
     const dx=p2.x-p1.x,dy=p2.y-p1.y;
-    const angle=Math.atan2(dy,dx)*180/Math.PI;
-    const cm=Math.sqrt(dx*dx+dy*dy)/pixelsPerCm;
-    totalCm+=cm;
-    if(prevAngle!==null){let diff=angle-prevAngle;if(diff>180)diff-=360;if(diff<-180)diff+=360;
-      if(Math.abs(diff)>MIN_ANGLE_DEG)movementCommands.push({type:diff>0?'R':'L',time:Math.abs(diff)*MS_PER_DEGREE,label:`TURN ${diff>0?'RIGHT':'LEFT'} ${Math.abs(diff).toFixed(0)}°`});}
-    if(cm>2)movementCommands.push({type:'F',time:cm*MS_PER_CM,label:`FORWARD ${cm.toFixed(1)}cm`});
-    prevAngle=angle;
+    const ang=Math.atan2(dy,dx)*180/Math.PI;
+    const cm=Math.sqrt(dx*dx+dy*dy)/pxcm;
+    tot+=cm;
+    if(prev!==null){
+      let df=ang-prev;if(df>180)df-=360;if(df<-180)df+=360;
+      // Only add turn if angle change is significant (MIN_ANG=15°)
+      // AND resulting turn time would be >= 250ms (MIN_TURN_MS on ESP)
+      const tms=Math.abs(df)*MPD;
+      if(Math.abs(df)>MIN_ANG&&tms>=250){
+        cmds.push({t:df>0?'R':'L',ms:tms,lb:`TURN ${df>0?'RIGHT':'LEFT'} ${Math.abs(df).toFixed(0)}° (${tms.toFixed(0)}ms)`});
+      }
+    }
+    if(cm>2)cmds.push({t:'F',ms:cm*MPC,lb:`FORWARD ${cm.toFixed(1)}cm (${(cm*MPC).toFixed(0)}ms)`});
+    prev=ang;
   }
-  updateStepGuide(5);
-  logPath(`// ${pixelsPerCm.toFixed(2)}px/cm — ${totalCm.toFixed(1)}cm — ${movementCommands.length} steps`,'info');
-  movementCommands.forEach(c=>logPath(`   ${c.label}`,'warn'));
+  sg(5);
+  log(`// ${pxcm.toFixed(2)}px/cm — ${tot.toFixed(1)}cm — ${cmds.length} steps`,'i');
+  cmds.forEach(c=>log(`   ${c.lb}`,'w'));
 }
 
-function executePathNow(){
-  if(!pixelsPerCm){alert('Calibrate first!');return;}
-  if(movementCommands.length===0)calculatePath();
-  if(movementCommands.length===0)return;
+function execPath(){
+  if(!pxcm){alert('Calibrate first!');return;}
+  if(cmds.length===0)calcPath();
+  if(cmds.length===0)return;
   if(!espConnected){alert('Connect ESP first!');return;}
-  if(isExploring)stopExplore();
-  logPath('// Executing...','ok');
-  executeStep(0);
+  if(isExp)stopExp();
+  log('// Executing...','ok');
+  exStep(0);
 }
 
-async function executeStep(index){
-  if(index>=movementCommands.length){await sendCmd('S');document.getElementById('progressFill').style.width='0%';logPath('// Done!','ok');return;}
-  const cmd=movementCommands[index];
-  document.getElementById('progressFill').style.width=(((index+1)/movementCommands.length)*100)+'%';
-  logPath(`// Step ${index+1}/${movementCommands.length}: ${cmd.label}`,'warn');
-  await sendCmd(cmd.type);await delay(cmd.time);await sendCmd('S');await delay(150);
-  await executeStep(index+1);
+async function exStep(i){
+  if(i>=cmds.length){await sc('S');document.getElementById('pbar').style.width='0%';log('// Done! Robot stopped.','ok');return;}
+  const c=cmds[i];
+  document.getElementById('pbar').style.width=(((i+1)/cmds.length)*100)+'%';
+  log(`// Step ${i+1}/${cmds.length}: ${c.lb}`,'w');
+  await sc(c.t);await dl(c.ms);await sc('S');await dl(150);
+  await exStep(i+1);
 }
 
-function emergencyStop(){
-  sendCmd('S');stopExplore();stopFollow();stopLightSeek();
-  if(sensorInterval)clearInterval(sensorInterval);
-  document.getElementById('progressFill').style.width='0%';
-  logPath('// EMERGENCY STOP','err');
+function eStop(){
+  sc('S');stopExp();stopFollow();stopSeek();
+  if(senIv)clearInterval(senIv);
+  document.getElementById('pbar').style.width='0%';
+  log('// EMERGENCY STOP','e');
 }
 
-function logPath(msg,type='warn'){
-  const log=document.getElementById('pathLog');
-  const line=document.createElement('div');line.className=type;line.innerText=msg;
-  log.appendChild(line);log.scrollTop=log.scrollHeight;
-  while(log.children.length>40)log.removeChild(log.firstChild);
+function log(m,t='w'){
+  const l=document.getElementById('plog');
+  const d=document.createElement('div');d.className=t;d.innerText=m;
+  l.appendChild(d);l.scrollTop=l.scrollHeight;
+  while(l.children.length>40)l.removeChild(l.firstChild);
 }
 
 // ═══════════════════════════════════════════════
 //  EXPLORE
 // ═══════════════════════════════════════════════
-const exploreMoves=['F','F','F','F','L','R','B'];
-
-async function exploreStep(){
-  if(!isExploring)return;
+const eMoves=['F','F','F','F','L','R','B'];
+async function expStep(){
+  if(!isExp)return;
   try{
     const r=await fetch(`http://${espIP}/sensors`,{signal:AbortSignal.timeout(1000)});
-    const data=await r.json();
-    if(data.ultrasonic<20){
-      document.getElementById('exploreStatus').innerText=`⚠️ Obstacle ${data.ultrasonic}cm`;
-      await sendCmd('S');await delay(200);
-      await sendCmd(Math.random()>0.5?'L':'R');await delay(400+Math.random()*400);
-      await sendCmd('S');await delay(200);
+    const d=await r.json();
+    if(d.ultrasonic<20){
+      document.getElementById('expSt').innerText=`⚠️ Obstacle ${d.ultrasonic}cm`;
+      await sc('S');await dl(200);await sc(Math.random()>0.5?'L':'R');await dl(400+Math.random()*400);await sc('S');await dl(200);
     } else {
-      const move=exploreMoves[Math.floor(Math.random()*exploreMoves.length)];
+      const m=eMoves[Math.floor(Math.random()*eMoves.length)];
       const t=300+Math.random()*500;
-      document.getElementById('exploreStatus').innerText=`🔵 ${move} (${t.toFixed(0)}ms)`;
-      await sendCmd(move);await delay(t);await sendCmd('S');await delay(150);
+      document.getElementById('expSt').innerText=`🔵 ${m} (${t.toFixed(0)}ms)`;
+      await sc(m);await dl(t);await sc('S');await dl(150);
     }
-  }catch(e){document.getElementById('exploreStatus').innerText='🔴 Lost...';await delay(500);}
-  if(isExploring)exploreStep();
+  }catch(e){document.getElementById('expSt').innerText='🔴 Lost...';await dl(500);}
+  if(isExp)expStep();
 }
-
-function startExplore(){
-  if(!espConnected){alert('Connect ESP first!');return;}
-  if(isFollowing)stopFollow();if(isLightSeeking)stopLightSeek();
-  isExploring=true;
-  document.getElementById('exploreBtn').innerText='⏸ EXPLORING...';
-  document.getElementById('exploreStatus').style.color='var(--accent)';
-  exploreStep();
-}
-
-function stopExplore(){
-  isExploring=false;sendCmd('S');
-  document.getElementById('exploreBtn').innerText='▶️ START';
-  document.getElementById('exploreStatus').innerText='⏸ Explore: OFF';
-  document.getElementById('exploreStatus').style.color='var(--muted)';
-}
+function startExp(){if(!espConnected){alert('Connect ESP first!');return;}if(isFol)stopFollow();if(isSeek)stopSeek();isExp=true;document.getElementById('expBtn').innerText='⏸ EXPLORING...';document.getElementById('expSt').style.color='var(--accent)';expStep();}
+function stopExp(){isExp=false;sc('S');document.getElementById('expBtn').innerText='▶️ START';document.getElementById('expSt').innerText='⏸ Explore: OFF';document.getElementById('expSt').style.color='var(--muted)';}
 
 // ═══════════════════════════════════════════════
-//  FOLLOW
+//  FOLLOW — RSSI GRADIENT
 // ═══════════════════════════════════════════════
-async function followStep(){
-  if(!isFollowing)return;
+async function folStep(){
+  if(!isFol)return;
   try{
-    const r0=await getRSSI();updateRSSIDisplay(r0);
-    if(r0>-45){await sendCmd('S');document.getElementById('followStatus').innerText='📱 Very close — stopped';await delay(800);if(isFollowing)followStep();return;}
-    await sendCmd('F');await delay(400);await sendCmd('S');await delay(200);const rFwd=await getRSSI();
-    if(rFwd>r0+2){document.getElementById('followStatus').innerText=`⬆️ Forward better`;await sendCmd('F');await delay(500);await sendCmd('S');await delay(200);if(isFollowing)followStep();return;}
-    await sendCmd('B');await delay(400);await sendCmd('S');await delay(200);
-    await sendCmd('R');await delay(300);await sendCmd('S');await delay(200);const rRight=await getRSSI();
-    await sendCmd('L');await delay(600);await sendCmd('S');await delay(200);const rLeft=await getRSSI();
-    await sendCmd('R');await delay(300);await sendCmd('S');await delay(200);
-    const best=Math.max(r0,rFwd,rRight,rLeft);
-    if(best===rRight){document.getElementById('followStatus').innerText=`➡️ Right better`;await sendCmd('R');await delay(250);await sendCmd('S');await delay(150);}
-    else if(best===rLeft){document.getElementById('followStatus').innerText=`⬅️ Left better`;await sendCmd('L');await delay(250);await sendCmd('S');await delay(150);}
-    else if(best===rFwd){document.getElementById('followStatus').innerText=`⬆️ Forward`;await sendCmd('F');await delay(400);await sendCmd('S');await delay(150);}
-    else{document.getElementById('followStatus').innerText=`🔄 Turning around`;await sendCmd('R');await delay(800);await sendCmd('S');await delay(200);}
-  }catch(e){document.getElementById('followStatus').innerText='🔴 Lost...';await delay(500);}
-  if(isFollowing)followStep();
+    const r0=await gRSSI();updRSSI(r0);
+    if(r0>-45){await sc('S');setFS('📱 Very close');await dl(800);if(isFol)folStep();return;}
+    await sc('F');await dl(400);await sc('S');await dl(200);const rF=await gRSSI();
+    if(rF>r0+2){setFS(`⬆️ Forward better`);await sc('F');await dl(500);await sc('S');await dl(200);if(isFol)folStep();return;}
+    await sc('B');await dl(400);await sc('S');await dl(200);
+    await sc('R');await dl(300);await sc('S');await dl(200);const rR=await gRSSI();
+    await sc('L');await dl(600);await sc('S');await dl(200);const rL=await gRSSI();
+    await sc('R');await dl(300);await sc('S');await dl(200);
+    const best=Math.max(r0,rF,rR,rL);
+    if(best===rR){setFS('➡️ Right better');await sc('R');await dl(250);await sc('S');await dl(150);}
+    else if(best===rL){setFS('⬅️ Left better');await sc('L');await dl(250);await sc('S');await dl(150);}
+    else if(best===rF){setFS('⬆️ Forward');await sc('F');await dl(400);await sc('S');await dl(150);}
+    else{setFS('🔄 Turning around');await sc('R');await dl(800);await sc('S');await dl(200);}
+  }catch(e){setFS('🔴 Lost...');await dl(500);}
+  if(isFol)folStep();
 }
-
-async function getRSSI(){
-  try{const r=await fetch(`http://${espIP}/rssi`,{signal:AbortSignal.timeout(800)});return parseInt(await r.text());}
-  catch(e){return -90;}
-}
-
-function updateRSSIDisplay(val){
-  document.getElementById('rssiValue').innerText=val+' dBm';
-  let pct=100-((val+90)*100/60);pct=Math.max(0,Math.min(100,pct));
-  document.getElementById('rssiFill').style.width=pct+'%';
-}
-
-function toggleFollow(){if(!espConnected){alert('Connect ESP first!');return;}isFollowing?stopFollow():startFollow();}
-
-function startFollow(){
-  if(isExploring)stopExplore();if(isLightSeeking)stopLightSeek();
-  isFollowing=true;document.getElementById('followBtn').innerText='⏸ FOLLOWING...';
-  document.getElementById('followStatus').style.color='var(--accent)';
-  followStep();
-}
-
-function stopFollow(){
-  isFollowing=false;sendCmd('S');
-  document.getElementById('followBtn').innerText='▶️ FOLLOW';
-  document.getElementById('followStatus').innerText='⏸ Follow: OFF';
-  document.getElementById('followStatus').style.color='var(--muted)';
-  document.getElementById('rssiFill').style.width='0%';
-  document.getElementById('rssiValue').innerText='-- dBm';
-}
+async function gRSSI(){try{const r=await fetch(`http://${espIP}/rssi`,{signal:AbortSignal.timeout(800)});return parseInt(await r.text());}catch(e){return -90;}}
+function updRSSI(v){document.getElementById('rssiV').innerText=v+' dBm';let p=100-((v+90)*100/60);p=Math.max(0,Math.min(100,p));document.getElementById('rssiF').style.width=p+'%';}
+function setFS(t){document.getElementById('folSt').innerText=t;}
+function togFollow(){if(!espConnected){alert('Connect ESP first!');return;}isFol?stopFollow():startFollow();}
+function startFollow(){if(isExp)stopExp();if(isSeek)stopSeek();isFol=true;document.getElementById('folBtn').innerText='⏸ FOLLOWING...';document.getElementById('folSt').style.color='var(--accent)';folStep();}
+function stopFollow(){isFol=false;sc('S');document.getElementById('folBtn').innerText='▶️ FOLLOW';setFS('⏸ Follow: OFF');document.getElementById('folSt').style.color='var(--muted)';document.getElementById('rssiF').style.width='0%';document.getElementById('rssiV').innerText='-- dBm';}
 
 // ═══════════════════════════════════════════════
-//  SENSORS TAB
+//  SENSORS
 // ═══════════════════════════════════════════════
-function toggleSensors(){
-  if(!sensorRunning){
+function togSensors(){
+  if(!senOn){
     if(!espConnected){alert('Connect ESP first!');return;}
-    sensorRunning=true;
-    document.getElementById('sensorBtn').innerText='⏹ STOP READING';
-    sensorInterval=setInterval(async()=>{
+    senOn=true;document.getElementById('senBtn').innerText='⏹ STOP READING';
+    senIv=setInterval(async()=>{
       try{
         const r=await fetch(`http://${espIP}/sensors`,{signal:AbortSignal.timeout(1000)});
-        const data=await r.json();
-        document.getElementById('ultrasonic').innerText=data.ultrasonic+' cm';
-        document.getElementById('ldrSensor').innerText=data.ldr;
-        document.getElementById('obstacleWarning').innerText=data.ultrasonic<20?'⚠️ OBSTACLE!':'';
-        document.getElementById('darkWarning').innerText=data.isDark?'⬛ DARK AREA!':'';
+        const d=await r.json();
+        document.getElementById('usVal').innerText=d.ultrasonic+' cm';
+        document.getElementById('ldrVal').innerText=d.ldr;
+        document.getElementById('obsWarn').innerText=d.ultrasonic<20?'⚠️ OBSTACLE!':'';
+        document.getElementById('darkWarn').innerText=d.isDark?'⬛ DARK AREA!':'';
       }catch(e){}
     },500);
   } else {
-    sensorRunning=false;clearInterval(sensorInterval);
-    document.getElementById('sensorBtn').innerText='▶ START READING';
+    senOn=false;clearInterval(senIv);document.getElementById('senBtn').innerText='▶ START READING';
   }
 }
 
 // ═══════════════════════════════════════════════
 //  UTILS
 // ═══════════════════════════════════════════════
-function delay(ms){return new Promise(r=>setTimeout(r,ms));}
+function dl(ms){return new Promise(r=>setTimeout(r,ms));}
 </script>
 </body>
 </html>
