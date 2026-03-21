@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🤖 ROBOT CONTROLLER v2</title>
+    <title>🤖 ROBOT CONTROLLER v3</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@400;700;900&display=swap');
 
@@ -72,7 +72,6 @@
             text-transform: uppercase;
         }
 
-        /* Connection */
         .conn-row { display:flex; gap:8px; margin-bottom:8px; }
 
         #espIp {
@@ -100,7 +99,6 @@
         .connected    { background:rgba(0,255,136,0.15); color:var(--green); border:1px solid var(--green); }
         .disconnected { background:rgba(255,59,59,0.15);  color:var(--red);   border:1px solid var(--red);   }
 
-        /* Tabs */
         .tabs { display:flex; gap:6px; margin-bottom:10px; }
         .tab {
             flex:1; padding:9px;
@@ -112,12 +110,12 @@
             font-family:'Share Tech Mono',monospace;
             letter-spacing:1px;
             cursor:pointer; text-align:center;
+            transition: all 0.15s;
         }
         .tab.active { background:rgba(0,212,255,0.15); color:var(--accent); border-color:var(--accent); }
         .tab-content { display:none; }
         .tab-content.active { display:block; }
 
-        /* Camera */
         .camera-box {
             position:relative; width:100%; height:300px;
             background:#000; border-radius:10px; overflow:hidden;
@@ -126,7 +124,6 @@
         #video  { position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; }
         #canvas { position:absolute; top:0; left:0; width:100%; height:100%; z-index:10; cursor:crosshair; }
 
-        /* Calibration overlay on canvas */
         .calib-badge {
             position:absolute; bottom:8px; left:8px;
             background:rgba(0,0,0,0.75);
@@ -140,7 +137,6 @@
             pointer-events:none;
         }
 
-        /* Buttons */
         .row { display:flex; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
 
         button {
@@ -167,7 +163,6 @@
         .btn-solid-yellow { background:var(--yellow); color:#000; border:none; }
         .btn-active { background:var(--accent)!important; color:#000!important; border-color:var(--accent)!important; }
 
-        /* Info bar */
         .info-bar {
             display:grid; grid-template-columns:1fr 1fr 1fr 1fr;
             gap:6px; margin:8px 0;
@@ -178,10 +173,9 @@
         }
         .info-cell span { display:block; font-size:9px; color:var(--muted); font-family:'Share Tech Mono',monospace; }
         .info-cell b    { font-size:13px; color:var(--accent); font-family:'Share Tech Mono',monospace; }
-        .info-cell.calib-ok b { color:var(--green); }
+        .info-cell.calib-ok b   { color:var(--green); }
         .info-cell.calib-warn b { color:var(--yellow); }
 
-        /* Progress */
         .progress {
             width:100%; height:6px; background:#0d1117;
             border-radius:3px; margin:8px 0; overflow:hidden;
@@ -193,7 +187,6 @@
             width:0%; transition:width 0.3s;
         }
 
-        /* Manual pad */
         .pad { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
         .pad-btn {
             aspect-ratio:1; font-size:22px;
@@ -203,7 +196,6 @@
         }
         .pad-btn:active { background:rgba(0,212,255,0.2)!important; border-color:var(--accent)!important; transform:scale(0.93); }
 
-        /* Sensors */
         .sensor-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
         .sensor-card {
             background:#0d1117; border:1px solid var(--border);
@@ -212,7 +204,6 @@
         .sensor-label { font-size:10px; color:var(--muted); font-family:'Share Tech Mono',monospace; letter-spacing:1px; }
         .sensor-value { font-size:22px; font-weight:900; color:var(--accent); margin:6px 0; font-family:'Share Tech Mono',monospace; }
 
-        /* Path log */
         #pathLog {
             background:#0d1117; border:1px solid var(--border);
             border-radius:8px; padding:10px;
@@ -224,18 +215,16 @@
         #pathLog .err  { color:var(--red); }
         #pathLog .info { color:var(--accent); }
 
-        /* Calibration steps guide */
         .step-guide {
             background:#0d1117; border:1px solid var(--yellow);
             border-radius:8px; padding:10px; margin-bottom:10px;
             font-family:'Share Tech Mono',monospace; font-size:11px;
         }
         .step-guide .step { padding:3px 0; }
-        .step-guide .step.done  { color:var(--green); }
-        .step-guide .step.active { color:var(--yellow); }
+        .step-guide .step.done    { color:var(--green); }
+        .step-guide .step.active  { color:var(--yellow); }
         .step-guide .step.pending { color:var(--muted); }
 
-        /* RSSI bar */
         .rssi-bar {
             width:100%; height:24px; background:#0d1117;
             border-radius:12px; margin:10px 0; overflow:hidden;
@@ -250,7 +239,6 @@
             text-shadow:1px 1px 3px black; z-index:2;
         }
 
-        /* Explore status */
         .explore-status {
             background:#0d1117; border:1px solid var(--border);
             border-radius:8px; padding:10px 14px;
@@ -258,7 +246,6 @@
             color:var(--muted); margin-top:8px; text-align:center;
         }
 
-        /* Robot length input */
         .robot-len-row {
             display:flex; gap:8px; align-items:center; margin-bottom:10px;
         }
@@ -277,7 +264,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>⟨ ROBOT CONTROLLER v2 ⟩</h1>
+    <h1>⟨ ROBOT CONTROLLER v3 ⟩</h1>
 
     <!-- CONNECTION -->
     <div class="panel">
@@ -297,7 +284,7 @@
         <div class="tab" onclick="switchTab('sensors')">📡 SENSORS</div>
     </div>
 
-    <!-- ═══════════ TAB: MANUAL ═══════════ -->
+    <!-- TAB: MANUAL -->
     <div id="tab-manual" class="tab-content active">
         <div class="panel">
             <div class="panel-title">◈ MANUAL CONTROL</div>
@@ -328,49 +315,43 @@
         </div>
     </div>
 
-    <!-- ═══════════ TAB: AI PATH ═══════════ -->
+    <!-- TAB: AI PATH -->
     <div id="tab-ai" class="tab-content">
         <div class="panel">
             <div class="panel-title">◈ AUTO CALIBRATION — ROBOT AS RULER</div>
 
-            <!-- Robot length setting -->
             <div class="robot-len-row">
                 <label>ROBOT LENGTH (cm):</label>
                 <input type="number" id="robotLengthInput" value="15" min="5" max="100">
                 <button class="btn-yellow" style="flex:0; padding:8px 14px;" onclick="updateRobotLength()">SET</button>
             </div>
 
-            <!-- Step guide -->
-            <div class="step-guide" id="stepGuide">
-                <div class="step active"   id="sg1">① FREEZE photo of arena</div>
-                <div class="step pending"  id="sg2">② Mark FRONT of robot (tap)</div>
-                <div class="step pending"  id="sg3">③ Mark BACK of robot (tap)</div>
-                <div class="step pending"  id="sg4">④ Draw PATH to goal</div>
-                <div class="step pending"  id="sg5">⑤ CALCULATE + EXECUTE</div>
+            <div class="step-guide">
+                <div class="step active"  id="sg1">① LIVE then FREEZE photo of arena</div>
+                <div class="step pending" id="sg2">② Tap 🔴 FRONT → tap front of robot</div>
+                <div class="step pending" id="sg3">③ Tap 🔵 BACK → tap back of robot</div>
+                <div class="step pending" id="sg4">④ Tap ✏️ PATH → draw path to goal</div>
+                <div class="step pending" id="sg5">⑤ CALCULATE then EXECUTE</div>
             </div>
 
-            <!-- Camera -->
             <div class="camera-box">
                 <video id="video" autoplay playsinline muted></video>
                 <canvas id="canvas"></canvas>
                 <div class="calib-badge" id="calibBadge">📏 NOT CALIBRATED</div>
             </div>
 
-            <!-- Camera controls -->
             <div class="row">
                 <button class="btn-green"  onclick="startLive()"   id="liveBtn">📷 LIVE</button>
                 <button class="btn-orange" onclick="freezeImage()" id="freezeBtn">❄️ FREEZE</button>
                 <button class="btn-red"    onclick="clearAll()">🗑️ CLEAR</button>
             </div>
 
-            <!-- Mode controls -->
             <div class="row">
                 <button class="btn-yellow" onclick="setMode('robot_front')" id="frontBtn">🔴 FRONT</button>
                 <button class="btn-yellow" onclick="setMode('robot_back')"  id="backBtn">🔵 BACK</button>
                 <button class="btn-cyan"   onclick="setMode('draw')"        id="drawBtn">✏️ PATH</button>
             </div>
 
-            <!-- Info bar -->
             <div class="info-bar">
                 <div class="info-cell" id="cellCalib">
                     <span>CALIB</span>
@@ -390,20 +371,18 @@
                 </div>
             </div>
 
-            <!-- Path actions -->
             <div class="row">
-                <button class="btn-solid-cyan"   style="flex:2" onclick="calculatePath()">📐 CALCULATE</button>
-                <button class="btn-solid-green"  style="flex:2" onclick="executePathNow()">▶️ EXECUTE</button>
-                <button class="btn-solid-red"    style="flex:1" onclick="emergencyStop()">⏹</button>
+                <button class="btn-solid-cyan"  style="flex:2" onclick="calculatePath()">📐 CALCULATE</button>
+                <button class="btn-solid-green" style="flex:2" onclick="executePathNow()">▶️ EXECUTE</button>
+                <button class="btn-solid-red"   style="flex:1" onclick="emergencyStop()">⏹</button>
             </div>
 
             <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
-
-            <div id="pathLog"><span class="info">// Freeze photo → mark robot front+back → draw path</span></div>
+            <div id="pathLog"><span class="info">// Press LIVE → FREEZE → mark robot → draw path</span></div>
         </div>
     </div>
 
-    <!-- ═══════════ TAB: EXPLORE ═══════════ -->
+    <!-- TAB: EXPLORE -->
     <div id="tab-explore" class="tab-content">
         <div class="panel">
             <div class="panel-title">◈ AUTO EXPLORE MODE</div>
@@ -429,7 +408,7 @@
         </div>
     </div>
 
-    <!-- ═══════════ TAB: SENSORS ═══════════ -->
+    <!-- TAB: SENSORS -->
     <div id="tab-sensors" class="tab-content">
         <div class="panel">
             <div class="panel-title">◈ LIVE SENSORS</div>
@@ -450,11 +429,10 @@
     </div>
 
 </div>
-
 <script>
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 //  STATE
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 let espIP        = '192.168.4.1';
 let espConnected = false;
 
@@ -462,45 +440,48 @@ let video  = document.getElementById('video');
 let canvas = document.getElementById('canvas');
 let ctx    = canvas.getContext('2d');
 
-let isLive   = true;
-let currentMode = null;   // 'robot_front' | 'robot_back' | 'draw'
+// Store frozen image as ImageData so redrawCanvas can restore it
+let frozenImageData = null;
+
+let isLive      = false;  // starts false — user must press LIVE
+let currentMode = null;
 let isDrawing   = false;
 
-// Calibration points
-let robotFront  = null;   // {x, y} in canvas pixels
-let robotBack   = null;   // {x, y} in canvas pixels
-let ROBOT_REAL_CM = 15;   // real length of robot
-let pixelsPerCm   = null; // calculated after marking front+back
+let robotFront    = null;
+let robotBack     = null;
+let ROBOT_REAL_CM = 15;
+let pixelsPerCm   = null;
 
-// Path
-let pathPoints = [];
+let pathPoints       = [];
 let movementCommands = [];
 
-// Timing constants (tune these per robot)
-const MS_PER_CM     = 80;   // ms to travel 1 cm
-const MS_PER_DEGREE = 12;   // ms to turn 1 degree
+const MS_PER_CM     = 80;
+const MS_PER_DEGREE = 12;
 
-// Flags
 let isExploring    = false;
 let isFollowing    = false;
 let followInterval = null;
 let sensorInterval = null;
 let sensorRunning  = false;
 
-// ═══════════════════════════════════════════════════
-//  TABS
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+//  TABS — fixed: no longer restarts camera
+// ═══════════════════════════════════════════════
 function switchTab(name) {
     const names = ['manual','ai','explore','sensors'];
-    document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', names[i] === name));
-    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-    document.getElementById('tab-'+name).classList.add('active');
-    if (name === 'ai' && isLive) startLive();
+    document.querySelectorAll('.tab').forEach((t,i) =>
+        t.classList.toggle('active', names[i] === name)
+    );
+    document.querySelectorAll('.tab-content').forEach(c =>
+        c.classList.remove('active')
+    );
+    document.getElementById('tab-' + name).classList.add('active');
+    // ← REMOVED: no camera restart here — camera only starts when user clicks LIVE
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 //  CONNECTION
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 function connectESP() {
     espIP = document.getElementById('espIp').value.trim();
     fetch(`http://${espIP}/ping`, {signal: AbortSignal.timeout(3000)})
@@ -524,28 +505,28 @@ function sendCmd(state) {
 
 function pressCmd(state) { sendCmd(state); }
 
-// ═══════════════════════════════════════════════════
-//  ROBOT LENGTH SETTING
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+//  ROBOT LENGTH
+// ═══════════════════════════════════════════════
 function updateRobotLength() {
     const val = parseFloat(document.getElementById('robotLengthInput').value);
     if (val > 0 && val < 300) {
         ROBOT_REAL_CM = val;
         logPath(`// Robot length set to ${val} cm`, 'info');
-        // Recalculate if already calibrated
         if (robotFront && robotBack) computeCalibration();
     }
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 //  CAMERA
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 async function startLive() {
     try {
         if (video.srcObject) video.srcObject.getTracks().forEach(t => t.stop());
         const stream = await navigator.mediaDevices.getUserMedia({ video: {facingMode:'environment'} });
         video.srcObject = stream;
         isLive = true;
+        frozenImageData = null;
         video.onloadedmetadata = () => {
             canvas.width  = video.videoWidth;
             canvas.height = video.videoHeight;
@@ -554,63 +535,70 @@ async function startLive() {
         document.getElementById('liveBtn').classList.add('btn-active');
         document.getElementById('freezeBtn').classList.remove('btn-active');
         updateStepGuide(1);
+        logPath('// Camera started. Press FREEZE when ready.', 'info');
     } catch(e) { alert('Camera error: ' + e.message); }
 }
 
-// REPLACE WITH:
 function freezeImage() {
-    if (!video.srcObject) { alert('Start live first!'); return; }
+    if (!video.srcObject) { alert('Press LIVE first!'); return; }
 
-    // Capture frame to canvas
+    // Draw current frame to canvas
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
-    // STOP the camera stream completely so it cannot restart
+    // Save the frozen frame so redrawCanvas can restore it
+    frozenImageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+    // Stop camera stream completely — nothing can overwrite canvas now
     video.srcObject.getTracks().forEach(t => t.stop());
     video.srcObject = null;
-
     isLive = false;
 
     document.getElementById('freezeBtn').classList.add('btn-active');
     document.getElementById('liveBtn').classList.remove('btn-active');
-    logPath('// Photo frozen! Camera stopped. Now mark robot FRONT point', 'info');
     updateStepGuide(2);
+    logPath('// Photo frozen! Tap 🔴 FRONT then tap front of robot.', 'info');
     setMode('robot_front');
 }
 
-// ═══════════════════════════════════════════════════
-//  MODE SWITCHING
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+//  MODE
+// ═══════════════════════════════════════════════
 function setMode(mode) {
-    if (isLive && mode !== null) { alert('FREEZE image first!'); return; }
+    if (isLive) { alert('Freeze image first!'); return; }
+    if (!frozenImageData && mode !== null) { alert('Press LIVE then FREEZE first!'); return; }
     currentMode = mode;
-
     document.getElementById('frontBtn').classList.toggle('btn-active', mode === 'robot_front');
     document.getElementById('backBtn').classList.toggle('btn-active',  mode === 'robot_back');
     document.getElementById('drawBtn').classList.toggle('btn-active',  mode === 'draw');
-
     const labels = {robot_front:'FRONT', robot_back:'BACK', draw:'DRAW'};
     document.getElementById('modeDisplay').innerText = labels[mode] || '--';
 }
 
-// ═══════════════════════════════════════════════════
-//  CANVAS TOUCH / CLICK
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+//  CANVAS EVENTS
+// ═══════════════════════════════════════════════
 function getPos(e) {
     const rect = canvas.getBoundingClientRect();
-    const sx = canvas.width / rect.width;
+    const sx = canvas.width  / rect.width;
     const sy = canvas.height / rect.height;
-    if (e.touches) return { x: (e.touches[0].clientX - rect.left)*sx, y: (e.touches[0].clientY - rect.top)*sy };
-    return { x: (e.clientX - rect.left)*sx, y: (e.clientY - rect.top)*sy };
+    if (e.touches) return {
+        x: (e.touches[0].clientX - rect.left) * sx,
+        y: (e.touches[0].clientY - rect.top)  * sy
+    };
+    return {
+        x: (e.clientX - rect.left) * sx,
+        y: (e.clientY - rect.top)  * sy
+    };
 }
 
 canvas.addEventListener('mousedown',  e => { e.preventDefault(); if (isLive) return; isDrawing=true; handleTap(e); });
 canvas.addEventListener('mousemove',  e => { e.preventDefault(); if (isDrawing && !isLive && currentMode==='draw') handleTap(e); });
-canvas.addEventListener('mouseup',    () => isDrawing=false);
-canvas.addEventListener('mouseleave', () => isDrawing=false);
-// REPLACE WITH:
+canvas.addEventListener('mouseup',    () => isDrawing = false);
+canvas.addEventListener('mouseleave', () => isDrawing = false);
+
 canvas.addEventListener('touchstart', e => {
     e.preventDefault();
-    e.stopPropagation();  // ← stops touch bubbling up
+    e.stopPropagation();
     if (isLive) return;
     isDrawing = true;
     handleTap(e);
@@ -618,12 +606,12 @@ canvas.addEventListener('touchstart', e => {
 
 canvas.addEventListener('touchmove', e => {
     e.preventDefault();
-    e.stopPropagation();  // ← stops touch bubbling up
+    e.stopPropagation();
     if (isDrawing && !isLive && currentMode === 'draw') handleTap(e);
 }, {passive:false});
 
 canvas.addEventListener('touchend', e => {
-    e.stopPropagation();  // ← stops touch bubbling up
+    e.stopPropagation();
     isDrawing = false;
 }, {passive:false});
 
@@ -633,7 +621,7 @@ function handleTap(e) {
     if (currentMode === 'robot_front') {
         robotFront = {x, y};
         redrawCanvas();
-        logPath('// Robot FRONT marked! Now mark robot BACK point', 'info');
+        logPath('// FRONT marked! Now tap 🔵 BACK then tap back of robot.', 'info');
         updateStepGuide(3);
         setMode('robot_back');
 
@@ -641,14 +629,12 @@ function handleTap(e) {
         robotBack = {x, y};
         computeCalibration();
         redrawCanvas();
-        logPath('// Robot BACK marked! Calibration complete.', 'ok');
+        logPath('// BACK marked! Calibration done. Now tap ✏️ PATH and draw your path.', 'ok');
         updateStepGuide(4);
         setMode('draw');
 
     } else if (currentMode === 'draw') {
-        if (!pixelsPerCm) { alert('Calibrate first! Mark robot front and back.'); return; }
-
-        // First path point = robot front position
+        if (!pixelsPerCm) { alert('Calibrate first! Mark robot FRONT and BACK.'); return; }
         if (pathPoints.length === 0) pathPoints.push(robotFront);
         pathPoints.push({x, y});
         redrawCanvas();
@@ -656,43 +642,39 @@ function handleTap(e) {
     }
 }
 
-// ═══════════════════════════════════════════════════
-//  CALIBRATION CALCULATION
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+//  CALIBRATION
+// ═══════════════════════════════════════════════
 function computeCalibration() {
     if (!robotFront || !robotBack) return;
-
     const dx = robotBack.x - robotFront.x;
     const dy = robotBack.y - robotFront.y;
     const pixelLength = Math.sqrt(dx*dx + dy*dy);
-
     pixelsPerCm = pixelLength / ROBOT_REAL_CM;
 
-    // Update UI
-    document.getElementById('pxPerCm').innerText    = pixelsPerCm.toFixed(2);
-    document.getElementById('calibStatus').innerText = 'OK';
-    document.getElementById('cellCalib').className   = 'info-cell calib-ok';
-    document.getElementById('calibBadge').innerText  = `📏 ${pixelsPerCm.toFixed(2)} px/cm`;
+    document.getElementById('pxPerCm').innerText     = pixelsPerCm.toFixed(2);
+    document.getElementById('calibStatus').innerText  = 'OK';
+    document.getElementById('cellCalib').className    = 'info-cell calib-ok';
+    document.getElementById('calibBadge').innerText   = `📏 ${pixelsPerCm.toFixed(2)} px/cm`;
     document.getElementById('calibBadge').style.borderColor = 'var(--green)';
     document.getElementById('calibBadge').style.color       = 'var(--green)';
 
-    logPath(`// Calibrated! ${pixelLength.toFixed(0)}px = ${ROBOT_REAL_CM}cm → ${pixelsPerCm.toFixed(2)}px/cm`, 'ok');
+    logPath(`// Calibrated! ${pixelLength.toFixed(0)}px = ${ROBOT_REAL_CM}cm → ${pixelsPerCm.toFixed(2)} px/cm`, 'ok');
 }
 
-// ═══════════════════════════════════════════════════
-//  REDRAW CANVAS
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+//  REDRAW CANVAS — always restores frozen image first
+// ═══════════════════════════════════════════════
 function redrawCanvas() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // Draw frozen frame if not live
-    if (!isLive) {
-        // canvas already has the frozen frame — no need to re-draw video
+    // Restore frozen image underneath all drawings
+    if (frozenImageData) {
+        ctx.putImageData(frozenImageData, 0, 0);
     }
 
-    // Draw robot calibration line
+    // Front dot (red)
     if (robotFront) {
-        // Front dot (red)
         ctx.fillStyle = '#ff3b3b';
         ctx.beginPath(); ctx.arc(robotFront.x, robotFront.y, 8, 0, 2*Math.PI); ctx.fill();
         ctx.strokeStyle = 'white'; ctx.lineWidth = 2; ctx.stroke();
@@ -701,8 +683,8 @@ function redrawCanvas() {
         ctx.fillText('F', robotFront.x, robotFront.y);
     }
 
+    // Back dot (blue)
     if (robotBack) {
-        // Back dot (blue)
         ctx.fillStyle = '#00d4ff';
         ctx.beginPath(); ctx.arc(robotBack.x, robotBack.y, 8, 0, 2*Math.PI); ctx.fill();
         ctx.strokeStyle = 'white'; ctx.lineWidth = 2; ctx.stroke();
@@ -711,7 +693,7 @@ function redrawCanvas() {
         ctx.fillText('B', robotBack.x, robotBack.y);
     }
 
-    // Draw calibration line between front and back
+    // Calibration line
     if (robotFront && robotBack) {
         ctx.strokeStyle = '#ffd600';
         ctx.lineWidth = 2;
@@ -721,18 +703,15 @@ function redrawCanvas() {
         ctx.lineTo(robotBack.x,  robotBack.y);
         ctx.stroke();
         ctx.setLineDash([]);
-
-        // Label in middle
         const mx = (robotFront.x + robotBack.x) / 2;
         const my = (robotFront.y + robotBack.y) / 2;
         ctx.fillStyle = '#ffd600';
         ctx.font = 'bold 11px monospace';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'bottom';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
         ctx.fillText(`${ROBOT_REAL_CM}cm`, mx, my - 4);
     }
 
-    // Draw path
+    // Path lines
     if (pathPoints.length > 1) {
         ctx.strokeStyle = '#ff6b35';
         ctx.lineWidth = 3;
@@ -743,72 +722,74 @@ function redrawCanvas() {
         ctx.stroke();
         ctx.setLineDash([]);
 
-        // Dots on each point
         for (let i = 1; i < pathPoints.length; i++) {
-            ctx.fillStyle = i === pathPoints.length-1 ? '#00ff88' : '#ff6b35';
+            ctx.fillStyle = i === pathPoints.length - 1 ? '#00ff88' : '#ff6b35';
             ctx.beginPath(); ctx.arc(pathPoints[i].x, pathPoints[i].y, 5, 0, 2*Math.PI); ctx.fill();
         }
     }
 
-    // Start dot at robot front (path start)
-    if (pathPoints.length > 0 && robotFront) {
+    // Start dot
+    if (robotFront) {
         ctx.fillStyle = '#00ff88';
         ctx.beginPath(); ctx.arc(robotFront.x, robotFront.y, 6, 0, 2*Math.PI); ctx.fill();
     }
 }
 
-// ═══════════════════════════════════════════════════
-//  CLEAR
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+//  CLEAR — fixed: no more broken bracket
+// ═══════════════════════════════════════════════
 function clearAll() {
-     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    }
+    frozenImageData = null;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    robotFront = null; robotBack = null;
+    robotFront = null;
+    robotBack  = null;
     pixelsPerCm = null;
-    pathPoints = []; movementCommands = [];
+    pathPoints  = [];
+    movementCommands = [];
+    currentMode = null;
 
-    document.getElementById('calibStatus').innerText = '--';
-    document.getElementById('pxPerCm').innerText     = '--';
-    document.getElementById('pointCount').innerText  = '0';
-    document.getElementById('cellCalib').className   = 'info-cell';
-    document.getElementById('calibBadge').innerText  = '📏 NOT CALIBRATED';
+    document.getElementById('calibStatus').innerText  = '--';
+    document.getElementById('pxPerCm').innerText      = '--';
+    document.getElementById('pointCount').innerText   = '0';
+    document.getElementById('modeDisplay').innerText  = '--';
+    document.getElementById('cellCalib').className    = 'info-cell';
+    document.getElementById('calibBadge').innerText   = '📏 NOT CALIBRATED';
     document.getElementById('calibBadge').style.borderColor = 'var(--yellow)';
     document.getElementById('calibBadge').style.color       = 'var(--yellow)';
     document.getElementById('progressFill').style.width = '0%';
 
-    updateStepGuide(isLive ? 1 : 2);
-    logPath('// Cleared. Mark robot front+back to recalibrate.', 'warn');
-    setMode(isLive ? null : 'robot_front');
+    document.getElementById('frontBtn').classList.remove('btn-active');
+    document.getElementById('backBtn').classList.remove('btn-active');
+    document.getElementById('drawBtn').classList.remove('btn-active');
+    document.getElementById('freezeBtn').classList.remove('btn-active');
+    document.getElementById('liveBtn').classList.remove('btn-active');
+
+    updateStepGuide(1);
+    logPath('// Cleared. Press LIVE then FREEZE to start again.', 'warn');
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 //  STEP GUIDE
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 function updateStepGuide(activeStep) {
     for (let i = 1; i <= 5; i++) {
-        const el = document.getElementById('sg'+i);
-        if (i < activeStep)       el.className = 'step done';
+        const el = document.getElementById('sg' + i);
+        if (i < activeStep)        el.className = 'step done';
         else if (i === activeStep) el.className = 'step active';
         else                       el.className = 'step pending';
     }
 }
 
-// ═══════════════════════════════════════════════════
-//  PATH CALCULATION (uses auto-calibrated pixelsPerCm)
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
+//  PATH CALCULATION
+// ═══════════════════════════════════════════════
 function calculatePath() {
-    if (!pixelsPerCm) {
-        alert('Not calibrated yet! Mark robot FRONT and BACK first.');
-        return;
-    }
-    if (pathPoints.length < 2) {
-        alert('Draw a path first!');
-        return;
-    }
+    if (!pixelsPerCm) { alert('Not calibrated! Mark robot FRONT and BACK first.'); return; }
+    if (pathPoints.length < 2) { alert('Draw a path first!'); return; }
 
     movementCommands = [];
-    let totalCm  = 0;
+    let totalCm   = 0;
     let prevAngle = null;
 
     for (let i = 1; i < pathPoints.length; i++) {
@@ -819,16 +800,13 @@ function calculatePath() {
 
         const angle     = Math.atan2(dy, dx) * 180 / Math.PI;
         const pixelDist = Math.sqrt(dx*dx + dy*dy);
-        const cm        = pixelDist / pixelsPerCm;  // ← uses auto-calibrated value
-
+        const cm        = pixelDist / pixelsPerCm;
         totalCm += cm;
 
-        // Turn if direction changed
         if (prevAngle !== null) {
             let diff = angle - prevAngle;
             if (diff >  180) diff -= 360;
             if (diff < -180) diff += 360;
-
             if (Math.abs(diff) > 8) {
                 movementCommands.push({
                     type:  diff > 0 ? 'R' : 'L',
@@ -848,14 +826,14 @@ function calculatePath() {
     }
 
     updateStepGuide(5);
-    logPath(`// CALIBRATED: ${pixelsPerCm.toFixed(2)}px/cm`, 'info');
-    logPath(`// Path: ${totalCm.toFixed(1)}cm total, ${movementCommands.length} steps`, 'ok');
+    logPath(`// Calibration: ${pixelsPerCm.toFixed(2)} px/cm`, 'info');
+    logPath(`// Total: ${totalCm.toFixed(1)}cm — ${movementCommands.length} steps`, 'ok');
     movementCommands.forEach(c => logPath(`   ${c.label}`, 'warn'));
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 //  EXECUTE PATH
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 function executePathNow() {
     if (!pixelsPerCm) { alert('Calibrate first!'); return; }
     if (movementCommands.length === 0) calculatePath();
@@ -873,17 +851,15 @@ async function executeStep(index) {
         logPath('// Path complete! Robot stopped.', 'ok');
         return;
     }
-
     const cmd      = movementCommands[index];
     const progress = ((index+1) / movementCommands.length) * 100;
     document.getElementById('progressFill').style.width = progress + '%';
     logPath(`// Step ${index+1}/${movementCommands.length}: ${cmd.label}`, 'warn');
-
     await sendCmd(cmd.type);
     await delay(cmd.time);
     await sendCmd('S');
     await delay(150);
-    await executeStep(index+1);
+    await executeStep(index + 1);
 }
 
 function emergencyStop() {
@@ -894,9 +870,9 @@ function emergencyStop() {
     logPath('// EMERGENCY STOP', 'err');
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 //  PATH LOG
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 function logPath(msg, type='warn') {
     const log  = document.getElementById('pathLog');
     const line = document.createElement('div');
@@ -904,13 +880,12 @@ function logPath(msg, type='warn') {
     line.innerText = msg;
     log.appendChild(line);
     log.scrollTop = log.scrollHeight;
-    // Keep log from growing too long
-    while (log.children.length > 30) log.removeChild(log.firstChild);
+    while (log.children.length > 40) log.removeChild(log.firstChild);
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 //  AUTO EXPLORE
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 const exploreMoves = ['F','F','F','F','L','R','B'];
 
 async function exploreStep() {
@@ -927,7 +902,7 @@ async function exploreStep() {
         }
 
         if (data.ultrasonic < 20) {
-            document.getElementById('exploreStatus').innerText = `⚠️ Obstacle at ${data.ultrasonic}cm — Turning...`;
+            document.getElementById('exploreStatus').innerText = `⚠️ Obstacle ${data.ultrasonic}cm — Turning...`;
             await sendCmd('S'); await delay(200);
             await sendCmd(Math.random() > 0.5 ? 'L' : 'R');
             await delay(400 + Math.random() * 400);
@@ -935,7 +910,7 @@ async function exploreStep() {
         } else {
             const move = exploreMoves[Math.floor(Math.random() * exploreMoves.length)];
             const t    = 300 + Math.random() * 500;
-            const lbl  = {F:'Forward',L:'Left',R:'Right',B:'Backward'};
+            const lbl  = {F:'Forward', L:'Left', R:'Right', B:'Backward'};
             document.getElementById('exploreStatus').innerText = `🔵 ${lbl[move]} (${t.toFixed(0)}ms)`;
             await sendCmd(move); await delay(t);
             await sendCmd('S'); await delay(150);
@@ -963,9 +938,9 @@ function stopExplore() {
     document.getElementById('exploreStatus').style.color = 'var(--muted)';
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 //  FOLLOW MODE
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 function toggleFollow() {
     if (!espConnected) { alert('Connect to ESP first!'); return; }
     isFollowing ? stopFollow() : startFollow();
@@ -999,9 +974,9 @@ function stopFollow() {
     document.getElementById('rssiValue').innerText = '-- dBm';
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 //  SENSORS
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 function toggleSensors() {
     if (!sensorRunning) {
         if (!espConnected) { alert('Connect to ESP first!'); return; }
@@ -1016,7 +991,7 @@ function toggleSensors() {
                     document.getElementById('obstacleWarning').innerText = data.ultrasonic < 20 ? '⚠️ OBSTACLE!' : '';
                     document.getElementById('goalWarning').innerText     = data.ir ? '🎯 GOAL REACHED!' : '';
                     if (data.ir && isExploring) stopExplore();
-                }).catch(()=>{});
+                }).catch(() => {});
         }, 500);
     } else {
         sensorRunning = false;
@@ -1025,9 +1000,9 @@ function toggleSensors() {
     }
 }
 
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 //  UTILS
-// ═══════════════════════════════════════════════════
+// ═══════════════════════════════════════════════
 function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
 </script>
 </body>
