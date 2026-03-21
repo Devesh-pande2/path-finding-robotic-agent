@@ -3,820 +3,952 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>🤖 ROBOT - FREEZE & DRAW + FOLLOW</title>
+    <title>🤖 ROBOT CONTROLLER</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            user-select: none;
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@400;700;900&display=swap');
+
+        :root {
+            --bg: #0a0e1a;
+            --panel: #111827;
+            --border: #1e3a5f;
+            --accent: #00d4ff;
+            --accent2: #ff6b35;
+            --green: #00ff88;
+            --red: #ff3b3b;
+            --purple: #a855f7;
+            --text: #e2e8f0;
+            --muted: #64748b;
         }
-        
+
+        * { margin: 0; padding: 0; box-sizing: border-box; user-select: none; }
+
         body {
-            background: #1a202c;
-            font-family: Arial, sans-serif;
+            background: var(--bg);
+            font-family: 'Exo 2', sans-serif;
+            color: var(--text);
+            min-height: 100vh;
             padding: 10px;
+            background-image: radial-gradient(ellipse at 20% 20%, #0d2137 0%, transparent 50%),
+                              radial-gradient(ellipse at 80% 80%, #1a0d2e 0%, transparent 50%);
         }
-        
-        .container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            padding: 15px;
-        }
-        
+
+        .container { max-width: 520px; margin: 0 auto; }
+
         h1 {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 20px;
+            color: var(--accent);
             text-align: center;
-            color: #667eea;
-            margin-bottom: 15px;
-            font-size: 22px;
+            padding: 12px 0;
+            letter-spacing: 3px;
+            text-shadow: 0 0 20px rgba(0,212,255,0.5);
         }
-        
-        h3 {
-            margin-bottom: 10px;
-            color: #4a5568;
-            font-size: 16px;
+
+        .panel {
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 12px;
+            position: relative;
+            overflow: hidden;
         }
-        
-        /* Camera Container */
+
+        .panel::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        }
+
+        .panel-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            color: var(--accent);
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+        }
+
+        /* Connection */
+        .conn-row { display: flex; gap: 8px; margin-bottom: 10px; }
+
+        #espIp {
+            flex: 3;
+            padding: 10px 14px;
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--accent);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 14px;
+        }
+
+        #connectBtn {
+            flex: 1;
+            background: var(--accent);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: 900;
+            font-size: 12px;
+            cursor: pointer;
+            letter-spacing: 1px;
+        }
+
+        #connectionStatus {
+            padding: 8px 14px;
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+        .connected    { background: rgba(0,255,136,0.15); color: var(--green); border: 1px solid var(--green); }
+        .disconnected { background: rgba(255,59,59,0.15);  color: var(--red);   border: 1px solid var(--red);   }
+
+        /* Camera */
         .camera-box {
             position: relative;
             width: 100%;
-            height: 350px;
-            background: black;
-            border-radius: 15px;
+            height: 280px;
+            background: #000;
+            border-radius: 10px;
             overflow: hidden;
-            border: 3px solid #667eea;
-            margin-bottom: 15px;
-        }
-        
-        #video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-        
-        #canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 10;
-            cursor: crosshair;
-            background: transparent;
-            display: block;
-        }
-        
-        /* Buttons */
-        .row {
-            display: flex;
-            gap: 8px;
+            border: 1px solid var(--border);
             margin-bottom: 10px;
-            flex-wrap: wrap;
         }
-        
+
+        #video  { position: absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; }
+        #canvas { position: absolute; top:0; left:0; width:100%; height:100%; z-index:10; cursor:crosshair; }
+
+        /* Buttons */
+        .row { display: flex; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+
         button {
             flex: 1;
-            padding: 14px;
+            padding: 11px;
             border: none;
-            border-radius: 50px;
-            font-weight: bold;
-            font-size: 14px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 12px;
             cursor: pointer;
-            min-width: 70px;
-            transition: 0.2s;
+            min-width: 60px;
+            font-family: 'Exo 2', sans-serif;
+            letter-spacing: 0.5px;
+            transition: all 0.15s;
         }
-        
-        button:active {
-            transform: scale(0.95);
-        }
-        
-        .blue { background: #667eea; color: white; }
-        .green { background: #48bb78; color: white; }
-        .red { background: #f56565; color: white; }
-        .orange { background: #ed8936; color: white; }
-        .purple { background: #9f7aea; color: white; }
-        .gray { background: #e2e8f0; color: black; }
-        
-        .active {
-            background: #667eea !important;
-            color: white !important;
-            border: 2px solid white;
-        }
-        
-        /* Info Panel */
-        .info {
-            background: #edf2f7;
-            padding: 12px;
-            border-radius: 12px;
-            margin: 10px 0;
+
+        button:active { transform: scale(0.96); }
+
+        .btn-cyan   { background: rgba(0,212,255,0.15);  color: var(--accent);  border: 1px solid var(--accent); }
+        .btn-green  { background: rgba(0,255,136,0.15);  color: var(--green);   border: 1px solid var(--green);  }
+        .btn-red    { background: rgba(255,59,59,0.15);  color: var(--red);     border: 1px solid var(--red);    }
+        .btn-orange { background: rgba(255,107,53,0.15); color: var(--accent2); border: 1px solid var(--accent2);}
+        .btn-purple { background: rgba(168,85,247,0.15); color: var(--purple);  border: 1px solid var(--purple); }
+        .btn-solid-green  { background: var(--green);  color: #000; border: none; }
+        .btn-solid-red    { background: var(--red);    color: #fff; border: none; }
+        .btn-solid-cyan   { background: var(--accent); color: #000; border: none; }
+        .btn-solid-orange { background: var(--accent2);color: #fff; border: none; }
+
+        .btn-active { background: var(--accent) !important; color: #000 !important; }
+
+        /* Info bar */
+        .info-bar {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-            text-align: center;
-        }
-        
-        .info div span {
-            display: block;
-            font-size: 11px;
-            color: #718096;
-        }
-        
-        .info div b {
-            font-size: 16px;
-            color: #667eea;
-        }
-        
-        /* Connection */
-        .conn-row {
-            display: flex;
             gap: 8px;
-            margin-bottom: 10px;
+            margin: 8px 0;
         }
-        
-        #espIp {
-            flex: 3;
-            padding: 12px;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 14px;
-        }
-        
-        #connectBtn {
-            flex: 1;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-weight: bold;
-        }
-        
-        #connectionStatus {
-            padding: 10px;
-            border-radius: 10px;
+
+        .info-cell {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px;
             text-align: center;
-            font-weight: bold;
-            margin-bottom: 15px;
         }
-        
-        .connected { background: #48bb78; color: white; }
-        .disconnected { background: #f56565; color: white; }
-        
-        /* Control Pad */
+
+        .info-cell span { display:block; font-size:10px; color:var(--muted); font-family:'Share Tech Mono',monospace; }
+        .info-cell b    { font-size:15px; color:var(--accent); font-family:'Share Tech Mono',monospace; }
+
+        /* Progress */
+        .progress {
+            width: 100%; height: 6px;
+            background: #0d1117;
+            border-radius: 3px;
+            margin: 8px 0;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent), var(--green));
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* Manual pad */
         .pad {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 8px;
-            margin: 10px 0;
         }
-        
+
         .pad-btn {
             aspect-ratio: 1;
-            font-size: 24px;
-            background: #e2e8f0;
-            border: none;
-            border-radius: 12px;
+            font-size: 22px;
+            background: #0d1117;
+            border: 1px solid var(--border) !important;
+            border-radius: 10px;
             cursor: pointer;
+            transition: all 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        
-        .pad-btn:active {
-            background: #667eea;
-            color: white;
+
+        .pad-btn:active, .pad-btn.pressed {
+            background: rgba(0,212,255,0.2) !important;
+            border-color: var(--accent) !important;
+            transform: scale(0.93);
         }
-        
-        /* Progress */
-        .progress {
-            width: 100%;
-            height: 10px;
-            background: #e2e8f0;
-            border-radius: 5px;
-            margin: 10px 0;
-            overflow: hidden;
-        }
-        
-        .progress-fill {
-            height: 100%;
-            background: #667eea;
-            width: 0%;
-            transition: width 0.3s;
-        }
-        
-        /* Sensor Cards */
-        .sensor-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 10px 0;
-        }
-        
+
+        /* Sensors */
+        .sensor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
         .sensor-card {
-            background: #f7fafc;
-            padding: 15px;
-            border-radius: 12px;
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px;
             text-align: center;
-            border: 1px solid #e2e8f0;
         }
-        
-        .sensor-value {
-            font-size: 24px;
-            font-weight: bold;
-            color: #667eea;
-            margin-top: 5px;
+
+        .sensor-label { font-size: 10px; color: var(--muted); font-family: 'Share Tech Mono', monospace; letter-spacing: 1px; }
+        .sensor-value { font-size: 22px; font-weight: 900; color: var(--accent); margin: 6px 0; font-family: 'Share Tech Mono', monospace; }
+        .sensor-warn  { font-size: 11px; min-height: 16px; }
+
+        /* Auto explore */
+        .explore-status {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 8px;
+            text-align: center;
         }
-        
-        /* Follow Mode */
-        .follow-box {
-            background: #f7fafc;
-            border-radius: 12px;
-            padding: 15px;
-            margin: 10px 0;
-            border: 2px solid #9f7aea;
+
+        /* Path log */
+        #pathLog {
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            max-height: 80px;
+            overflow-y: auto;
+            margin-top: 8px;
         }
-        
+
+        #pathLog .ok   { color: var(--green); }
+        #pathLog .warn { color: var(--accent2); }
+        #pathLog .err  { color: var(--red); }
+
+        /* RSSI bar */
         .rssi-bar {
-            width: 100%;
-            height: 30px;
-            background: #e2e8f0;
-            border-radius: 15px;
+            width: 100%; height: 24px;
+            background: #0d1117;
+            border-radius: 12px;
             margin: 10px 0;
             overflow: hidden;
             position: relative;
+            border: 1px solid var(--border);
         }
-        
+
         .rssi-fill {
             height: 100%;
-            background: linear-gradient(90deg, #f56565, #ed8936, #48bb78);
+            background: linear-gradient(90deg, var(--red), var(--accent2), var(--green));
             width: 0%;
             transition: width 0.3s;
         }
-        
+
         .rssi-text {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            top: 50%; left: 50%;
+            transform: translate(-50%,-50%);
             color: white;
             font-weight: bold;
-            text-shadow: 1px 1px 2px black;
+            font-size: 11px;
+            font-family: 'Share Tech Mono', monospace;
+            text-shadow: 1px 1px 3px black;
             z-index: 2;
         }
+
+        /* Tabs */
+        .tabs { display: flex; gap: 6px; margin-bottom: 12px; }
+        .tab {
+            flex: 1; padding: 9px;
+            background: #0d1117;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--muted);
+            font-size: 11px;
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s;
+        }
+        .tab.active { background: rgba(0,212,255,0.15); color: var(--accent); border-color: var(--accent); }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🤖 ROBOT CONTROLLER + FOLLOW</h1>
-        
-        <!-- ESP Connection -->
+<div class="container">
+
+    <h1>⟨ ROBOT CONTROLLER ⟩</h1>
+
+    <!-- CONNECTION -->
+    <div class="panel">
+        <div class="panel-title">◈ ESP CONNECTION</div>
         <div class="conn-row">
-            <input type="text" id="espIp" value="192.168.4.1" placeholder="ESP IP">
-            <button id="connectBtn" onclick="connectESP()">CONNECT</button>
+            <input type="text" id="espIp" value="192.168.4.1" placeholder="ESP IP Address">
+            <button id="connectBtn" onclick="connectESP()">LINK</button>
         </div>
-        <div id="connectionStatus" class="disconnected">🔴 DISCONNECTED</div>
-        
-        <!-- CAMERA SECTION -->
-        <div class="camera-box">
-            <video id="video" autoplay playsinline></video>
-            <canvas id="canvas"></canvas>
-        </div>
-        
-        <!-- CAMERA CONTROLS -->
-        <div class="row">
-            <button class="green" onclick="startLive()" id="liveBtn">📷 LIVE</button>
-            <button class="orange" onclick="freezeImage()" id="freezeBtn">❄️ FREEZE</button>
-        </div>
-        
-        <!-- DRAWING MODES -->
-        <div class="row">
-            <button class="gray" onclick="setMode('robot')" id="robotBtn">🤖 MARK ROBOT</button>
-            <button class="gray" onclick="setMode('draw')" id="drawBtn">✏️ DRAW PATH</button>
-            <button class="red" onclick="clearAll()">🗑️ CLEAR</button>
-        </div>
-        
-        <!-- INFO -->
-        <div class="info">
-            <div>
-                <span>ROBOT</span>
-                <b id="robotStatus">NOT SET</b>
-            </div>
-            <div>
-                <span>POINTS</span>
-                <b id="pointCount">0</b>
-            </div>
-            <div>
-                <span>MODE</span>
-                <b id="modeDisplay">DRAW</b>
-            </div>
-        </div>
-        
-        <!-- PATH ACTIONS -->
-        <div class="row">
-            <button class="blue" style="flex:2" onclick="calculatePath()">📐 CALCULATE</button>
-            <button class="green" style="flex:1" onclick="sendToESP()">📤 SEND</button>
-        </div>
-        
-        <!-- PROGRESS -->
-        <div class="progress">
-            <div class="progress-fill" id="progressFill"></div>
-        </div>
-        
-        <!-- MOVEMENT -->
-        <div class="row">
-            <button class="green" style="flex:2" onclick="startMovement()">▶️ START</button>
-            <button class="red" style="flex:1" onclick="emergencyStop()">⏹️ STOP</button>
-        </div>
-        
-        <!-- SENSORS -->
-        <div style="background:#f8f9fa; border-radius:15px; padding:12px; margin:15px 0;">
-            <h3>📡 SENSORS</h3>
-            <div class="sensor-grid">
-                <div class="sensor-card">
-                    <div>ULTRASONIC</div>
-                    <div class="sensor-value" id="ultrasonic">-- cm</div>
-                    <div id="obstacleWarning" style="color:#f56565; font-size:12px;"></div>
-                </div>
-                <div class="sensor-card">
-                    <div>IR SENSOR</div>
-                    <div class="sensor-value" id="irSensor">⚪ WHITE</div>
-                    <div id="goalWarning" style="color:#48bb78; font-size:12px;"></div>
-                </div>
-            </div>
-            <button class="blue" style="width:100%;" onclick="startSensors()">🔄 READ SENSORS</button>
-        </div>
-        
-        <!-- FOLLOW MODE - NEW FEATURE -->
-        <div class="follow-box">
-            <h3 style="display:flex; align-items:center; gap:5px;">📱 WI-FI FOLLOW MODE</h3>
-            <p style="font-size:12px; color:#718096; margin-bottom:10px;">Robot will follow your phone based on signal strength</p>
-            
-            <div class="row">
-                <button class="purple" style="flex:2;" onclick="toggleFollow()" id="followBtn">▶️ START FOLLOWING</button>
-                <button class="red" style="flex:1;" onclick="stopFollow()">⏹️ STOP</button>
-            </div>
-            
-            <div style="position:relative; margin:15px 0;">
-                <div class="rssi-bar">
-                    <div class="rssi-fill" id="rssiFill"></div>
-                    <div class="rssi-text" id="rssiValue">-- dBm</div>
-                </div>
-            </div>
-            
-            <div style="display:flex; justify-content:space-between; font-size:12px;">
-                <span>📱 PHONE FAR</span>
-                <span>⚖️ BALANCE</span>
-                <span>📱 PHONE NEAR</span>
-            </div>
-            
-            <div style="margin-top:10px; padding:8px; background:#edf2f7; border-radius:8px; text-align:center; font-size:13px;" id="followStatus">
-                ⏸️ Follow mode: OFF
-            </div>
-        </div>
-        
-        <!-- MANUAL CONTROL -->
-        <div style="background:#f8f9fa; border-radius:15px; padding:12px; margin-top:15px;">
-            <h3>🎮 MANUAL CONTROL</h3>
+        <div id="connectionStatus" class="disconnected">◉ DISCONNECTED</div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab('manual')">🎮 MANUAL</div>
+        <div class="tab" onclick="switchTab('ai')">🤖 AI PATH</div>
+        <div class="tab" onclick="switchTab('explore')">🔍 EXPLORE</div>
+        <div class="tab" onclick="switchTab('sensors')">📡 SENSORS</div>
+    </div>
+
+    <!-- TAB: MANUAL -->
+    <div id="tab-manual" class="tab-content active">
+        <div class="panel">
+            <div class="panel-title">◈ MANUAL CONTROL</div>
             <div class="pad">
                 <div></div>
-                <button class="pad-btn" ontouchstart="sendCommand('forward')" ontouchend="sendCommand('stop')" onmousedown="sendCommand('forward')" onmouseup="sendCommand('stop')">⬆️</button>
+                <button class="pad-btn" id="btn-F"
+                    ontouchstart="pressCmd('F')" ontouchend="pressCmd('S')"
+                    onmousedown="pressCmd('F')" onmouseup="pressCmd('S')">⬆️</button>
                 <div></div>
-                <button class="pad-btn" ontouchstart="sendCommand('left')" ontouchend="sendCommand('stop')" onmousedown="sendCommand('left')" onmouseup="sendCommand('stop')">⬅️</button>
-                <button class="pad-btn" onclick="sendCommand('stop')">⏹️</button>
-                <button class="pad-btn" ontouchstart="sendCommand('right')" ontouchend="sendCommand('stop')" onmousedown="sendCommand('right')" onmouseup="sendCommand('stop')">➡️</button>
+                <button class="pad-btn" id="btn-L"
+                    ontouchstart="pressCmd('L')" ontouchend="pressCmd('S')"
+                    onmousedown="pressCmd('L')" onmouseup="pressCmd('S')">⬅️</button>
+                <button class="pad-btn" onclick="pressCmd('S')">⏹️</button>
+                <button class="pad-btn" id="btn-R"
+                    ontouchstart="pressCmd('R')" ontouchend="pressCmd('S')"
+                    onmousedown="pressCmd('R')" onmouseup="pressCmd('S')">➡️</button>
                 <div></div>
-                <button class="pad-btn" ontouchstart="sendCommand('backward')" ontouchend="sendCommand('stop')" onmousedown="sendCommand('backward')" onmouseup="sendCommand('stop')">⬇️</button>
+                <button class="pad-btn" id="btn-B"
+                    ontouchstart="pressCmd('B')" ontouchend="pressCmd('S')"
+                    onmousedown="pressCmd('B')" onmouseup="pressCmd('S')">⬇️</button>
                 <div></div>
+            </div>
+            <div style="margin-top:10px; display:flex; gap:8px;">
+                <button class="btn-solid-green" style="flex:2" onclick="pressCmd('G')">↖ FWD-L</button>
+                <button class="btn-solid-cyan"  style="flex:2" onclick="pressCmd('I')">↗ FWD-R</button>
+                <button class="btn-solid-red"   style="flex:1" onclick="pressCmd('S')">■ STOP</button>
             </div>
         </div>
     </div>
 
-    <script>
-        // ========== VARIABLES ==========
-        let video = document.getElementById('video');
-        let canvas = document.getElementById('canvas');
-        let ctx = canvas.getContext('2d');
-        
-        let isLive = true;
-        let currentMode = 'draw';
-        let robotPosition = null;
-        let pathPoints = [];
-        let isDrawing = false;
-        
-        let espIP = '192.168.4.1';
-        let espConnected = false;
-        let movementCommands = [];
-        
-        // Follow mode variables
-        let isFollowing = false;
-        let followInterval = null;
-        let sensorInterval = null;
-        
-        // ========== CAMERA ==========
-        async function startLive() {
-            try {
-                if (video.srcObject) {
-                    video.srcObject.getTracks().forEach(t => t.stop());
-                }
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: { facingMode: 'environment' }
-                });
-                video.srcObject = stream;
-                isLive = true;
-                
-                video.onloadedmetadata = () => {
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
-                    ctx.clearRect(0, 0, canvas.width, canvas.height);
-                };
-                
-                document.getElementById('liveBtn').style.background = '#48bb78';
-                document.getElementById('freezeBtn').style.background = '#ed8936';
-            } catch(e) {
-                alert('Camera error: ' + e.message);
-            }
-        }
-        
-        function freezeImage() {
-            if (!video.srcObject) {
-                alert('Start live first!');
-                return;
-            }
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            isLive = false;
-            
-            document.getElementById('freezeBtn').style.background = '#48bb78';
-            document.getElementById('liveBtn').style.background = '#667eea';
-        }
-        
-        // ========== DRAWING ==========
-        function setMode(mode) {
-            if (isLive) {
-                alert('FREEZE the camera first!');
-                return;
-            }
-            
-            currentMode = mode;
-            document.getElementById('robotBtn').classList.remove('active');
-            document.getElementById('drawBtn').classList.remove('active');
-            
-            if (mode === 'robot') {
-                document.getElementById('robotBtn').classList.add('active');
-                document.getElementById('modeDisplay').innerText = 'ROBOT';
-            } else {
-                document.getElementById('drawBtn').classList.add('active');
-                document.getElementById('modeDisplay').innerText = 'DRAW';
-            }
-        }
-        
-        canvas.addEventListener('mousedown', (e) => {
-            e.preventDefault();
-            if (isLive) {
-                alert('FREEZE the camera first!');
-                return;
-            }
-            isDrawing = true;
-            handleDraw(e);
+    <!-- TAB: AI PATH -->
+    <div id="tab-ai" class="tab-content">
+        <div class="panel">
+            <div class="panel-title">◈ AI PATH CONTROL</div>
+
+            <!-- Camera -->
+            <div class="camera-box">
+                <video id="video" autoplay playsinline muted></video>
+                <canvas id="canvas"></canvas>
+            </div>
+
+            <div class="row">
+                <button class="btn-green"  onclick="startLive()"    id="liveBtn">📷 LIVE</button>
+                <button class="btn-orange" onclick="freezeImage()"  id="freezeBtn">❄️ FREEZE</button>
+            </div>
+            <div class="row">
+                <button class="btn-cyan"   onclick="setMode('robot')" id="robotBtn">🤖 MARK BOT</button>
+                <button class="btn-cyan"   onclick="setMode('draw')"  id="drawBtn">✏️ DRAW PATH</button>
+                <button class="btn-red"    onclick="clearAll()">🗑️ CLEAR</button>
+            </div>
+
+            <div class="info-bar">
+                <div class="info-cell"><span>ROBOT</span><b id="robotStatus">--</b></div>
+                <div class="info-cell"><span>POINTS</span><b id="pointCount">0</b></div>
+                <div class="info-cell"><span>MODE</span><b id="modeDisplay">DRAW</b></div>
+            </div>
+
+            <div class="row">
+                <button class="btn-solid-cyan"   style="flex:2" onclick="calculatePath()">📐 CALCULATE</button>
+                <button class="btn-solid-green"  style="flex:2" onclick="sendPathToESP()">📤 SEND PATH</button>
+                <button class="btn-solid-red"    style="flex:1" onclick="emergencyStop()">⏹</button>
+            </div>
+
+            <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+
+            <button class="btn-solid-orange" style="width:100%; margin-top:4px;" onclick="startMovement()">▶️ EXECUTE PATH</button>
+
+            <div id="pathLog"><span class="warn">// Path log will appear here</span></div>
+        </div>
+    </div>
+
+    <!-- TAB: EXPLORE -->
+    <div id="tab-explore" class="tab-content">
+        <div class="panel">
+            <div class="panel-title">◈ AUTO EXPLORE MODE</div>
+            <p style="font-size:12px; color:var(--muted); margin-bottom:12px; line-height:1.6;">
+                Robot moves randomly and avoids obstacles using ultrasonic sensor.
+                Stops automatically when IR detects black (goal reached).
+            </p>
+
+            <div class="row">
+                <button class="btn-solid-green"  style="flex:2" onclick="startExplore()" id="exploreBtn">▶️ START EXPLORE</button>
+                <button class="btn-solid-red"    style="flex:1" onclick="stopExplore()">⏹ STOP</button>
+            </div>
+
+            <div class="explore-status" id="exploreStatus">⏸ Explore mode: OFF</div>
+
+            <div style="margin-top:12px;" class="panel-title">◈ WIFI FOLLOW MODE</div>
+            <p style="font-size:12px; color:var(--muted); margin-bottom:10px;">Robot follows your phone based on WiFi signal.</p>
+            <div class="row">
+                <button class="btn-purple" style="flex:2" onclick="toggleFollow()" id="followBtn">▶️ START FOLLOW</button>
+                <button class="btn-red"    style="flex:1" onclick="stopFollow()">⏹</button>
+            </div>
+            <div class="rssi-bar">
+                <div class="rssi-fill" id="rssiFill"></div>
+                <div class="rssi-text" id="rssiValue">-- dBm</div>
+            </div>
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:var(--muted); font-family:'Share Tech Mono',monospace;">
+                <span>FAR</span><span>BALANCED</span><span>NEAR</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- TAB: SENSORS -->
+    <div id="tab-sensors" class="tab-content">
+        <div class="panel">
+            <div class="panel-title">◈ LIVE SENSORS</div>
+            <div class="sensor-grid">
+                <div class="sensor-card">
+                    <div class="sensor-label">ULTRASONIC</div>
+                    <div class="sensor-value" id="ultrasonic">--</div>
+                    <div class="sensor-warn" id="obstacleWarning" style="color:var(--red);"></div>
+                </div>
+                <div class="sensor-card">
+                    <div class="sensor-label">IR SENSOR</div>
+                    <div class="sensor-value" id="irSensor">--</div>
+                    <div class="sensor-warn" id="goalWarning" style="color:var(--green);"></div>
+                </div>
+            </div>
+            <button class="btn-solid-cyan" style="width:100%; margin-top:10px;" onclick="toggleSensors()" id="sensorBtn">▶ START READING</button>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+//  VARIABLES
+// ═══════════════════════════════════════════════════
+let espIP        = '192.168.4.1';
+let espConnected = false;
+
+let video  = document.getElementById('video');
+let canvas = document.getElementById('canvas');
+let ctx    = canvas.getContext('2d');
+
+let isLive       = true;
+let currentMode  = 'draw';
+let robotPosition = null;
+let pathPoints   = [];
+let isDrawing    = false;
+let movementCommands = [];
+
+let isExploring  = false;
+let exploreTimer = null;
+let isFollowing  = false;
+let followInterval = null;
+let sensorInterval = null;
+let sensorRunning  = false;
+
+// ═══════════════════════════════════════════════════
+//  TABS
+// ═══════════════════════════════════════════════════
+function switchTab(name) {
+    document.querySelectorAll('.tab').forEach((t,i) => {
+        const tabs = ['manual','ai','explore','sensors'];
+        t.classList.toggle('active', tabs[i] === name);
+    });
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.getElementById('tab-' + name).classList.add('active');
+    if (name === 'ai' && isLive) startLive();
+}
+
+// ═══════════════════════════════════════════════════
+//  CONNECTION
+// ═══════════════════════════════════════════════════
+function connectESP() {
+    espIP = document.getElementById('espIp').value.trim();
+    fetch(`http://${espIP}/ping`, {signal: AbortSignal.timeout(3000)})
+        .then(r => r.text())
+        .then(d => {
+            espConnected = true;
+            document.getElementById('connectionStatus').className = 'connected';
+            document.getElementById('connectionStatus').innerText = '◉ CONNECTED — ' + espIP;
+        })
+        .catch(() => {
+            espConnected = false;
+            document.getElementById('connectionStatus').className = 'disconnected';
+            document.getElementById('connectionStatus').innerText = '◉ DISCONNECTED — Check IP & WiFi';
         });
-        
-        canvas.addEventListener('mousemove', (e) => {
-            e.preventDefault();
-            if (isDrawing && !isLive) handleDraw(e);
-        });
-        
-        canvas.addEventListener('mouseup', () => isDrawing = false);
-        canvas.addEventListener('mouseleave', () => isDrawing = false);
-        
-        canvas.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            if (isLive) {
-                alert('FREEZE the camera first!');
-                return;
-            }
-            isDrawing = true;
-            handleDraw(e);
-        });
-        
-        canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            if (isDrawing && !isLive) handleDraw(e);
-        });
-        
-        canvas.addEventListener('touchend', () => isDrawing = false);
-        
-        function handleDraw(e) {
-            e.preventDefault();
-            
-            const rect = canvas.getBoundingClientRect();
-            const scaleX = canvas.width / rect.width;
-            const scaleY = canvas.height / rect.height;
-            
-            let x, y;
-            if (e.touches) {
-                x = (e.touches[0].clientX - rect.left) * scaleX;
-                y = (e.touches[0].clientY - rect.top) * scaleY;
-            } else {
-                x = (e.clientX - rect.left) * scaleX;
-                y = (e.clientY - rect.top) * scaleY;
-            }
-            
-            if (currentMode === 'robot') {
-                robotPosition = {x, y};
-                drawRobot(x, y);
-                document.getElementById('robotStatus').innerText = 'SET';
-            } else {
-                if (!robotPosition) {
-                    alert('Mark robot first!');
-                    isDrawing = false;
-                    return;
-                }
-                
-                if (pathPoints.length === 0) {
-                    pathPoints.push(robotPosition);
-                }
-                
-                pathPoints.push({x, y});
-                drawLine(pathPoints[pathPoints.length-2], {x, y}, '#f56565');
-                drawPoint(x, y, '#f56565');
-                document.getElementById('pointCount').innerText = pathPoints.length - 1;
-            }
-        }
-        
-        function drawRobot(x, y) {
-            ctx.fillStyle = '#48bb78';
-            ctx.beginPath();
-            ctx.arc(x, y, 12, 0, 2*Math.PI);
-            ctx.fill();
-            ctx.strokeStyle = 'white';
-            ctx.lineWidth = 3;
-            ctx.stroke();
-            
-            ctx.fillStyle = 'white';
-            ctx.font = 'bold 14px Arial';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText('R', x, y);
-        }
-        
-        function drawPoint(x, y, color) {
-            ctx.fillStyle = color;
-            ctx.beginPath();
-            ctx.arc(x, y, 5, 0, 2*Math.PI);
-            ctx.fill();
-            ctx.strokeStyle = 'white';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-        }
-        
-        function drawLine(p1, p2, color) {
-            ctx.beginPath();
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 4;
-            ctx.moveTo(p1.x, p1.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.stroke();
-        }
-        
-        function clearAll() {
+}
+
+// ═══════════════════════════════════════════════════
+//  SEND COMMAND TO ESP
+// ═══════════════════════════════════════════════════
+function sendCmd(state) {
+    if (!espConnected) { console.log('CMD:', state); return Promise.resolve(); }
+    return fetch(`http://${espIP}/?State=${state}`).catch(() => {});
+}
+
+function pressCmd(state) {
+    sendCmd(state);
+}
+
+// ═══════════════════════════════════════════════════
+//  CAMERA
+// ═══════════════════════════════════════════════════
+async function startLive() {
+    try {
+        if (video.srcObject) video.srcObject.getTracks().forEach(t => t.stop());
+        const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        video.srcObject = stream;
+        isLive = true;
+        video.onloadedmetadata = () => {
+            canvas.width  = video.videoWidth;
+            canvas.height = video.videoHeight;
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-            robotPosition = null;
-            pathPoints = [];
-            document.getElementById('robotStatus').innerText = 'NOT SET';
-            document.getElementById('pointCount').innerText = '0';
+        };
+        document.getElementById('liveBtn').classList.add('btn-active');
+        document.getElementById('freezeBtn').classList.remove('btn-active');
+    } catch(e) { alert('Camera error: ' + e.message); }
+}
+
+function freezeImage() {
+    if (!video.srcObject) { alert('Start live first!'); return; }
+    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    isLive = false;
+    document.getElementById('freezeBtn').classList.add('btn-active');
+    document.getElementById('liveBtn').classList.remove('btn-active');
+}
+
+// ═══════════════════════════════════════════════════
+//  DRAWING
+// ═══════════════════════════════════════════════════
+function setMode(mode) {
+    if (isLive) { alert('FREEZE camera first!'); return; }
+    currentMode = mode;
+    document.getElementById('robotBtn').classList.toggle('btn-active', mode === 'robot');
+    document.getElementById('drawBtn').classList.toggle('btn-active',  mode === 'draw');
+    document.getElementById('modeDisplay').innerText = mode.toUpperCase();
+}
+
+function getCanvasPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width  / rect.width;
+    const scaleY = canvas.height / rect.height;
+    if (e.touches) {
+        return { x: (e.touches[0].clientX - rect.left) * scaleX, y: (e.touches[0].clientY - rect.top) * scaleY };
+    }
+    return { x: (e.clientX - rect.left) * scaleX, y: (e.clientY - rect.top) * scaleY };
+}
+
+canvas.addEventListener('mousedown',  e => { e.preventDefault(); if (isLive) return; isDrawing = true; handleDraw(e); });
+canvas.addEventListener('mousemove',  e => { e.preventDefault(); if (isDrawing && !isLive) handleDraw(e); });
+canvas.addEventListener('mouseup',    () => isDrawing = false);
+canvas.addEventListener('mouseleave', () => isDrawing = false);
+canvas.addEventListener('touchstart', e => { e.preventDefault(); if (isLive) return; isDrawing = true; handleDraw(e); }, {passive:false});
+canvas.addEventListener('touchmove',  e => { e.preventDefault(); if (isDrawing && !isLive) handleDraw(e); }, {passive:false});
+canvas.addEventListener('touchend',   () => isDrawing = false);
+
+function handleDraw(e) {
+    const {x, y} = getCanvasPos(e);
+    if (currentMode === 'robot') {
+        robotPosition = {x, y};
+        redrawCanvas();
+        document.getElementById('robotStatus').innerText = 'SET';
+    } else {
+        if (!robotPosition) { alert('Mark robot first!'); isDrawing = false; return; }
+        if (pathPoints.length === 0) pathPoints.push(robotPosition);
+        pathPoints.push({x, y});
+        redrawCanvas();
+        document.getElementById('pointCount').innerText = pathPoints.length - 1;
+    }
+}
+
+function redrawCanvas() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (!isLive && video.srcObject) ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // Draw path
+    if (pathPoints.length > 1) {
+        ctx.beginPath();
+        ctx.strokeStyle = '#ff6b35';
+        ctx.lineWidth = 3;
+        ctx.setLineDash([8, 4]);
+        ctx.moveTo(pathPoints[0].x, pathPoints[0].y);
+        for (let i = 1; i < pathPoints.length; i++) ctx.lineTo(pathPoints[i].x, pathPoints[i].y);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Draw points
+        for (let i = 1; i < pathPoints.length; i++) {
+            ctx.fillStyle = '#ff6b35';
+            ctx.beginPath();
+            ctx.arc(pathPoints[i].x, pathPoints[i].y, 5, 0, 2*Math.PI);
+            ctx.fill();
         }
-        
-        // ========== PATH CALCULATION ==========
-        function calculatePath() {
-            if (!robotPosition || pathPoints.length < 2) {
-                alert('Mark robot and draw path!');
-                return;
-            }
-            
-            movementCommands = [];
-            let totalDist = 0;
-            
-            for (let i = 1; i < pathPoints.length; i++) {
-                const p1 = pathPoints[i-1];
-                const p2 = pathPoints[i];
-                
-                const dx = p2.x - p1.x;
-                const dy = p2.y - p1.y;
-                const angle = Math.atan2(dy, dx) * 180 / Math.PI;
-                const dist = Math.sqrt(dx*dx + dy*dy) * 0.5;
-                
-                totalDist += dist;
-                
-                if (Math.abs(angle) > 5) {
-                    movementCommands.push({
-                        type: 'turn',
-                        dir: angle > 0 ? 'right' : 'left',
-                        time: Math.abs(angle) * 10
-                    });
-                }
-                
+
+        // Arrow at end
+        const last = pathPoints[pathPoints.length-1];
+        const prev = pathPoints[pathPoints.length-2];
+        drawArrow(prev, last);
+    }
+
+    // Draw robot
+    if (robotPosition) {
+        ctx.fillStyle = '#00ff88';
+        ctx.beginPath();
+        ctx.arc(robotPosition.x, robotPosition.y, 14, 0, 2*Math.PI);
+        ctx.fill();
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+        ctx.fillStyle = '#000';
+        ctx.font = 'bold 13px Exo 2';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('R', robotPosition.x, robotPosition.y);
+    }
+}
+
+function drawArrow(from, to) {
+    const angle = Math.atan2(to.y - from.y, to.x - from.x);
+    const size = 12;
+    ctx.fillStyle = '#00d4ff';
+    ctx.beginPath();
+    ctx.moveTo(to.x + size * Math.cos(angle), to.y + size * Math.sin(angle));
+    ctx.lineTo(to.x + size * Math.cos(angle + 2.4), to.y + size * Math.sin(angle + 2.4));
+    ctx.lineTo(to.x + size * Math.cos(angle - 2.4), to.y + size * Math.sin(angle - 2.4));
+    ctx.closePath();
+    ctx.fill();
+}
+
+function clearAll() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    robotPosition = null;
+    pathPoints    = [];
+    movementCommands = [];
+    document.getElementById('robotStatus').innerText = '--';
+    document.getElementById('pointCount').innerText  = '0';
+    document.getElementById('progressFill').style.width = '0%';
+    logPath('// Cleared', 'warn');
+}
+
+// ═══════════════════════════════════════════════════
+//  PATH CALCULATION
+// ═══════════════════════════════════════════════════
+// Calibration: pixels per cm (tune this for your camera height)
+const PIXELS_PER_CM = 8;
+// Time for robot to travel 1cm at current speed (ms) - tune this!
+const MS_PER_CM     = 80;
+// Time for robot to turn 1 degree (ms) - tune this!
+const MS_PER_DEGREE = 12;
+
+function calculatePath() {
+    if (!robotPosition || pathPoints.length < 2) {
+        alert('Mark robot and draw a path first!');
+        return;
+    }
+
+    movementCommands = [];
+    let totalCm = 0;
+    let prevAngle = null;
+
+    for (let i = 1; i < pathPoints.length; i++) {
+        const p1 = pathPoints[i-1];
+        const p2 = pathPoints[i];
+
+        const dx = p2.x - p1.x;
+        const dy = p2.y - p1.y;
+
+        // Angle in degrees (-180 to 180)
+        const angle    = Math.atan2(dy, dx) * 180 / Math.PI;
+        const pixelDist = Math.sqrt(dx*dx + dy*dy);
+        const cm       = pixelDist / PIXELS_PER_CM;
+
+        totalCm += cm;
+
+        // Add turn command if direction changed
+        if (prevAngle !== null) {
+            let diff = angle - prevAngle;
+            if (diff > 180)  diff -= 360;
+            if (diff < -180) diff += 360;
+
+            if (Math.abs(diff) > 8) {
                 movementCommands.push({
-                    type: 'forward',
-                    time: dist * 100
+                    type: diff > 0 ? 'R' : 'L',
+                    time: Math.abs(diff) * MS_PER_DEGREE,
+                    label: `TURN ${diff > 0 ? 'RIGHT' : 'LEFT'} ${Math.abs(diff).toFixed(0)}°`
                 });
             }
-            
-            alert(`Path calculated: ${totalDist.toFixed(1)} cm`);
         }
-        
-        function sendToESP() {
-            if (movementCommands.length === 0) {
-                alert('Calculate first!');
-                return;
-            }
-            alert('Path sent to ESP!');
+
+        // Add forward command
+        movementCommands.push({
+            type: 'F',
+            time: cm * MS_PER_CM,
+            label: `FORWARD ${cm.toFixed(1)}cm`
+        });
+
+        prevAngle = angle;
+    }
+
+    logPath(`// Calculated: ${totalCm.toFixed(1)}cm, ${movementCommands.length} steps`, 'ok');
+    movementCommands.forEach(c => logPath(`   ${c.label} (${c.time.toFixed(0)}ms)`, 'warn'));
+}
+
+// ═══════════════════════════════════════════════════
+//  SEND PATH TO ESP & EXECUTE
+// ═══════════════════════════════════════════════════
+function sendPathToESP() {
+    if (movementCommands.length === 0) {
+        alert('Calculate path first!');
+        return;
+    }
+    if (!espConnected) {
+        alert('Connect to ESP first!');
+        return;
+    }
+    logPath(`// Sending ${movementCommands.length} commands to ESP...`, 'ok');
+    startMovement();
+}
+
+async function startMovement() {
+    if (movementCommands.length === 0) { alert('Calculate path first!'); return; }
+    if (isExploring) stopExplore();
+    logPath('// Executing path...', 'ok');
+    await executeStep(0);
+}
+
+async function executeStep(index) {
+    if (index >= movementCommands.length) {
+        await sendCmd('S');
+        document.getElementById('progressFill').style.width = '0%';
+        logPath('// Path complete! Stopped.', 'ok');
+        return;
+    }
+
+    const cmd = movementCommands[index];
+    const progress = ((index + 1) / movementCommands.length) * 100;
+    document.getElementById('progressFill').style.width = progress + '%';
+    logPath(`// Step ${index+1}: ${cmd.label}`, 'warn');
+
+    await sendCmd(cmd.type);
+
+    await new Promise(resolve => setTimeout(resolve, cmd.time));
+
+    await sendCmd('S');
+    await new Promise(resolve => setTimeout(resolve, 150));
+
+    await executeStep(index + 1);
+}
+
+function emergencyStop() {
+    sendCmd('S');
+    stopExplore();
+    stopFollow();
+    if (sensorInterval) clearInterval(sensorInterval);
+    document.getElementById('progressFill').style.width = '0%';
+    logPath('// EMERGENCY STOP', 'err');
+}
+
+// ═══════════════════════════════════════════════════
+//  PATH LOG
+// ═══════════════════════════════════════════════════
+function logPath(msg, type='warn') {
+    const log = document.getElementById('pathLog');
+    const line = document.createElement('div');
+    line.className = type;
+    line.innerText = msg;
+    log.appendChild(line);
+    log.scrollTop = log.scrollHeight;
+}
+
+// ═══════════════════════════════════════════════════
+//  AUTO EXPLORE MODE (random movement + obstacle avoid)
+// ═══════════════════════════════════════════════════
+const exploreMoves = ['F','F','F','F','L','R','B'];  // weighted forward
+
+async function exploreStep() {
+    if (!isExploring) return;
+
+    // Check sensors first
+    try {
+        const resp = await fetch(`http://${espIP}/sensors`, {signal: AbortSignal.timeout(1000)});
+        const data = await resp.json();
+
+        // Goal reached - stop everything
+        if (data.ir === true) {
+            stopExplore();
+            document.getElementById('exploreStatus').innerText = '🎯 GOAL REACHED! IR detected black!';
+            document.getElementById('exploreStatus').style.color = 'var(--green)';
+            return;
         }
-        
-        function startMovement() {
-            if (movementCommands.length === 0) {
-                alert('Calculate first!');
-                return;
-            }
-            if (isFollowing) stopFollow();
-            executeCommand(0);
+
+        // Obstacle ahead - turn
+        if (data.ultrasonic < 20) {
+            document.getElementById('exploreStatus').innerText = `⚠️ Obstacle at ${data.ultrasonic}cm — Turning...`;
+            await sendCmd('S');
+            await delay(200);
+            // Turn randomly left or right
+            await sendCmd(Math.random() > 0.5 ? 'L' : 'R');
+            await delay(400 + Math.random() * 400);
+            await sendCmd('S');
+            await delay(200);
+        } else {
+            // Pick random move (weighted forward)
+            const move = exploreMoves[Math.floor(Math.random() * exploreMoves.length)];
+            const moveTime = 300 + Math.random() * 500;
+            const labels = {F:'Moving forward', L:'Turning left', R:'Turning right', B:'Moving backward'};
+            document.getElementById('exploreStatus').innerText = `🔵 ${labels[move]} (${moveTime.toFixed(0)}ms)`;
+            await sendCmd(move);
+            await delay(moveTime);
+            await sendCmd('S');
+            await delay(150);
         }
-        
-        function executeCommand(index) {
-            if (index >= movementCommands.length) {
-                sendCommand('stop');
-                document.getElementById('progressFill').style.width = '0%';
-                return;
-            }
-            
-            const cmd = movementCommands[index];
-            sendCommand(cmd.type === 'turn' ? cmd.dir : 'forward');
-            
-            const progress = ((index + 1) / movementCommands.length) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
-            
-            setTimeout(() => {
-                sendCommand('stop');
-                setTimeout(() => executeCommand(index + 1), 200);
-            }, cmd.time);
-        }
-        
-        // ========== ESP COMMANDS ==========
-        function connectESP() {
-            espIP = document.getElementById('espIp').value;
-            fetch(`http://${espIP}/ping`)
-                .then(r => r.text())
-                .then(d => {
-                    if (d === 'pong') {
-                        espConnected = true;
-                        document.getElementById('connectionStatus').className = 'connected';
-                        document.getElementById('connectionStatus').innerText = '🟢 CONNECTED';
-                    }
-                })
-                .catch(() => {
-                    espConnected = false;
-                    document.getElementById('connectionStatus').className = 'disconnected';
-                    document.getElementById('connectionStatus').innerText = '🔴 DISCONNECTED';
-                });
-        }
-        
-        function sendCommand(cmd) {
-            if (!espConnected) {
-                console.log('Command:', cmd);
-                return;
-            }
-            fetch(`http://${espIP}/move?dir=${cmd}`).catch(() => {});
-        }
-        
-        function emergencyStop() {
-            sendCommand('stop');
-            if (isFollowing) stopFollow();
-            if (sensorInterval) clearInterval(sensorInterval);
-            document.getElementById('progressFill').style.width = '0%';
-        }
-        
-        // ========== SENSORS ==========
-        function startSensors() {
-            if (!espConnected) {
-                alert('Connect ESP first!');
-                return;
-            }
-            
-            if (sensorInterval) clearInterval(sensorInterval);
-            
-            sensorInterval = setInterval(() => {
-                fetch(`http://${espIP}/sensors`)
-                    .then(r => r.json())
-                    .then(data => {
-                        document.getElementById('ultrasonic').innerText = data.ultrasonic + ' cm';
-                        document.getElementById('irSensor').innerText = data.ir ? '⚫ BLACK' : '⚪ WHITE';
-                        
-                        if (data.ultrasonic < 20) {
-                            document.getElementById('obstacleWarning').innerText = '⚠️ OBSTACLE!';
-                            if (isFollowing) stopFollow();
-                        } else {
-                            document.getElementById('obstacleWarning').innerText = '';
-                        }
-                        
-                        if (data.ir) {
-                            document.getElementById('goalWarning').innerText = '🎯 GOAL REACHED!';
-                            if (isFollowing) stopFollow();
-                        } else {
-                            document.getElementById('goalWarning').innerText = '';
-                        }
-                    });
-            }, 500);
-        }
-        
-        // ========== FOLLOW MODE - RSSI BASED ==========
-        function toggleFollow() {
-            if (!espConnected) {
-                alert('Connect ESP first!');
-                return;
-            }
-            
-            if (isFollowing) {
-                stopFollow();
-            } else {
-                startFollow();
-            }
-        }
-        
-        function startFollow() {
-            isFollowing = true;
-            document.getElementById('followBtn').innerHTML = '⏸️ STOP FOLLOWING';
-            document.getElementById('followBtn').style.background = '#f56565';
-            document.getElementById('followStatus').innerHTML = '🔵 FOLLOW MODE: ACTIVE - Robot will follow your phone';
-            
-            // Clear any existing interval
-            if (followInterval) clearInterval(followInterval);
-            
-            // Start following
-            followInterval = setInterval(() => {
-                fetch(`http://${espIP}/rssi`)
-                    .then(r => r.text())
-                    .then(rssi => {
-                        const rssiVal = parseInt(rssi);
-                        
-                        // Update display
-                        document.getElementById('rssiValue').innerText = rssiVal + ' dBm';
-                        
-                        // Update bar (RSSI range: -30 to -90)
-                        let percent = 100 - ((rssiVal + 90) * 100 / 60);
-                        if (percent < 0) percent = 0;
-                        if (percent > 100) percent = 100;
-                        document.getElementById('rssiFill').style.width = percent + '%';
-                        
-                        // FOLLOWING LOGIC:
-                        // RSSI closer to 0 = stronger signal = phone is near
-                        // RSSI more negative = weaker signal = phone is far
-                        
-                        if (rssiVal > -50) {
-                            // Phone is very close - stop
-                            sendCommand('stop');
-                            document.getElementById('followStatus').innerHTML = '📱 PHONE NEAR - Stopped';
-                        } 
-                        else if (rssiVal > -65) {
-                            // Phone is close - move slowly
-                            sendCommand('forward');
-                            document.getElementById('followStatus').innerHTML = '🚶 FOLLOWING - Moving slowly';
-                        }
-                        else if (rssiVal > -75) {
-                            // Phone is medium distance - move normal
-                            sendCommand('forward');
-                            document.getElementById('followStatus').innerHTML = '🏃 FOLLOWING - Moving normal';
-                        }
-                        else {
-                            // Phone is far - move fast
-                            sendCommand('forward');
-                            document.getElementById('followStatus').innerHTML = '⚡ FOLLOWING - Moving fast';
-                        }
-                    })
-                    .catch(() => {
-                        stopFollow();
-                        alert('Lost connection to ESP!');
-                    });
-            }, 500);
-        }
-        
-        function stopFollow() {
-            isFollowing = false;
-            if (followInterval) {
-                clearInterval(followInterval);
-                followInterval = null;
-            }
-            sendCommand('stop');
-            
-            document.getElementById('followBtn').innerHTML = '▶️ START FOLLOWING';
-            document.getElementById('followBtn').style.background = '#9f7aea';
-            document.getElementById('followStatus').innerHTML = '⏸️ Follow mode: OFF';
-            document.getElementById('rssiFill').style.width = '0%';
-            document.getElementById('rssiValue').innerText = '-- dBm';
-        }
-        
-        // Start live on load
-        window.onload = () => startLive();
-    </script>
+    } catch(e) {
+        document.getElementById('exploreStatus').innerText = '🔴 Lost connection...';
+        await delay(500);
+    }
+
+    if (isExploring) exploreStep();  // loop
+}
+
+function startExplore() {
+    if (!espConnected) { alert('Connect to ESP first!'); return; }
+    if (isFollowing) stopFollow();
+    isExploring = true;
+    document.getElementById('exploreBtn').innerText = '⏸ EXPLORING...';
+    document.getElementById('exploreStatus').style.color = 'var(--accent)';
+    document.getElementById('exploreStatus').innerText = '🔵 Starting explore...';
+    exploreStep();
+}
+
+function stopExplore() {
+    isExploring = false;
+    sendCmd('S');
+    document.getElementById('exploreBtn').innerText = '▶️ START EXPLORE';
+    document.getElementById('exploreStatus').innerText = '⏸ Explore mode: OFF';
+    document.getElementById('exploreStatus').style.color = 'var(--muted)';
+}
+
+// ═══════════════════════════════════════════════════
+//  FOLLOW MODE
+// ═══════════════════════════════════════════════════
+function toggleFollow() {
+    if (!espConnected) { alert('Connect to ESP first!'); return; }
+    isFollowing ? stopFollow() : startFollow();
+}
+
+function startFollow() {
+    if (isExploring) stopExplore();
+    isFollowing = true;
+    document.getElementById('followBtn').innerText = '⏸ FOLLOWING...';
+
+    followInterval = setInterval(() => {
+        fetch(`http://${espIP}/rssi`, {signal: AbortSignal.timeout(1000)})
+            .then(r => r.text())
+            .then(rssi => {
+                const val = parseInt(rssi);
+                document.getElementById('rssiValue').innerText = val + ' dBm';
+                let pct = 100 - ((val + 90) * 100 / 60);
+                pct = Math.max(0, Math.min(100, pct));
+                document.getElementById('rssiFill').style.width = pct + '%';
+
+                if (val > -50)      sendCmd('S');
+                else if (val > -70) sendCmd('F');
+                else                sendCmd('F');
+            })
+            .catch(() => stopFollow());
+    }, 600);
+}
+
+function stopFollow() {
+    isFollowing = false;
+    if (followInterval) { clearInterval(followInterval); followInterval = null; }
+    sendCmd('S');
+    document.getElementById('followBtn').innerText = '▶️ START FOLLOW';
+    document.getElementById('rssiFill').style.width = '0%';
+    document.getElementById('rssiValue').innerText = '-- dBm';
+}
+
+// ═══════════════════════════════════════════════════
+//  SENSORS
+// ═══════════════════════════════════════════════════
+function toggleSensors() {
+    if (!sensorRunning) {
+        if (!espConnected) { alert('Connect to ESP first!'); return; }
+        sensorRunning = true;
+        document.getElementById('sensorBtn').innerText = '⏹ STOP READING';
+        sensorInterval = setInterval(readSensors, 500);
+    } else {
+        sensorRunning = false;
+        clearInterval(sensorInterval);
+        document.getElementById('sensorBtn').innerText = '▶ START READING';
+    }
+}
+
+function readSensors() {
+    fetch(`http://${espIP}/sensors`, {signal: AbortSignal.timeout(1000)})
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('ultrasonic').innerText = data.ultrasonic + ' cm';
+            document.getElementById('irSensor').innerText   = data.ir ? '⚫ BLACK' : '⚪ WHITE';
+
+            document.getElementById('obstacleWarning').innerText = data.ultrasonic < 20 ? '⚠️ OBSTACLE!' : '';
+            document.getElementById('goalWarning').innerText     = data.ir ? '🎯 GOAL REACHED!' : '';
+
+            if (data.ir && isExploring) stopExplore();
+        })
+        .catch(() => {});
+}
+
+// ═══════════════════════════════════════════════════
+//  UTILS
+// ═══════════════════════════════════════════════════
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+window.onload = () => {
+    // Don't auto-start camera (user opens AI tab when needed)
+};
+</script>
 </body>
 </html>
