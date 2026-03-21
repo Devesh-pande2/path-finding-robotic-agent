@@ -18,42 +18,37 @@ body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--text);paddi
   background-image:radial-gradient(ellipse at 20% 20%,#0d2137 0%,transparent 50%),
                    radial-gradient(ellipse at 80% 80%,#1a0d2e 0%,transparent 50%);}
 .container{max-width:520px;margin:0 auto;}
-h1{font-family:'Share Tech Mono',monospace;font-size:16px;color:var(--accent);
-   text-align:center;padding:10px 0;letter-spacing:3px;
-   text-shadow:0 0 20px rgba(0,212,255,0.4);}
+h1{font-family:'Share Tech Mono',monospace;font-size:15px;color:var(--accent);
+   text-align:center;padding:8px 0;letter-spacing:3px;text-shadow:0 0 20px rgba(0,212,255,0.4);}
 .panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;
        padding:14px;margin-bottom:10px;position:relative;}
 .panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--accent),transparent);
-  border-radius:12px 12px 0 0;}
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);border-radius:12px 12px 0 0;}
 .pt{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--accent);
     letter-spacing:2px;margin-bottom:10px;text-transform:uppercase;}
 .conn-row{display:flex;gap:8px;margin-bottom:8px;}
 #espIp{flex:3;padding:10px 14px;background:#0d1117;border:1px solid var(--border);
        border-radius:8px;color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:14px;}
-#connectBtn{flex:1;background:var(--accent);color:#000;border:none;border-radius:8px;
-            font-weight:900;font-size:12px;cursor:pointer;}
-#cStatus{padding:8px 14px;border-radius:8px;text-align:center;
-         font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:1px;}
+#connectBtn{flex:1;background:var(--accent);color:#000;border:none;border-radius:8px;font-weight:900;font-size:12px;cursor:pointer;}
+#cSt{padding:8px 14px;border-radius:8px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:1px;}
 .connected{background:rgba(0,255,136,0.15);color:var(--green);border:1px solid var(--green);}
 .disconnected{background:rgba(255,59,59,0.15);color:var(--red);border:1px solid var(--red);}
-.tabs{display:flex;gap:5px;margin-bottom:10px;}
-.tab{flex:1;padding:8px 4px;background:#0d1117;border:1px solid var(--border);border-radius:8px;
-     color:var(--muted);font-size:9px;font-family:'Share Tech Mono',monospace;
-     cursor:pointer;text-align:center;transition:all 0.15s;}
+.tabs{display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap;}
+.tab{flex:1;padding:7px 3px;background:#0d1117;border:1px solid var(--border);border-radius:8px;
+     color:var(--muted);font-size:8px;font-family:'Share Tech Mono',monospace;
+     cursor:pointer;text-align:center;transition:all 0.15s;min-width:48px;}
 .tab.active{background:rgba(0,212,255,0.15);color:var(--accent);border-color:var(--accent);}
 .tc{display:none;}.tc.active{display:block;}
-.cam{position:relative;width:100%;height:280px;background:#000;
-     border-radius:10px;overflow:hidden;border:1px solid var(--border);margin-bottom:10px;}
+.cam{position:relative;width:100%;height:260px;background:#000;border-radius:10px;
+     overflow:hidden;border:1px solid var(--border);margin-bottom:10px;}
 #video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;}
 #canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:10;cursor:crosshair;}
-.cbadge{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.75);
-        border:1px solid var(--yellow);border-radius:6px;padding:4px 10px;
-        font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--yellow);
-        z-index:20;pointer-events:none;}
+.cbadge{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.75);border:1px solid var(--yellow);
+        border-radius:6px;padding:4px 10px;font-family:'Share Tech Mono',monospace;font-size:11px;
+        color:var(--yellow);z-index:20;pointer-events:none;}
 .row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
-button{flex:1;padding:11px;border:none;border-radius:8px;font-weight:700;font-size:12px;
-       cursor:pointer;min-width:50px;font-family:'Exo 2',sans-serif;transition:all 0.15s;}
+button{flex:1;padding:10px;border:none;border-radius:8px;font-weight:700;font-size:11px;
+       cursor:pointer;min-width:48px;font-family:'Exo 2',sans-serif;transition:all 0.15s;}
 button:active{transform:scale(0.96);}
 .bc{background:rgba(0,212,255,0.15);color:var(--accent);border:1px solid var(--accent);}
 .bg{background:rgba(0,255,136,0.15);color:var(--green);border:1px solid var(--green);}
@@ -64,59 +59,79 @@ button:active{transform:scale(0.96);}
 .bsg{background:var(--green);color:#000;border:none;}
 .bsr{background:var(--red);color:#fff;border:none;}
 .bsc{background:var(--accent);color:#000;border:none;}
-.bso{background:var(--accent2);color:#fff;border:none;}
 .bsy{background:var(--yellow);color:#000;border:none;}
 .ba{background:var(--accent)!important;color:#000!important;border-color:var(--accent)!important;}
-.ibar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;margin:8px 0;}
-.ic{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:6px;text-align:center;}
-.ic span{display:block;font-size:9px;color:var(--muted);font-family:'Share Tech Mono',monospace;}
-.ic b{font-size:13px;color:var(--accent);font-family:'Share Tech Mono',monospace;}
+.ibar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;margin:8px 0;}
+.ic{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:5px;text-align:center;}
+.ic span{display:block;font-size:8px;color:var(--muted);font-family:'Share Tech Mono',monospace;}
+.ic b{font-size:12px;color:var(--accent);font-family:'Share Tech Mono',monospace;}
 .ic.ok b{color:var(--green);}
-.prog{width:100%;height:6px;background:#0d1117;border-radius:3px;margin:8px 0;
-      overflow:hidden;border:1px solid var(--border);}
+.prog{width:100%;height:6px;background:#0d1117;border-radius:3px;margin:6px 0;overflow:hidden;border:1px solid var(--border);}
 .pf{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));width:0%;transition:width 0.3s;}
 .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.pb{aspect-ratio:1;font-size:22px;background:#0d1117;border:1px solid var(--border)!important;
+.pb{aspect-ratio:1;font-size:20px;background:#0d1117;border:1px solid var(--border)!important;
     border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .pb:active{background:rgba(0,212,255,0.2)!important;border-color:var(--accent)!important;transform:scale(0.93);}
-.sg{background:#0d1117;border:1px solid var(--yellow);border-radius:8px;
-    padding:10px;margin-bottom:10px;font-family:'Share Tech Mono',monospace;font-size:11px;}
+.sg{background:#0d1117;border:1px solid var(--yellow);border-radius:8px;padding:10px;
+    margin-bottom:10px;font-family:'Share Tech Mono',monospace;font-size:11px;}
 .sg .s{padding:3px 0;}
-.sg .s.done{color:var(--green);}
-.sg .s.act{color:var(--yellow);}
-.sg .s.pend{color:var(--muted);}
+.sg .s.done{color:var(--green);}.sg .s.act{color:var(--yellow);}.sg .s.pend{color:var(--muted);}
 .scard{background:#0d1117;border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;}
 .slabel{font-size:10px;color:var(--muted);font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
 .sval{font-size:20px;font-weight:900;color:var(--accent);margin:6px 0;font-family:'Share Tech Mono',monospace;}
 .sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-#plog{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:10px;
-      font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);
-      max-height:90px;overflow-y:auto;margin-top:8px;}
-#plog .ok{color:var(--green);}#plog .w{color:var(--yellow);}
-#plog .e{color:var(--red);}#plog .i{color:var(--accent);}
+.log{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:10px;
+     font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);
+     max-height:90px;overflow-y:auto;margin-top:8px;}
+.log .ok{color:var(--green);}.log .w{color:var(--yellow);}
+.log .e{color:var(--red);}.log .i{color:var(--accent);}
 .rbar{width:100%;height:22px;background:#0d1117;border-radius:11px;margin:8px 0;
       overflow:hidden;position:relative;border:1px solid var(--border);}
-.rf{height:100%;background:linear-gradient(90deg,var(--red),var(--accent2),var(--green));
-    width:0%;transition:width 0.3s;}
-.rt{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-    color:white;font-weight:bold;font-size:11px;font-family:'Share Tech Mono',monospace;
-    text-shadow:1px 1px 3px black;z-index:2;}
+.rf{height:100%;background:linear-gradient(90deg,var(--red),var(--accent2),var(--green));width:0%;transition:width 0.3s;}
+.rt{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;
+    font-weight:bold;font-size:11px;font-family:'Share Tech Mono',monospace;text-shadow:1px 1px 3px black;z-index:2;}
 .stbox{background:#0d1117;border:1px solid var(--border);border-radius:8px;
        padding:10px 14px;font-family:'Share Tech Mono',monospace;font-size:12px;
        color:var(--muted);margin-top:8px;text-align:center;}
 .ninput{flex:1;padding:8px 12px;background:#0d1117;border:1px solid var(--border);
-        border-radius:8px;color:var(--yellow);font-family:'Share Tech Mono',monospace;
-        font-size:14px;text-align:center;}
-.lrow{display:flex;gap:8px;align-items:center;margin-bottom:10px;}
+        border-radius:8px;color:var(--yellow);font-family:'Share Tech Mono',monospace;font-size:14px;text-align:center;}
+.lrow{display:flex;gap:8px;align-items:center;margin-bottom:8px;}
 .lrow label{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);white-space:nowrap;}
-.lbar{width:100%;height:28px;background:#0d1117;border-radius:14px;overflow:hidden;
+.lbar{width:100%;height:26px;background:#0d1117;border-radius:13px;overflow:hidden;
       position:relative;border:1px solid var(--border);margin:8px 0;}
-.lfill{height:100%;background:linear-gradient(90deg,#1a0d2e,#ffd600,#fff);
-       transition:width 0.4s;width:0%;}
-.ltext{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-       color:white;font-weight:bold;font-size:12px;font-family:'Share Tech Mono',monospace;
-       text-shadow:1px 1px 3px black;z-index:2;}
+.lfill{height:100%;background:linear-gradient(90deg,#1a0d2e,#ffd600,#fff);transition:width 0.4s;width:0%;}
+.ltext{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;
+       font-weight:bold;font-size:12px;font-family:'Share Tech Mono',monospace;text-shadow:1px 1px 3px black;z-index:2;}
 #scanCanvas{display:block;margin:10px auto;border-radius:50%;border:1px solid var(--border);}
+/* CALIBRATION */
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.cbtn{background:#0d1117;border:1px solid var(--border);border-radius:10px;
+      padding:12px 6px;text-align:center;cursor:pointer;transition:all 0.15s;}
+.cbtn:active{border-color:var(--accent);background:rgba(0,212,255,0.1);}
+.cbtn .ci{font-size:18px;margin-bottom:4px;}
+.cbtn .cl{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent);}
+.cbtn .cs{font-size:10px;color:var(--muted);margin-top:2px;}
+.fbbox{background:#0d1117;border:2px solid var(--yellow);border-radius:12px;
+       padding:14px;margin:10px 0;text-align:center;display:none;}
+.fbbox.show{display:block;}
+.fbq{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--yellow);margin-bottom:12px;line-height:1.6;}
+.fbbts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.fbb{padding:12px 6px;border:none;border-radius:8px;font-weight:700;font-size:11px;
+     cursor:pointer;font-family:'Share Tech Mono',monospace;}
+.fbb:active{transform:scale(0.95);}
+.fbslow{background:rgba(255,107,53,0.2);color:var(--accent2);border:1px solid var(--accent2);}
+.fbok  {background:rgba(0,255,136,0.2);color:var(--green);  border:1px solid var(--green);}
+.fbfast{background:rgba(0,212,255,0.2);color:var(--accent);  border:1px solid var(--accent);}
+.vdisp{background:#0d1117;border:1px solid var(--border);border-radius:10px;padding:10px;margin:8px 0;}
+.vrow{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);}
+.vrow:last-child{border-bottom:none;}
+.vlabel{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);}
+.vnum{font-family:'Share Tech Mono',monospace;font-size:15px;color:var(--accent);font-weight:900;}
+.vnum.saved{color:var(--green);}
+.svbanner{background:rgba(0,255,136,0.15);border:1px solid var(--green);border-radius:8px;
+          padding:10px;text-align:center;font-family:'Share Tech Mono',monospace;
+          font-size:12px;color:var(--green);margin:8px 0;display:none;}
+.svbanner.show{display:block;}
 </style>
 </head>
 <body>
@@ -130,16 +145,17 @@ button:active{transform:scale(0.96);}
     <input type="text" id="espIp" value="192.168.43.1" placeholder="ESP IP">
     <button id="connectBtn" onclick="connectESP()">LINK</button>
   </div>
-  <div id="cStatus" class="disconnected">◉ DISCONNECTED</div>
+  <div id="cSt" class="disconnected">◉ DISCONNECTED</div>
 </div>
 
-<!-- TABS -->
+<!-- TABS — 6 tabs total -->
 <div class="tabs">
-  <div class="tab active" onclick="switchTab('manual')">🎮 MANUAL</div>
-  <div class="tab" onclick="switchTab('ai')">🤖 AI PATH</div>
-  <div class="tab" onclick="switchTab('light')">🔦 LIGHT</div>
-  <div class="tab" onclick="switchTab('explore')">🔍 EXPLORE</div>
-  <div class="tab" onclick="switchTab('sensors')">📡 SENSORS</div>
+  <div class="tab active" onclick="ST('manual')">🎮 CTRL</div>
+  <div class="tab" onclick="ST('ai')">🤖 PATH</div>
+  <div class="tab" onclick="ST('light')">🔦 LIGHT</div>
+  <div class="tab" onclick="ST('explore')">🔍 AUTO</div>
+  <div class="tab" onclick="ST('calib')">📐 CALIB</div>
+  <div class="tab" onclick="ST('sensors')">📡 DATA</div>
 </div>
 
 <!-- ══ MANUAL ══ -->
@@ -168,11 +184,11 @@ button:active{transform:scale(0.96);}
 <!-- ══ AI PATH ══ -->
 <div id="tab-ai" class="tc">
 <div class="panel">
-  <div class="pt">◈ AI PATH — AUTO CALIBRATION</div>
+  <div class="pt">◈ AI PATH — ROBOT AS RULER</div>
   <div class="lrow">
     <label>ROBOT LENGTH (cm):</label>
     <input type="number" class="ninput" id="rlInput" value="15" min="5" max="100">
-    <button class="by" style="flex:0;padding:8px 12px;" onclick="updateRL()">SET</button>
+    <button class="by" style="flex:0;padding:8px 10px;" onclick="updateRL()">SET</button>
   </div>
   <div class="sg">
     <div class="s act"  id="sg1">① LIVE → FREEZE photo</div>
@@ -187,14 +203,14 @@ button:active{transform:scale(0.96);}
     <div class="cbadge" id="cbadge">📏 NOT CALIBRATED</div>
   </div>
   <div class="row">
-    <button class="bg"  onclick="startLive()"   id="liveBtn">📷 LIVE</button>
-    <button class="bo"  onclick="freezeImg()"   id="frzBtn">❄️ FREEZE</button>
-    <button class="br"  onclick="clearAll()">🗑️ CLEAR</button>
+    <button class="bg" onclick="startLive()" id="liveBtn">📷 LIVE</button>
+    <button class="bo" onclick="freezeImg()" id="frzBtn">❄️ FREEZE</button>
+    <button class="br" onclick="clearAll()">🗑️ CLEAR</button>
   </div>
   <div class="row">
-    <button class="by"  onclick="setMode('rf')" id="frontBtn">🔴 FRONT</button>
-    <button class="by"  onclick="setMode('rb')" id="backBtn">🔵 BACK</button>
-    <button class="bc"  onclick="setMode('draw')" id="drawBtn">✏️ PATH</button>
+    <button class="by" onclick="setMode('rf')" id="frontBtn">🔴 FRONT</button>
+    <button class="by" onclick="setMode('rb')" id="backBtn">🔵 BACK</button>
+    <button class="bc" onclick="setMode('draw')" id="drawBtn">✏️ PATH</button>
   </div>
   <div class="ibar">
     <div class="ic" id="ccell"><span>CALIB</span><b id="caliSt">--</b></div>
@@ -208,7 +224,7 @@ button:active{transform:scale(0.96);}
     <button class="bsr" style="flex:1" onclick="eStop()">⏹</button>
   </div>
   <div class="prog"><div class="pf" id="pbar"></div></div>
-  <div id="plog"><span class="i">// LIVE → FREEZE → mark robot → draw path</span></div>
+  <div class="log" id="plog"><span class="i">// LIVE → FREEZE → mark robot → draw path</span></div>
 </div>
 </div>
 
@@ -216,90 +232,182 @@ button:active{transform:scale(0.96);}
 <div id="tab-light" class="tc">
 <div class="panel">
   <div class="pt">◈ LIGHT SEEKER — LDR</div>
-  <p style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5;">
-    Robot scans 360° to find the darkest area and moves toward it automatically.
+  <p style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;">
+    Scans 360° to find darkest area and moves toward it automatically.
   </p>
-  <div class="pt" style="margin-top:4px;">◈ LIVE LDR READING</div>
+  <div class="pt">◈ LIVE LDR</div>
   <div class="lbar"><div class="lfill" id="ldrFill"></div><div class="ltext" id="ldrTxt">-- / 1023</div></div>
-  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);
-              font-family:'Share Tech Mono',monospace;margin-bottom:10px;">
-    <span>⬛ DARK</span><span>░ MEDIUM</span><span>⬜ BRIGHT</span>
+  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-family:'Share Tech Mono',monospace;margin-bottom:8px;">
+    <span>⬛ DARK</span><span>░ MED</span><span>⬜ BRIGHT</span>
   </div>
   <div class="lrow">
-    <label>DARK THRESHOLD:</label>
+    <label>THRESHOLD:</label>
     <input type="number" class="ninput" id="thrInput" value="300" min="0" max="1023">
-    <button class="by" style="flex:0;padding:8px 12px;" onclick="setThr()">SET</button>
-  </div>
-  <div style="font-size:11px;color:var(--muted);font-family:'Share Tech Mono',monospace;margin-bottom:10px;">
-    Point LDR at black paper → note value → set threshold slightly above it.
-    Also type lt=XXX in Serial Monitor to save on ESP.
+    <button class="by" style="flex:0;padding:8px 10px;" onclick="setThr()">SET</button>
   </div>
   <div class="pt">◈ 360° SCAN</div>
-  <canvas id="scanCanvas" width="200" height="200"></canvas>
+  <canvas id="scanCanvas" width="180" height="180"></canvas>
   <div id="scanRes" class="stbox">⏸ Press SCAN to find darkest direction</div>
-  <div class="row" style="margin-top:10px;">
+  <div class="row" style="margin-top:8px;">
     <button class="bsy" style="flex:2" onclick="doScan()" id="scanBtn">🔄 SCAN 360°</button>
-    <button class="bsr" style="flex:1" onclick="eStop()">⏹ STOP</button>
+    <button class="bsr" style="flex:1" onclick="eStop()">⏹</button>
   </div>
   <div class="row">
     <button class="bsg" style="flex:2" onclick="startSeek()" id="seekBtn">🔦 START SEEKING</button>
-    <button class="bsr" style="flex:1" onclick="stopSeek()">⏹ STOP</button>
+    <button class="bsr" style="flex:1" onclick="stopSeek()">⏹</button>
   </div>
   <div class="stbox" id="seekSt">⏸ Light seeker: OFF</div>
 </div>
 </div>
 
-<!-- ══ EXPLORE ══ -->
+<!-- ══ EXPLORE / FOLLOW ══ -->
 <div id="tab-explore" class="tc">
 <div class="panel">
   <div class="pt">◈ AUTO EXPLORE</div>
-  <p style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.5;">
-    Random movement with obstacle avoidance via ultrasonic sensor.
-  </p>
+  <p style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.5;">Random movement with obstacle avoidance.</p>
   <div class="row">
     <button class="bsg" style="flex:2" onclick="startExp()" id="expBtn">▶️ START</button>
     <button class="bsr" style="flex:1" onclick="stopExp()">⏹ STOP</button>
   </div>
   <div class="stbox" id="expSt">⏸ Explore: OFF</div>
   <div style="margin-top:14px;" class="pt">◈ WIFI FOLLOW (RSSI GRADIENT)</div>
-  <p style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.5;">
-    Tests F/L/R directions and moves toward strongest WiFi signal.
-  </p>
+  <p style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.5;">Tests F/L/R and moves toward strongest signal.</p>
   <div class="row">
-    <button class="bp" style="flex:2" onclick="togFollow()" id="folBtn">▶️ FOLLOW</button>
-    <button class="br" style="flex:1" onclick="stopFollow()">⏹</button>
+    <button class="bp" style="flex:2" onclick="togFol()" id="folBtn">▶️ FOLLOW</button>
+    <button class="br" style="flex:1" onclick="stopFol()">⏹</button>
   </div>
   <div class="rbar"><div class="rf" id="rssiF"></div><div class="rt" id="rssiV">-- dBm</div></div>
   <div class="stbox" id="folSt">⏸ Follow: OFF</div>
 </div>
 </div>
 
+<!-- ══ CALIBRATION ══ -->
+<div id="tab-calib" class="tc">
+<div class="panel">
+  <div class="pt">◈ INTERACTIVE CALIBRATION</div>
+  <p style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;">
+    Click a test. Robot performs it. You say if it was correct, too short/slow or too long/fast.
+    App automatically finds the perfect value using binary search and saves to ESP flash!
+  </p>
+
+  <!-- Sub tabs for distance / turning -->
+  <div class="row" style="margin-bottom:12px;">
+    <button class="bsc" id="cdBtn" onclick="showCalib('dist')">📏 DISTANCE</button>
+    <button class="bc"  id="ctBtn" onclick="showCalib('turn')">🔄 TURNING</button>
+  </div>
+
+  <!-- DISTANCE CALIBRATION -->
+  <div id="cdiv">
+    <div class="pt">◈ DISTANCE TESTS</div>
+    <div class="cgrid">
+      <div class="cbtn" onclick="testDist('F',10)"><div class="ci">➡️</div><div class="cl">FWD 10cm</div><div class="cs">short test</div></div>
+      <div class="cbtn" onclick="testDist('F',20)"><div class="ci">➡️</div><div class="cl">FWD 20cm</div><div class="cs">medium</div></div>
+      <div class="cbtn" onclick="testDist('F',30)"><div class="ci">➡️</div><div class="cl">FWD 30cm</div><div class="cs">recommended ✓</div></div>
+      <div class="cbtn" onclick="testDist('F',50)"><div class="ci">➡️</div><div class="cl">FWD 50cm</div><div class="cs">most accurate</div></div>
+      <div class="cbtn" onclick="testDist('B',10)"><div class="ci">⬅️</div><div class="cl">BWD 10cm</div><div class="cs">reverse</div></div>
+      <div class="cbtn" onclick="testDist('B',30)"><div class="ci">⬅️</div><div class="cl">BWD 30cm</div><div class="cs">reverse</div></div>
+    </div>
+    <div class="vdisp">
+      <div class="vrow"><span class="vlabel">CURRENT MS/CM</span><span class="vnum" id="dMPC">80</span></div>
+      <div class="vrow"><span class="vlabel">TEST DISTANCE</span><span class="vnum" id="dTest">--</span></div>
+      <div class="vrow"><span class="vlabel">EXPECTED TIME</span><span class="vnum" id="dTime">--</span></div>
+      <div class="vrow"><span class="vlabel">ATTEMPT #</span><span class="vnum" id="dAtt">0</span></div>
+    </div>
+    <div class="prog"><div class="pf" id="dProg" style="width:0%"></div></div>
+    <div class="fbbox" id="dFB">
+      <div class="fbq" id="dFBQ">Did robot travel correct distance?</div>
+      <div class="fbbts">
+        <button class="fbb fbslow" onclick="dFeed('slow')">📏 TOO SHORT<br><small>went less</small></button>
+        <button class="fbb fbok"   onclick="dFeed('ok')">✅ PERFECT!<br><small>exactly right</small></button>
+        <button class="fbb fbfast" onclick="dFeed('fast')">📏 TOO LONG<br><small>went more</small></button>
+      </div>
+    </div>
+    <div class="svbanner" id="dSaved">✅ MS/CM CALIBRATED & SAVED TO ESP FLASH!</div>
+    <div class="row"><button class="br" onclick="resetDist()">🔄 RESET DISTANCE</button></div>
+    <div class="log" id="dLog"><span class="i">// Pick a distance to start</span></div>
+  </div>
+
+  <!-- TURNING CALIBRATION -->
+  <div id="ctdiv" style="display:none;">
+    <div class="pt">◈ TURNING TESTS</div>
+    <div class="cgrid">
+      <div class="cbtn" onclick="testTurn('R',45)"><div class="ci">↪️</div><div class="cl">RIGHT 45°</div><div class="cs">quarter turn</div></div>
+      <div class="cbtn" onclick="testTurn('R',90)"><div class="ci">↪️</div><div class="cl">RIGHT 90°</div><div class="cs">recommended ✓</div></div>
+      <div class="cbtn" onclick="testTurn('R',180)"><div class="ci">↪️</div><div class="cl">RIGHT 180°</div><div class="cs">u-turn</div></div>
+      <div class="cbtn" onclick="testTurn('R',360)"><div class="ci">🔄</div><div class="cl">RIGHT 360°</div><div class="cs">full spin</div></div>
+      <div class="cbtn" onclick="testTurn('L',45)"><div class="ci">↩️</div><div class="cl">LEFT 45°</div><div class="cs">quarter turn</div></div>
+      <div class="cbtn" onclick="testTurn('L',90)"><div class="ci">↩️</div><div class="cl">LEFT 90°</div><div class="cs">recommended ✓</div></div>
+    </div>
+    <div class="vdisp">
+      <div class="vrow"><span class="vlabel">CURRENT MS/DEGREE</span><span class="vnum" id="tMPD">12</span></div>
+      <div class="vrow"><span class="vlabel">CURRENT KICK MS</span><span class="vnum" id="tKick">80</span></div>
+      <div class="vrow"><span class="vlabel">TEST ANGLE</span><span class="vnum" id="tTest">--</span></div>
+      <div class="vrow"><span class="vlabel">EXPECTED TIME</span><span class="vnum" id="tTime">--</span></div>
+      <div class="vrow"><span class="vlabel">ATTEMPT #</span><span class="vnum" id="tAtt">0</span></div>
+    </div>
+    <div class="prog"><div class="pf" id="tProg" style="width:0%"></div></div>
+    <div class="fbbox" id="tFB">
+      <div class="fbq" id="tFBQ">Did robot turn correct angle?</div>
+      <div class="fbbts">
+        <button class="fbb fbslow" onclick="tFeed('less')">📐 TOO LITTLE<br><small>turned less</small></button>
+        <button class="fbb fbok"   onclick="tFeed('ok')">✅ PERFECT!<br><small>exactly right</small></button>
+        <button class="fbb fbfast" onclick="tFeed('more')">📐 TOO MUCH<br><small>turned more</small></button>
+      </div>
+    </div>
+    <div class="svbanner" id="tSaved">✅ MS/DEGREE CALIBRATED & SAVED TO ESP FLASH!</div>
+    <div class="pt" style="margin-top:10px;">◈ KICK TUNING</div>
+    <p style="font-size:11px;color:var(--muted);margin-bottom:8px;">Motors twitch/shake → increase kick. Turns overshoot → decrease kick.</p>
+    <div class="lrow">
+      <label>KICK MS:</label>
+      <input type="number" class="ninput" id="kickInput" value="80" min="0" max="200">
+      <button class="by" style="flex:0;padding:8px 10px;" onclick="setKick()">SAVE</button>
+    </div>
+    <div class="row"><button class="br" onclick="resetTurn()">🔄 RESET TURNING</button></div>
+    <div class="log" id="tLog"><span class="i">// Pick an angle to start</span></div>
+  </div>
+
+  <!-- Current saved values summary -->
+  <div style="margin-top:10px;" class="pt">◈ SAVED VALUES ON ESP</div>
+  <div class="vdisp" id="summaryVals">
+    <div class="vrow"><span class="vlabel">MS/CM (distance)</span><span class="vnum saved" id="svMPC">--</span></div>
+    <div class="vrow"><span class="vlabel">MS/DEGREE (turn)</span><span class="vnum saved" id="svMPD">--</span></div>
+    <div class="vrow"><span class="vlabel">KICK MS</span><span class="vnum saved" id="svKick">--</span></div>
+    <div class="vrow"><span class="vlabel">LEFT SPEED</span><span class="vnum saved" id="svLeft">--</span></div>
+    <div class="vrow"><span class="vlabel">RIGHT SPEED</span><span class="vnum saved" id="svRight">--</span></div>
+  </div>
+  <div class="row">
+    <button class="bsc" onclick="loadCalibData()">🔄 REFRESH FROM ESP</button>
+    <button class="bsr" onclick="factReset()">⚠️ FACTORY RESET</button>
+  </div>
+</div>
+</div>
+
 <!-- ══ SENSORS ══ -->
 <div id="tab-sensors" class="tc">
 <div class="panel">
-  <div class="pt">◈ LIVE SENSORS</div>
+  <div class="pt">◈ LIVE SENSOR DATA</div>
   <div class="sgrid">
     <div class="scard">
       <div class="slabel">ULTRASONIC</div>
       <div class="sval" id="usVal">--</div>
-      <div id="obsWarn" style="color:var(--red);font-size:11px;min-height:16px;"></div>
+      <div id="obsW" style="color:var(--red);font-size:11px;min-height:16px;"></div>
     </div>
     <div class="scard">
       <div class="slabel">LDR VALUE</div>
       <div class="sval" id="ldrVal">--</div>
-      <div id="darkWarn" style="color:var(--yellow);font-size:11px;min-height:16px;"></div>
+      <div id="darkW" style="color:var(--yellow);font-size:11px;min-height:16px;"></div>
     </div>
   </div>
-  <button class="bsc" style="width:100%;margin-top:10px;" onclick="togSensors()" id="senBtn">▶ START READING</button>
+  <button class="bsc" style="width:100%;margin-top:10px;" onclick="togSen()" id="senBtn">▶ START READING</button>
 </div>
 </div>
 
 </div><!-- container -->
 <script>
 // ═══════════════════════════════════════════════
-//  STATE
+//  CORE STATE
 // ═══════════════════════════════════════════════
-let espIP='192.168.43.1', espConnected=false;
+let espIP='192.168.43.1', espOK=false;
 let video=document.getElementById('video');
 let canvas=document.getElementById('canvas');
 let ctx=canvas.getContext('2d');
@@ -307,20 +415,27 @@ let sctx=document.getElementById('scanCanvas').getContext('2d');
 let frozenImg=null, isLive=false, curMode=null, isDrw=false;
 let rFront=null, rBack=null, RLEN=15, pxcm=null;
 let rawPts=[], pathPts=[], cmds=[];
-const MPC=80, MPD=12, MIN_PX=15, MIN_ANG=15;
+const MIN_PX=15, MIN_ANG=15;
+// Timing values (synced with ESP)
+let MPC=80, MPD=12, KICK=80;
 let isExp=false, isFol=false, isSeek=false;
 let folIv=null, senIv=null, senOn=false, ldrIv=null;
 let ldrThr=300;
 
+// Calibration binary search state
+let dLow=20, dHigh=300, dMid=80, dCm=30, dDir='F', dAtt=0, dDone=false;
+let tLow=2,  tHigh=80,  tMid=12, tDeg=90, tDir='R', tAtt=0, tDone=false;
+
 // ═══════════════════════════════════════════════
 //  TABS
 // ═══════════════════════════════════════════════
-function switchTab(n){
-  const ns=['manual','ai','light','explore','sensors'];
+function ST(n){
+  const ns=['manual','ai','light','explore','calib','sensors'];
   document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',ns[i]===n));
   document.querySelectorAll('.tc').forEach(c=>c.classList.remove('active'));
   document.getElementById('tab-'+n).classList.add('active');
-  if(n==='light'&&espConnected)startLDRP(); else stopLDRP();
+  if(n==='light'&&espOK)startLDRP(); else stopLDRP();
+  if(n==='calib'&&espOK)loadCalibData();
 }
 
 // ═══════════════════════════════════════════════
@@ -329,16 +444,196 @@ function switchTab(n){
 function connectESP(){
   espIP=document.getElementById('espIp').value.trim();
   fetch(`http://${espIP}/ping`,{signal:AbortSignal.timeout(3000)})
-    .then(r=>r.text()).then(()=>{espConnected=true;setSt('connected','◉ CONNECTED — '+espIP);})
-    .catch(()=>{espConnected=false;setSt('disconnected','◉ DISCONNECTED — Check IP & WiFi');});
+    .then(r=>r.text()).then(()=>{espOK=true;setSt('connected','◉ CONNECTED — '+espIP);loadCalibData();})
+    .catch(()=>{espOK=false;setSt('disconnected','◉ DISCONNECTED');});
 }
-function setSt(c,t){const e=document.getElementById('cStatus');e.className=c;e.innerText=t;}
-function sc(s){if(!espConnected){console.log('CMD:',s);return Promise.resolve();}
+function setSt(c,t){const e=document.getElementById('cSt');e.className=c;e.innerText=t;}
+function sc(s){if(!espOK){console.log('CMD:',s);return Promise.resolve();}
   return fetch(`http://${espIP}/?State=${s}`).catch(()=>{});}
 function pc(s){sc(s);}
+function sserial(cmd){if(!espOK)return Promise.resolve();
+  return fetch(`http://${espIP}/serial?cmd=${encodeURIComponent(cmd)}`).catch(()=>{});}
 
 // ═══════════════════════════════════════════════
-//  LDR POLLING (light tab)
+//  CALIB SUB TABS
+// ═══════════════════════════════════════════════
+function showCalib(t){
+  document.getElementById('cdiv').style.display  = t==='dist'?'block':'none';
+  document.getElementById('ctdiv').style.display = t==='turn'?'block':'none';
+  document.getElementById('cdBtn').className = t==='dist'?'bsc':'bc';
+  document.getElementById('ctBtn').className = t==='turn'?'bsc':'bc';
+}
+
+// ═══════════════════════════════════════════════
+//  DISTANCE CALIBRATION
+// ═══════════════════════════════════════════════
+async function testDist(dir,cm){
+  if(!espOK){alert('Connect ESP first!');return;}
+  dCm=cm; dDir=dir; await runDistTest();
+}
+
+async function runDistTest(){
+  dAtt++;
+  document.getElementById('dAtt').innerText  = dAtt;
+  document.getElementById('dTest').innerText = dCm+'cm '+(dDir==='F'?'fwd':'bwd');
+  document.getElementById('dMPC').innerText  = dMid;
+  const ms=dCm*dMid;
+  document.getElementById('dTime').innerText = ms+'ms';
+  document.getElementById('dProg').style.width = Math.max(0,100-((dHigh-dLow)/2.8))+'%';
+  dlog(`// Test #${dAtt}: ${dDir==='F'?'Forward':'Backward'} ${dCm}cm @ ${dMid}ms/cm = ${ms}ms`,'i');
+  document.getElementById('dFB').classList.remove('show');
+  document.getElementById('dSaved').classList.remove('show');
+  await sserial(`mpc=${dMid}`); await dl(300);
+  await sc(dDir); await dl(ms); await sc('S'); await dl(500);
+  document.getElementById('dFBQ').innerHTML=
+    `Robot moved ${dDir==='F'?'<b>forward</b>':'<b>backward</b>'} <b>${dCm}cm</b><br>
+     At <b>${dMid}ms/cm</b> = <b>${ms}ms</b><br><br>
+     Did it travel the <b>correct distance</b>?`;
+  document.getElementById('dFB').classList.add('show');
+}
+
+function dFeed(r){
+  document.getElementById('dFB').classList.remove('show');
+  if(r==='ok'){
+    MPC=dMid; dDone=true; sserial(`mpc=${dMid}`);
+    dlog(`✅ PERFECT! MS/CM=${dMid} saved to flash!`,'ok');
+    document.getElementById('dProg').style.width='100%';
+    document.getElementById('dSaved').classList.add('show');
+    document.getElementById('dMPC').className='vnum saved';
+    loadCalibData(); return;
+  }
+  if(r==='slow'){dLow=dMid; dlog(`Too short → increasing. L=${dLow} H=${dHigh}`,'w');}
+  else           {dHigh=dMid;dlog(`Too long  → decreasing. L=${dLow} H=${dHigh}`,'w');}
+  dMid=Math.round((dLow+dHigh)/2);
+  dlog(`// Next: ${dMid}ms/cm`,'i');
+  if(dHigh-dLow<=2){
+    dDone=true; MPC=dMid; sserial(`mpc=${dMid}`);
+    document.getElementById('dSaved').classList.add('show');
+    document.getElementById('dProg').style.width='100%';
+    dlog(`// Converged! MS/CM=${dMid}`,'ok'); loadCalibData(); return;
+  }
+  document.getElementById('dMPC').innerText=dMid;
+  setTimeout(()=>runDistTest(),800);
+}
+
+function resetDist(){
+  dLow=20;dHigh=300;dMid=80;dAtt=0;dDone=false;
+  ['dAtt','dTest','dTime'].forEach(id=>document.getElementById(id).innerText='--');
+  document.getElementById('dMPC').innerText='80';
+  document.getElementById('dMPC').className='vnum';
+  document.getElementById('dProg').style.width='0%';
+  document.getElementById('dFB').classList.remove('show');
+  document.getElementById('dSaved').classList.remove('show');
+  dlog('// Reset. Pick a distance to start.','i');
+}
+
+function dlog(m,t='i'){
+  const l=document.getElementById('dLog');
+  const d=document.createElement('div');d.className=t;d.innerText=m;
+  l.appendChild(d);l.scrollTop=l.scrollHeight;
+  while(l.children.length>25)l.removeChild(l.firstChild);
+}
+
+// ═══════════════════════════════════════════════
+//  TURNING CALIBRATION
+// ═══════════════════════════════════════════════
+async function testTurn(dir,deg){
+  if(!espOK){alert('Connect ESP first!');return;}
+  tDeg=deg; tDir=dir; await runTurnTest();
+}
+
+async function runTurnTest(){
+  tAtt++;
+  document.getElementById('tAtt').innerText  = tAtt;
+  document.getElementById('tTest').innerText = (tDir==='R'?'RIGHT ':'LEFT ')+tDeg+'°';
+  document.getElementById('tMPD').innerText  = tMid;
+  const ms=tDeg*tMid;
+  document.getElementById('tTime').innerText = ms+'ms';
+  document.getElementById('tProg').style.width = Math.max(0,100-((tHigh-tLow)/0.78))+'%';
+  tlog(`// Test #${tAtt}: ${tDir==='R'?'RIGHT':'LEFT'} ${tDeg}° @ ${tMid}ms/deg = ${ms}ms`,'i');
+  document.getElementById('tFB').classList.remove('show');
+  document.getElementById('tSaved').classList.remove('show');
+  await sserial(`td=${tMid}`); await dl(300);
+  await sc(tDir); await dl(ms+KICK); await sc('S'); await dl(600);
+  document.getElementById('tFBQ').innerHTML=
+    `Robot turned <b>${tDir==='R'?'RIGHT':'LEFT'} ${tDeg}°</b><br>
+     At <b>${tMid}ms/deg</b> = <b>${ms}ms</b><br><br>
+     Did it rotate the <b>correct angle</b>?`;
+  document.getElementById('tFB').classList.add('show');
+}
+
+function tFeed(r){
+  document.getElementById('tFB').classList.remove('show');
+  if(r==='ok'){
+    MPD=tMid; tDone=true; sserial(`td=${tMid}`);
+    tlog(`✅ PERFECT! MS/DEG=${tMid} saved to flash!`,'ok');
+    document.getElementById('tProg').style.width='100%';
+    document.getElementById('tSaved').classList.add('show');
+    document.getElementById('tMPD').className='vnum saved';
+    loadCalibData(); return;
+  }
+  if(r==='less'){tLow=tMid; tlog(`Too little → increasing. L=${tLow} H=${tHigh}`,'w');}
+  else           {tHigh=tMid;tlog(`Too much  → decreasing. L=${tLow} H=${tHigh}`,'w');}
+  tMid=Math.round((tLow+tHigh)/2);
+  tlog(`// Next: ${tMid}ms/deg`,'i');
+  if(tHigh-tLow<=1){
+    tDone=true; MPD=tMid; sserial(`td=${tMid}`);
+    document.getElementById('tSaved').classList.add('show');
+    document.getElementById('tProg').style.width='100%';
+    tlog(`// Converged! MS/DEG=${tMid}`,'ok'); loadCalibData(); return;
+  }
+  document.getElementById('tMPD').innerText=tMid;
+  setTimeout(()=>runTurnTest(),800);
+}
+
+async function setKick(){
+  const v=parseInt(document.getElementById('kickInput').value);
+  if(v>=0&&v<=200){KICK=v; await sserial(`k=${v}`);document.getElementById('tKick').innerText=v;tlog(`// Kick=${v}ms saved`,'ok');}
+}
+
+function resetTurn(){
+  tLow=2;tHigh=80;tMid=12;tAtt=0;tDone=false;
+  ['tAtt','tTest','tTime'].forEach(id=>document.getElementById(id).innerText='--');
+  document.getElementById('tMPD').innerText='12';
+  document.getElementById('tMPD').className='vnum';
+  document.getElementById('tProg').style.width='0%';
+  document.getElementById('tFB').classList.remove('show');
+  document.getElementById('tSaved').classList.remove('show');
+  tlog('// Reset. Pick an angle to start.','i');
+}
+
+function tlog(m,t='i'){
+  const l=document.getElementById('tLog');
+  const d=document.createElement('div');d.className=t;d.innerText=m;
+  l.appendChild(d);l.scrollTop=l.scrollHeight;
+  while(l.children.length>25)l.removeChild(l.firstChild);
+}
+
+async function loadCalibData(){
+  if(!espOK)return;
+  try{
+    const r=await fetch(`http://${espIP}/calibdata`,{signal:AbortSignal.timeout(2000)});
+    const d=await r.json();
+    MPC=d.mpc; MPD=d.mpd; KICK=d.kick;
+    document.getElementById('svMPC').innerText  = d.mpc;
+    document.getElementById('svMPD').innerText  = d.mpd;
+    document.getElementById('svKick').innerText = d.kick;
+    document.getElementById('svLeft').innerText = d.left;
+    document.getElementById('svRight').innerText= d.right;
+    document.getElementById('kickInput').value  = d.kick;
+    document.getElementById('tKick').innerText  = d.kick;
+  }catch(e){}
+}
+
+async function factReset(){
+  if(!confirm('Reset ALL values to defaults?'))return;
+  await sserial('rst'); MPC=80;MPD=12;KICK=80;
+  dDone=false;tDone=false;resetDist();resetTurn();
+  await loadCalibData();
+}
+
+// ═══════════════════════════════════════════════
+//  LDR POLLING
 // ═══════════════════════════════════════════════
 function startLDRP(){
   if(ldrIv)return;
@@ -348,127 +643,84 @@ function startLDRP(){
   },400);
 }
 function stopLDRP(){if(ldrIv){clearInterval(ldrIv);ldrIv=null;}}
-
 function updLDR(v,thr){
   const pct=(v/1023)*100;
   document.getElementById('ldrFill').style.width=pct+'%';
   const f=document.getElementById('ldrFill');
-  if(v<thr){
-    f.style.background='linear-gradient(90deg,#1a0d2e,#ff3b3b)';
-    document.getElementById('ldrTxt').innerText=v+' ⬛ DARK!';
-  } else {
-    f.style.background='linear-gradient(90deg,#1a0d2e,#ffd600,#fff)';
-    document.getElementById('ldrTxt').innerText=v+' / 1023';
-  }
+  if(v<thr){f.style.background='linear-gradient(90deg,#1a0d2e,#ff3b3b)';document.getElementById('ldrTxt').innerText=v+' ⬛ DARK!';}
+  else{f.style.background='linear-gradient(90deg,#1a0d2e,#ffd600,#fff)';document.getElementById('ldrTxt').innerText=v+' / 1023';}
 }
-
 function setThr(){
   const v=parseInt(document.getElementById('thrInput').value);
-  if(v>=0&&v<=1023){
-    ldrThr=v;
-    document.getElementById('seekSt').innerText=`// Threshold=${v}. Also type lt=${v} in Serial Monitor!`;
-    document.getElementById('seekSt').style.color='var(--yellow)';
-  }
+  if(v>=0&&v<=1023){ldrThr=v;sserial(`lt=${v}`);document.getElementById('seekSt').innerText=`// Threshold=${v} saved to ESP flash`;}
 }
 
 // ═══════════════════════════════════════════════
 //  360° SCAN
 // ═══════════════════════════════════════════════
 async function doScan(){
-  if(!espConnected){alert('Connect ESP first!');return;}
+  if(!espOK){alert('Connect ESP first!');return;}
   document.getElementById('scanBtn').innerText='⏳ SCANNING...';
-  document.getElementById('scanRes').innerText='// Robot scanning 360°... (~15 sec)';
+  document.getElementById('scanRes').innerText='// Scanning 360°... (~15 sec)';
   document.getElementById('scanRes').style.color='var(--accent)';
   try{
     const r=await fetch(`http://${espIP}/scan`,{signal:AbortSignal.timeout(35000)});
     const d=await r.json();
     drawRadar(d.readings,d.bestAngle);
-    document.getElementById('scanRes').innerText=`✅ Best: ${d.bestAngle}° LDR=${d.bestLight} — Robot facing darkest!`;
+    document.getElementById('scanRes').innerText=`✅ Best: ${d.bestAngle}° LDR=${d.bestLight}`;
     document.getElementById('scanRes').style.color='var(--green)';
-  }catch(e){
-    document.getElementById('scanRes').innerText='❌ Scan failed: '+e.message;
-    document.getElementById('scanRes').style.color='var(--red)';
-  }
+  }catch(e){document.getElementById('scanRes').innerText='❌ Failed: '+e.message;document.getElementById('scanRes').style.color='var(--red)';}
   document.getElementById('scanBtn').innerText='🔄 SCAN 360°';
 }
 
 function drawRadar(readings,best){
   const c=document.getElementById('scanCanvas');
-  const cx=c.width/2,cy=c.height/2,r=85;
+  const cx=c.width/2,cy=c.height/2,r=78;
   sctx.clearRect(0,0,c.width,c.height);
-  sctx.fillStyle='#0d1117';sctx.beginPath();sctx.arc(cx,cy,r+8,0,2*Math.PI);sctx.fill();
-  [0.33,0.66,1].forEach(f=>{
-    sctx.beginPath();sctx.arc(cx,cy,r*f,0,2*Math.PI);
-    sctx.strokeStyle='#1e3a5f';sctx.lineWidth=0.5;sctx.stroke();
-  });
+  sctx.fillStyle='#0d1117';sctx.beginPath();sctx.arc(cx,cy,r+6,0,2*Math.PI);sctx.fill();
+  [0.33,0.66,1].forEach(f=>{sctx.beginPath();sctx.arc(cx,cy,r*f,0,2*Math.PI);sctx.strokeStyle='#1e3a5f';sctx.lineWidth=0.5;sctx.stroke();});
   if(!readings||!readings.length)return;
   const mx=Math.max(...readings),mn=Math.min(...readings),rng=mx-mn||1;
   const steps=readings.length,dpS=360/steps;
   sctx.beginPath();
-  readings.forEach((v,i)=>{
-    const a=(i*dpS-90)*Math.PI/180;
-    const nr=1-((v-mn)/rng);
-    const rd=15+nr*(r-15);
-    const x=cx+rd*Math.cos(a),y=cy+rd*Math.sin(a);
-    i===0?sctx.moveTo(x,y):sctx.lineTo(x,y);
-  });
-  sctx.closePath();sctx.fillStyle='rgba(0,212,255,0.2)';
-  sctx.strokeStyle='#00d4ff';sctx.lineWidth=1.5;sctx.fill();sctx.stroke();
+  readings.forEach((v,i)=>{const a=(i*dpS-90)*Math.PI/180;const nr=1-((v-mn)/rng);const rd=12+nr*(r-12);const x=cx+rd*Math.cos(a),y=cy+rd*Math.sin(a);i===0?sctx.moveTo(x,y):sctx.lineTo(x,y);});
+  sctx.closePath();sctx.fillStyle='rgba(0,212,255,0.2)';sctx.strokeStyle='#00d4ff';sctx.lineWidth=1.5;sctx.fill();sctx.stroke();
   const bi=best/dpS,ba=(bi*dpS-90)*Math.PI/180;
-  const bnr=1-((readings[bi]-mn)/rng);
-  const brd=15+bnr*(r-15);
+  const bnr=1-((readings[Math.round(bi)]-mn)/rng);const brd=12+bnr*(r-12);
   const bx=cx+brd*Math.cos(ba),by=cy+brd*Math.sin(ba);
-  sctx.beginPath();sctx.moveTo(cx,cy);sctx.lineTo(bx,by);
-  sctx.strokeStyle='#00ff88';sctx.lineWidth=2;sctx.stroke();
-  sctx.fillStyle='#00ff88';sctx.beginPath();sctx.arc(bx,by,6,0,2*Math.PI);sctx.fill();
-  sctx.fillStyle='#ffd600';sctx.beginPath();sctx.arc(cx,cy,8,0,2*Math.PI);sctx.fill();
-  sctx.fillStyle='#000';sctx.font='bold 9px monospace';sctx.textAlign='center';sctx.textBaseline='middle';
-  sctx.fillText('R',cx,cy);
-  sctx.fillStyle='#64748b';sctx.font='9px monospace';sctx.textAlign='center';
-  sctx.fillText('0°',cx,cy-r-4);sctx.fillText('180°',cx,cy+r+12);
-  sctx.textAlign='right';sctx.fillText('270°',cx-r-4,cy+4);
-  sctx.textAlign='left';sctx.fillText('90°',cx+r+4,cy+4);
+  sctx.beginPath();sctx.moveTo(cx,cy);sctx.lineTo(bx,by);sctx.strokeStyle='#00ff88';sctx.lineWidth=2;sctx.stroke();
+  sctx.fillStyle='#00ff88';sctx.beginPath();sctx.arc(bx,by,5,0,2*Math.PI);sctx.fill();
+  sctx.fillStyle='#ffd600';sctx.beginPath();sctx.arc(cx,cy,7,0,2*Math.PI);sctx.fill();
+  sctx.fillStyle='#000';sctx.font='bold 8px monospace';sctx.textAlign='center';sctx.textBaseline='middle';sctx.fillText('R',cx,cy);
 }
 
 // ═══════════════════════════════════════════════
 //  LIGHT SEEKER
 // ═══════════════════════════════════════════════
 async function startSeek(){
-  if(!espConnected){alert('Connect ESP first!');return;}
-  if(isExp)stopExp();if(isFol)stopFollow();
-  isSeek=true;
+  if(!espOK){alert('Connect ESP first!');return;}
+  if(isExp)stopExp();if(isFol)stopFol();isSeek=true;
   await fetch(`http://${espIP}/lightseek?cmd=start`).catch(()=>{});
   document.getElementById('seekBtn').innerText='🔦 SEEKING...';
   document.getElementById('seekSt').style.color='var(--green)';
-  setSKSt('🔦 Seeking darkest area...');
   const p=setInterval(async()=>{
     if(!isSeek){clearInterval(p);return;}
-    try{
-      const r=await fetch(`http://${espIP}/sensors`,{signal:AbortSignal.timeout(800)});
-      const d=await r.json();
-      updLDR(d.ldr,ldrThr);
-      setSKSt(`🔦 LDR:${d.ldr} | Dist:${d.ultrasonic}cm`);
-      if(d.isDark){
-        isSeek=false;clearInterval(p);
-        document.getElementById('seekBtn').innerText='🔦 START SEEKING';
-        setSKSt('🎯 GOAL FOUND! Dark area reached!');
-      }
-    }catch(e){}
+    try{const r=await fetch(`http://${espIP}/sensors`,{signal:AbortSignal.timeout(800)});
+      const d=await r.json();updLDR(d.ldr,ldrThr);
+      document.getElementById('seekSt').innerText=`🔦 LDR:${d.ldr} | Dist:${d.ultrasonic}cm`;
+      if(d.isDark){isSeek=false;clearInterval(p);document.getElementById('seekBtn').innerText='🔦 START SEEKING';document.getElementById('seekSt').innerText='🎯 GOAL FOUND!';}}
+    catch(e){}
   },500);
 }
-
 async function stopSeek(){
-  isSeek=false;
-  await fetch(`http://${espIP}/lightseek?cmd=stop`).catch(()=>{});
+  isSeek=false;await fetch(`http://${espIP}/lightseek?cmd=stop`).catch(()=>{});
   document.getElementById('seekBtn').innerText='🔦 START SEEKING';
-  setSKSt('⏸ Light seeker: OFF');
+  document.getElementById('seekSt').innerText='⏸ Light seeker: OFF';
   document.getElementById('seekSt').style.color='var(--muted)';
 }
 
-function setSKSt(t){document.getElementById('seekSt').innerText=t;}
-
 // ═══════════════════════════════════════════════
-//  CAMERA
+//  CAMERA & PATH
 // ═══════════════════════════════════════════════
 async function startLive(){
   try{
@@ -476,27 +728,18 @@ async function startLive(){
     const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
     video.srcObject=s;isLive=true;frozenImg=null;
     video.onloadedmetadata=()=>{canvas.width=video.videoWidth;canvas.height=video.videoHeight;ctx.clearRect(0,0,canvas.width,canvas.height);};
-    document.getElementById('liveBtn').classList.add('ba');
-    document.getElementById('frzBtn').classList.remove('ba');
-    sg(1);log('// Camera ready. Press FREEZE.','i');
+    document.getElementById('liveBtn').classList.add('ba');document.getElementById('frzBtn').classList.remove('ba');
+    sg(1);plog('// Camera ready. Press FREEZE.','i');
   }catch(e){alert('Camera: '+e.message);}
 }
-
 function freezeImg(){
   if(!video.srcObject){alert('Press LIVE first!');return;}
   ctx.drawImage(video,0,0,canvas.width,canvas.height);
   frozenImg=ctx.getImageData(0,0,canvas.width,canvas.height);
-  video.srcObject.getTracks().forEach(t=>t.stop());
-  video.srcObject=null;isLive=false;
-  document.getElementById('frzBtn').classList.add('ba');
-  document.getElementById('liveBtn').classList.remove('ba');
-  sg(2);log('// Frozen! Tap 🔴 FRONT then tap front of robot.','i');
-  setMode('rf');
+  video.srcObject.getTracks().forEach(t=>t.stop());video.srcObject=null;isLive=false;
+  document.getElementById('frzBtn').classList.add('ba');document.getElementById('liveBtn').classList.remove('ba');
+  sg(2);plog('// Frozen! Tap 🔴 FRONT.','i');setMode('rf');
 }
-
-// ═══════════════════════════════════════════════
-//  MODE & CANVAS
-// ═══════════════════════════════════════════════
 function setMode(m){
   if(isLive){alert('Freeze first!');return;}
   if(!frozenImg&&m!==null){alert('LIVE then FREEZE first!');return;}
@@ -507,94 +750,37 @@ function setMode(m){
   const lb={rf:'FRONT',rb:'BACK',draw:'DRAW'};
   document.getElementById('modeSt').innerText=lb[m]||'--';
 }
-
-function gp(e){
-  const rect=canvas.getBoundingClientRect();
-  const sx=canvas.width/rect.width,sy=canvas.height/rect.height;
-  if(e.touches)return{x:(e.touches[0].clientX-rect.left)*sx,y:(e.touches[0].clientY-rect.top)*sy};
-  return{x:(e.clientX-rect.left)*sx,y:(e.clientY-rect.top)*sy};
-}
-function dist(a,b){const dx=b.x-a.x,dy=b.y-a.y;return Math.sqrt(dx*dx+dy*dy);}
-
+function gp(e){const rect=canvas.getBoundingClientRect();const sx=canvas.width/rect.width,sy=canvas.height/rect.height;if(e.touches)return{x:(e.touches[0].clientX-rect.left)*sx,y:(e.touches[0].clientY-rect.top)*sy};return{x:(e.clientX-rect.left)*sx,y:(e.clientY-rect.top)*sy};}
+function dst(a,b){const dx=b.x-a.x,dy=b.y-a.y;return Math.sqrt(dx*dx+dy*dy);}
 canvas.addEventListener('mousedown',e=>{e.preventDefault();if(isLive)return;isDrw=true;tap(e);});
-canvas.addEventListener('mousemove',e=>{e.preventDefault();if(isDrw&&!isLive&&curMode==='draw')drawMove(e);});
-canvas.addEventListener('mouseup',()=>{isDrw=false;if(curMode==='draw')finPath();});
+canvas.addEventListener('mousemove',e=>{e.preventDefault();if(isDrw&&!isLive&&curMode==='draw')dmv(e);});
+canvas.addEventListener('mouseup',()=>{isDrw=false;if(curMode==='draw')finP();});
 canvas.addEventListener('mouseleave',()=>{isDrw=false;});
 canvas.addEventListener('touchstart',e=>{e.preventDefault();e.stopPropagation();if(isLive)return;isDrw=true;tap(e);},{passive:false});
-canvas.addEventListener('touchmove',e=>{e.preventDefault();e.stopPropagation();if(isDrw&&!isLive&&curMode==='draw')drawMove(e);},{passive:false});
-canvas.addEventListener('touchend',e=>{e.stopPropagation();isDrw=false;if(curMode==='draw')finPath();},{passive:false});
-
+canvas.addEventListener('touchmove',e=>{e.preventDefault();e.stopPropagation();if(isDrw&&!isLive&&curMode==='draw')dmv(e);},{passive:false});
+canvas.addEventListener('touchend',e=>{e.stopPropagation();isDrw=false;if(curMode==='draw')finP();},{passive:false});
 function tap(e){
   const{x,y}=gp(e);
-  if(curMode==='rf'){rFront={x,y};redraw();log('// FRONT marked! Tap 🔵 BACK.','i');sg(3);setMode('rb');}
-  else if(curMode==='rb'){rBack={x,y};doCalib();redraw();log('// Calibrated! Tap ✏️ PATH.','ok');sg(4);setMode('draw');}
+  if(curMode==='rf'){rFront={x,y};redraw();plog('// FRONT marked! Tap 🔵 BACK.','i');sg(3);setMode('rb');}
+  else if(curMode==='rb'){rBack={x,y};doCalib();redraw();plog('// Calibrated! Tap ✏️ PATH.','ok');sg(4);setMode('draw');}
   else if(curMode==='draw'){if(!pxcm){alert('Calibrate first!');return;}rawPts=[rFront,{x,y}];redraw();}
 }
-
-function drawMove(e){
-  if(!pxcm)return;
-  const{x,y}=gp(e);
-  const last=rawPts[rawPts.length-1];
-  if(dist(last,{x,y})>=MIN_PX){rawPts.push({x,y});redraw();document.getElementById('ptcnt').innerText=rawPts.length-1;}
-}
-
-function finPath(){
-  if(rawPts.length<2)return;
-  pathPts=simplify(rawPts);redraw();
-  log(`// ${rawPts.length} raw → ${pathPts.length} simplified`,'ok');
-  document.getElementById('ptcnt').innerText=pathPts.length-1;
-}
-
-function simplify(pts,eps=8){
-  if(pts.length<=2)return pts;
-  let md=0,mi=0;
-  const s=pts[0],e=pts[pts.length-1];
-  for(let i=1;i<pts.length-1;i++){const d=ptld(pts[i],s,e);if(d>md){md=d;mi=i;}}
-  if(md>eps){const l=simplify(pts.slice(0,mi+1),eps),r=simplify(pts.slice(mi),eps);return[...l.slice(0,-1),...r];}
-  return[s,e];
-}
-function ptld(p,a,b){
-  const dx=b.x-a.x,dy=b.y-a.y,len=Math.sqrt(dx*dx+dy*dy);
-  if(len===0)return dist(p,a);
-  return Math.abs(dy*p.x-dx*p.y+b.x*a.y-b.y*a.x)/len;
-}
-
-function updateRL(){const v=parseFloat(document.getElementById('rlInput').value);if(v>0&&v<300){RLEN=v;log(`// Robot: ${v}cm`,'i');if(rFront&&rBack)doCalib();}}
-
-function doCalib(){
-  if(!rFront||!rBack)return;
-  const dx=rBack.x-rFront.x,dy=rBack.y-rFront.y;
-  const pl=Math.sqrt(dx*dx+dy*dy);
-  pxcm=pl/RLEN;
-  document.getElementById('pxcm').innerText=pxcm.toFixed(2);
-  document.getElementById('caliSt').innerText='OK';
-  document.getElementById('ccell').className='ic ok';
-  document.getElementById('cbadge').innerText=`📏 ${pxcm.toFixed(2)} px/cm`;
-  document.getElementById('cbadge').style.borderColor='var(--green)';
-  document.getElementById('cbadge').style.color='var(--green)';
-  log(`// Calibrated: ${pl.toFixed(0)}px=${RLEN}cm → ${pxcm.toFixed(2)}px/cm`,'ok');
-}
-
+function dmv(e){if(!pxcm)return;const{x,y}=gp(e);const last=rawPts[rawPts.length-1];if(dst(last,{x,y})>=MIN_PX){rawPts.push({x,y});redraw();document.getElementById('ptcnt').innerText=rawPts.length-1;}}
+function finP(){if(rawPts.length<2)return;pathPts=simplify(rawPts);redraw();plog(`// ${rawPts.length}→${pathPts.length} pts`,'ok');document.getElementById('ptcnt').innerText=pathPts.length-1;}
+function simplify(pts,eps=8){if(pts.length<=2)return pts;let md=0,mi=0;const s=pts[0],e=pts[pts.length-1];for(let i=1;i<pts.length-1;i++){const d=ptld(pts[i],s,e);if(d>md){md=d;mi=i;}}if(md>eps){const l=simplify(pts.slice(0,mi+1),eps),r=simplify(pts.slice(mi),eps);return[...l.slice(0,-1),...r];}return[s,e];}
+function ptld(p,a,b){const dx=b.x-a.x,dy=b.y-a.y,len=Math.sqrt(dx*dx+dy*dy);if(len===0)return dst(p,a);return Math.abs(dy*p.x-dx*p.y+b.x*a.y-b.y*a.x)/len;}
+function updateRL(){const v=parseFloat(document.getElementById('rlInput').value);if(v>0&&v<300){RLEN=v;if(rFront&&rBack)doCalib();}}
+function doCalib(){if(!rFront||!rBack)return;const dx=rBack.x-rFront.x,dy=rBack.y-rFront.y;const pl=Math.sqrt(dx*dx+dy*dy);pxcm=pl/RLEN;document.getElementById('pxcm').innerText=pxcm.toFixed(2);document.getElementById('caliSt').innerText='OK';document.getElementById('ccell').className='ic ok';document.getElementById('cbadge').innerText=`📏 ${pxcm.toFixed(2)}px/cm`;document.getElementById('cbadge').style.borderColor='var(--green)';document.getElementById('cbadge').style.color='var(--green)';plog(`// Calibrated: ${pl.toFixed(0)}px=${RLEN}cm`,'ok');}
 function redraw(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   if(frozenImg)ctx.putImageData(frozenImg,0,0);
-  if(rawPts.length>1&&curMode==='draw'){
-    ctx.strokeStyle='rgba(255,107,53,0.3)';ctx.lineWidth=2;ctx.setLineDash([3,3]);
-    ctx.beginPath();rawPts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
-    ctx.stroke();ctx.setLineDash([]);
-  }
+  if(rawPts.length>1&&curMode==='draw'){ctx.strokeStyle='rgba(255,107,53,0.3)';ctx.lineWidth=2;ctx.setLineDash([3,3]);ctx.beginPath();rawPts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));ctx.stroke();ctx.setLineDash([]);}
   const pts=pathPts.length>1?pathPts:rawPts;
-  if(pts.length>1){
-    ctx.strokeStyle='#ff6b35';ctx.lineWidth=3;ctx.setLineDash([8,4]);
-    ctx.beginPath();pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
-    ctx.stroke();ctx.setLineDash([]);
-    for(let i=1;i<pts.length;i++){ctx.fillStyle=i===pts.length-1?'#00ff88':'#ff6b35';ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,5,0,2*Math.PI);ctx.fill();}
-  }
+  if(pts.length>1){ctx.strokeStyle='#ff6b35';ctx.lineWidth=3;ctx.setLineDash([8,4]);ctx.beginPath();pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));ctx.stroke();ctx.setLineDash([]);for(let i=1;i<pts.length;i++){ctx.fillStyle=i===pts.length-1?'#00ff88':'#ff6b35';ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,5,0,2*Math.PI);ctx.fill();}}
   if(rFront){ctx.fillStyle='#ff3b3b';ctx.beginPath();ctx.arc(rFront.x,rFront.y,9,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='white';ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('F',rFront.x,rFront.y);}
   if(rBack){ctx.fillStyle='#00d4ff';ctx.beginPath();ctx.arc(rBack.x,rBack.y,9,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='white';ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('B',rBack.x,rBack.y);}
-  if(rFront&&rBack){ctx.strokeStyle='#ffd600';ctx.lineWidth=1.5;ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(rFront.x,rFront.y);ctx.lineTo(rBack.x,rBack.y);ctx.stroke();ctx.setLineDash([]);const mx=(rFront.x+rBack.x)/2,my=(rFront.y+rBack.y)/2;ctx.fillStyle='#ffd600';ctx.font='bold 11px monospace';ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText(`${RLEN}cm`,mx,my-4);}
+  if(rFront&&rBack){ctx.strokeStyle='#ffd600';ctx.lineWidth=1.5;ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(rFront.x,rFront.y);ctx.lineTo(rBack.x,rBack.y);ctx.stroke();ctx.setLineDash([]);const mx=(rFront.x+rBack.x)/2,my=(rFront.y+rBack.y)/2;ctx.fillStyle='#ffd600';ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText(`${RLEN}cm`,mx,my-4);}
 }
-
 function clearAll(){
   frozenImg=null;ctx.clearRect(0,0,canvas.width,canvas.height);
   rFront=null;rBack=null;pxcm=null;rawPts=[];pathPts=[];cmds=[];curMode=null;
@@ -605,16 +791,13 @@ function clearAll(){
   document.getElementById('cbadge').style.color='var(--yellow)';
   document.getElementById('pbar').style.width='0%';
   ['frontBtn','backBtn','drawBtn','frzBtn','liveBtn'].forEach(id=>document.getElementById(id).classList.remove('ba'));
-  sg(1);log('// Cleared. LIVE → FREEZE to restart.','w');
+  sg(1);plog('// Cleared. LIVE→FREEZE to restart.','w');
 }
-
 function sg(a){for(let i=1;i<=5;i++){const e=document.getElementById('sg'+i);e.className=i<a?'s done':i===a?'s act':'s pend';}}
 
-// ═══════════════════════════════════════════════
-//  PATH CALC & EXECUTE
-// ═══════════════════════════════════════════════
+// PATH CALC & EXECUTE
 function calcPath(){
-  if(!pxcm){alert('Calibrate first!');return;}
+  if(!pxcm){alert('Calibrate robot size first!');return;}
   const pts=pathPts.length>1?pathPts:rawPts;
   if(pts.length<2){alert('Draw path first!');return;}
   cmds=[];let tot=0,prev=null;
@@ -624,135 +807,92 @@ function calcPath(){
     const ang=Math.atan2(dy,dx)*180/Math.PI;
     const cm=Math.sqrt(dx*dx+dy*dy)/pxcm;
     tot+=cm;
-    if(prev!==null){
-      let df=ang-prev;if(df>180)df-=360;if(df<-180)df+=360;
-      // Only add turn if angle change is significant (MIN_ANG=15°)
-      // AND resulting turn time would be >= 250ms (MIN_TURN_MS on ESP)
+    if(prev!==null){let df=ang-prev;if(df>180)df-=360;if(df<-180)df+=360;
       const tms=Math.abs(df)*MPD;
-      if(Math.abs(df)>MIN_ANG&&tms>=250){
-        cmds.push({t:df>0?'R':'L',ms:tms,lb:`TURN ${df>0?'RIGHT':'LEFT'} ${Math.abs(df).toFixed(0)}° (${tms.toFixed(0)}ms)`});
-      }
-    }
-    if(cm>2)cmds.push({t:'F',ms:cm*MPC,lb:`FORWARD ${cm.toFixed(1)}cm (${(cm*MPC).toFixed(0)}ms)`});
+      if(Math.abs(df)>MIN_ANG&&tms>=250)cmds.push({t:df>0?'R':'L',ms:tms,lb:`TURN ${df>0?'RIGHT':'LEFT'} ${Math.abs(df).toFixed(0)}°`});}
+    if(cm>2)cmds.push({t:'F',ms:cm*MPC,lb:`FWD ${cm.toFixed(1)}cm`});
     prev=ang;
   }
-  sg(5);
-  log(`// ${pxcm.toFixed(2)}px/cm — ${tot.toFixed(1)}cm — ${cmds.length} steps`,'i');
-  cmds.forEach(c=>log(`   ${c.lb}`,'w'));
+  sg(5);plog(`// ${pxcm.toFixed(2)}px/cm — ${tot.toFixed(1)}cm — ${cmds.length} steps`,'i');
+  cmds.forEach(c=>plog(`   ${c.lb}`,'w'));
 }
-
 function execPath(){
   if(!pxcm){alert('Calibrate first!');return;}
   if(cmds.length===0)calcPath();
   if(cmds.length===0)return;
-  if(!espConnected){alert('Connect ESP first!');return;}
+  if(!espOK){alert('Connect ESP first!');return;}
   if(isExp)stopExp();
-  log('// Executing...','ok');
-  exStep(0);
+  plog('// Executing...','ok');exStep(0);
 }
-
 async function exStep(i){
-  if(i>=cmds.length){await sc('S');document.getElementById('pbar').style.width='0%';log('// Done! Robot stopped.','ok');return;}
+  if(i>=cmds.length){await sc('S');document.getElementById('pbar').style.width='0%';plog('// Done!','ok');return;}
   const c=cmds[i];
   document.getElementById('pbar').style.width=(((i+1)/cmds.length)*100)+'%';
-  log(`// Step ${i+1}/${cmds.length}: ${c.lb}`,'w');
-  await sc(c.t);await dl(c.ms);await sc('S');await dl(150);
-  await exStep(i+1);
+  plog(`// ${i+1}/${cmds.length}: ${c.lb}`,'w');
+  await sc(c.t);await dl(c.ms);await sc('S');await dl(150);await exStep(i+1);
 }
-
-function eStop(){
-  sc('S');stopExp();stopFollow();stopSeek();
-  if(senIv)clearInterval(senIv);
-  document.getElementById('pbar').style.width='0%';
-  log('// EMERGENCY STOP','e');
-}
-
-function log(m,t='w'){
-  const l=document.getElementById('plog');
-  const d=document.createElement('div');d.className=t;d.innerText=m;
-  l.appendChild(d);l.scrollTop=l.scrollHeight;
-  while(l.children.length>40)l.removeChild(l.firstChild);
-}
+function eStop(){sc('S');stopExp();stopFol();stopSeek();if(senIv)clearInterval(senIv);document.getElementById('pbar').style.width='0%';plog('// EMERGENCY STOP','e');}
+function plog(m,t='w'){const l=document.getElementById('plog');const d=document.createElement('div');d.className=t;d.innerText=m;l.appendChild(d);l.scrollTop=l.scrollHeight;while(l.children.length>40)l.removeChild(l.firstChild);}
 
 // ═══════════════════════════════════════════════
 //  EXPLORE
 // ═══════════════════════════════════════════════
-const eMoves=['F','F','F','F','L','R','B'];
+const eMv=['F','F','F','F','L','R','B'];
 async function expStep(){
   if(!isExp)return;
-  try{
-    const r=await fetch(`http://${espIP}/sensors`,{signal:AbortSignal.timeout(1000)});
-    const d=await r.json();
-    if(d.ultrasonic<20){
-      document.getElementById('expSt').innerText=`⚠️ Obstacle ${d.ultrasonic}cm`;
-      await sc('S');await dl(200);await sc(Math.random()>0.5?'L':'R');await dl(400+Math.random()*400);await sc('S');await dl(200);
-    } else {
-      const m=eMoves[Math.floor(Math.random()*eMoves.length)];
-      const t=300+Math.random()*500;
-      document.getElementById('expSt').innerText=`🔵 ${m} (${t.toFixed(0)}ms)`;
-      await sc(m);await dl(t);await sc('S');await dl(150);
-    }
+  try{const r=await fetch(`http://${espIP}/sensors`,{signal:AbortSignal.timeout(1000)});const d=await r.json();
+    if(d.ultrasonic<20){document.getElementById('expSt').innerText=`⚠️ ${d.ultrasonic}cm`;await sc('S');await dl(200);await sc(Math.random()>0.5?'L':'R');await dl(400+Math.random()*400);await sc('S');await dl(200);}
+    else{const m=eMv[Math.floor(Math.random()*eMv.length)];const t=300+Math.random()*500;document.getElementById('expSt').innerText=`🔵 ${m} ${t.toFixed(0)}ms`;await sc(m);await dl(t);await sc('S');await dl(150);}
   }catch(e){document.getElementById('expSt').innerText='🔴 Lost...';await dl(500);}
   if(isExp)expStep();
 }
-function startExp(){if(!espConnected){alert('Connect ESP first!');return;}if(isFol)stopFollow();if(isSeek)stopSeek();isExp=true;document.getElementById('expBtn').innerText='⏸ EXPLORING...';document.getElementById('expSt').style.color='var(--accent)';expStep();}
+function startExp(){if(!espOK){alert('Connect ESP first!');return;}if(isFol)stopFol();if(isSeek)stopSeek();isExp=true;document.getElementById('expBtn').innerText='⏸ EXPLORING...';document.getElementById('expSt').style.color='var(--accent)';expStep();}
 function stopExp(){isExp=false;sc('S');document.getElementById('expBtn').innerText='▶️ START';document.getElementById('expSt').innerText='⏸ Explore: OFF';document.getElementById('expSt').style.color='var(--muted)';}
 
 // ═══════════════════════════════════════════════
-//  FOLLOW — RSSI GRADIENT
+//  FOLLOW
 // ═══════════════════════════════════════════════
 async function folStep(){
   if(!isFol)return;
   try{
-    const r0=await gRSSI();updRSSI(r0);
-    if(r0>-45){await sc('S');setFS('📱 Very close');await dl(800);if(isFol)folStep();return;}
+    const r0=await gRSSI();updR(r0);
+    if(r0>-45){await sc('S');document.getElementById('folSt').innerText='📱 Very close';await dl(800);if(isFol)folStep();return;}
     await sc('F');await dl(400);await sc('S');await dl(200);const rF=await gRSSI();
-    if(rF>r0+2){setFS(`⬆️ Forward better`);await sc('F');await dl(500);await sc('S');await dl(200);if(isFol)folStep();return;}
+    if(rF>r0+2){document.getElementById('folSt').innerText='⬆️ Forward';await sc('F');await dl(500);await sc('S');await dl(200);if(isFol)folStep();return;}
     await sc('B');await dl(400);await sc('S');await dl(200);
     await sc('R');await dl(300);await sc('S');await dl(200);const rR=await gRSSI();
     await sc('L');await dl(600);await sc('S');await dl(200);const rL=await gRSSI();
     await sc('R');await dl(300);await sc('S');await dl(200);
     const best=Math.max(r0,rF,rR,rL);
-    if(best===rR){setFS('➡️ Right better');await sc('R');await dl(250);await sc('S');await dl(150);}
-    else if(best===rL){setFS('⬅️ Left better');await sc('L');await dl(250);await sc('S');await dl(150);}
-    else if(best===rF){setFS('⬆️ Forward');await sc('F');await dl(400);await sc('S');await dl(150);}
-    else{setFS('🔄 Turning around');await sc('R');await dl(800);await sc('S');await dl(200);}
-  }catch(e){setFS('🔴 Lost...');await dl(500);}
+    if(best===rR){document.getElementById('folSt').innerText='➡️ Right';await sc('R');await dl(250);await sc('S');await dl(150);}
+    else if(best===rL){document.getElementById('folSt').innerText='⬅️ Left';await sc('L');await dl(250);await sc('S');await dl(150);}
+    else if(best===rF){document.getElementById('folSt').innerText='⬆️ Forward';await sc('F');await dl(400);await sc('S');await dl(150);}
+    else{document.getElementById('folSt').innerText='🔄 Turning';await sc('R');await dl(800);await sc('S');await dl(200);}
+  }catch(e){document.getElementById('folSt').innerText='🔴 Lost...';await dl(500);}
   if(isFol)folStep();
 }
 async function gRSSI(){try{const r=await fetch(`http://${espIP}/rssi`,{signal:AbortSignal.timeout(800)});return parseInt(await r.text());}catch(e){return -90;}}
-function updRSSI(v){document.getElementById('rssiV').innerText=v+' dBm';let p=100-((v+90)*100/60);p=Math.max(0,Math.min(100,p));document.getElementById('rssiF').style.width=p+'%';}
-function setFS(t){document.getElementById('folSt').innerText=t;}
-function togFollow(){if(!espConnected){alert('Connect ESP first!');return;}isFol?stopFollow():startFollow();}
-function startFollow(){if(isExp)stopExp();if(isSeek)stopSeek();isFol=true;document.getElementById('folBtn').innerText='⏸ FOLLOWING...';document.getElementById('folSt').style.color='var(--accent)';folStep();}
-function stopFollow(){isFol=false;sc('S');document.getElementById('folBtn').innerText='▶️ FOLLOW';setFS('⏸ Follow: OFF');document.getElementById('folSt').style.color='var(--muted)';document.getElementById('rssiF').style.width='0%';document.getElementById('rssiV').innerText='-- dBm';}
+function updR(v){document.getElementById('rssiV').innerText=v+' dBm';let p=100-((v+90)*100/60);p=Math.max(0,Math.min(100,p));document.getElementById('rssiF').style.width=p+'%';}
+function togFol(){if(!espOK){alert('Connect ESP first!');return;}isFol?stopFol():startFol();}
+function startFol(){if(isExp)stopExp();if(isSeek)stopSeek();isFol=true;document.getElementById('folBtn').innerText='⏸ FOLLOWING...';document.getElementById('folSt').style.color='var(--accent)';folStep();}
+function stopFol(){isFol=false;sc('S');document.getElementById('folBtn').innerText='▶️ FOLLOW';document.getElementById('folSt').innerText='⏸ Follow: OFF';document.getElementById('folSt').style.color='var(--muted)';document.getElementById('rssiF').style.width='0%';document.getElementById('rssiV').innerText='-- dBm';}
 
 // ═══════════════════════════════════════════════
-//  SENSORS
+//  SENSORS TAB
 // ═══════════════════════════════════════════════
-function togSensors(){
-  if(!senOn){
-    if(!espConnected){alert('Connect ESP first!');return;}
-    senOn=true;document.getElementById('senBtn').innerText='⏹ STOP READING';
-    senIv=setInterval(async()=>{
-      try{
-        const r=await fetch(`http://${espIP}/sensors`,{signal:AbortSignal.timeout(1000)});
-        const d=await r.json();
-        document.getElementById('usVal').innerText=d.ultrasonic+' cm';
-        document.getElementById('ldrVal').innerText=d.ldr;
-        document.getElementById('obsWarn').innerText=d.ultrasonic<20?'⚠️ OBSTACLE!':'';
-        document.getElementById('darkWarn').innerText=d.isDark?'⬛ DARK AREA!':'';
-      }catch(e){}
-    },500);
-  } else {
-    senOn=false;clearInterval(senIv);document.getElementById('senBtn').innerText='▶ START READING';
-  }
+function togSen(){
+  if(!senOn){if(!espOK){alert('Connect ESP first!');return;}senOn=true;document.getElementById('senBtn').innerText='⏹ STOP';
+    senIv=setInterval(async()=>{try{const r=await fetch(`http://${espIP}/sensors`,{signal:AbortSignal.timeout(1000)});const d=await r.json();document.getElementById('usVal').innerText=d.ultrasonic+' cm';document.getElementById('ldrVal').innerText=d.ldr;document.getElementById('obsW').innerText=d.ultrasonic<20?'⚠️ OBSTACLE!':'';document.getElementById('darkW').innerText=d.isDark?'⬛ DARK AREA!':'';}catch(e){}},500);
+  }else{senOn=false;clearInterval(senIv);document.getElementById('senBtn').innerText='▶ START READING';}
 }
 
 // ═══════════════════════════════════════════════
 //  UTILS
 // ═══════════════════════════════════════════════
 function dl(ms){return new Promise(r=>setTimeout(r,ms));}
+
+// Init calibration sub tab
+showCalib('dist');
 </script>
 </body>
 </html>
