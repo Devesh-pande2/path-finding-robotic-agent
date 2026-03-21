@@ -557,13 +557,22 @@ async function startLive() {
     } catch(e) { alert('Camera error: ' + e.message); }
 }
 
+// REPLACE WITH:
 function freezeImage() {
     if (!video.srcObject) { alert('Start live first!'); return; }
+
+    // Capture frame to canvas
     ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+    // STOP the camera stream completely so it cannot restart
+    video.srcObject.getTracks().forEach(t => t.stop());
+    video.srcObject = null;
+
     isLive = false;
+
     document.getElementById('freezeBtn').classList.add('btn-active');
     document.getElementById('liveBtn').classList.remove('btn-active');
-    logPath('// Photo frozen! Now mark robot FRONT point', 'info');
+    logPath('// Photo frozen! Camera stopped. Now mark robot FRONT point', 'info');
     updateStepGuide(2);
     setMode('robot_front');
 }
@@ -598,9 +607,25 @@ canvas.addEventListener('mousedown',  e => { e.preventDefault(); if (isLive) ret
 canvas.addEventListener('mousemove',  e => { e.preventDefault(); if (isDrawing && !isLive && currentMode==='draw') handleTap(e); });
 canvas.addEventListener('mouseup',    () => isDrawing=false);
 canvas.addEventListener('mouseleave', () => isDrawing=false);
-canvas.addEventListener('touchstart', e => { e.preventDefault(); if (isLive) return; isDrawing=true; handleTap(e); }, {passive:false});
-canvas.addEventListener('touchmove',  e => { e.preventDefault(); if (isDrawing && !isLive && currentMode==='draw') handleTap(e); }, {passive:false});
-canvas.addEventListener('touchend',   () => isDrawing=false);
+// REPLACE WITH:
+canvas.addEventListener('touchstart', e => {
+    e.preventDefault();
+    e.stopPropagation();  // ← stops touch bubbling up
+    if (isLive) return;
+    isDrawing = true;
+    handleTap(e);
+}, {passive:false});
+
+canvas.addEventListener('touchmove', e => {
+    e.preventDefault();
+    e.stopPropagation();  // ← stops touch bubbling up
+    if (isDrawing && !isLive && currentMode === 'draw') handleTap(e);
+}, {passive:false});
+
+canvas.addEventListener('touchend', e => {
+    e.stopPropagation();  // ← stops touch bubbling up
+    isDrawing = false;
+}, {passive:false});
 
 function handleTap(e) {
     const {x, y} = getPos(e);
