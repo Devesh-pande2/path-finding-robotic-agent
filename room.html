@@ -2,165 +2,136 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>🤖 ROBOT CONTROLLER</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>🤖 ROBOT v6</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@400;700;900&display=swap');
-:root{
-  --bg:#0a0e1a;--panel:#111827;--border:#1e3a5f;
-  --accent:#00d4ff;--accent2:#ff6b35;
-  --green:#00ff88;--red:#ff3b3b;
-  --purple:#a855f7;--yellow:#ffd600;
-  --text:#e2e8f0;--muted:#64748b;
-}
+:root{--bg:#0a0e1a;--panel:#111827;--border:#1e3a5f;--accent:#00d4ff;--a2:#ff6b35;--g:#00ff88;--r:#ff3b3b;--p:#a855f7;--y:#ffd600;--tx:#e2e8f0;--mu:#64748b;}
 *{margin:0;padding:0;box-sizing:border-box;user-select:none;}
-body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--text);padding:10px;
-  background-image:radial-gradient(ellipse at 20% 20%,#0d2137 0%,transparent 50%),
-                   radial-gradient(ellipse at 80% 80%,#1a0d2e 0%,transparent 50%);}
-.container{max-width:520px;margin:0 auto;}
-h1{font-family:'Share Tech Mono',monospace;font-size:15px;color:var(--accent);
-   text-align:center;padding:8px 0;letter-spacing:3px;text-shadow:0 0 20px rgba(0,212,255,0.4);}
-.panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;
-       padding:14px;margin-bottom:10px;position:relative;}
-.panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,transparent,var(--accent),transparent);border-radius:12px 12px 0 0;}
-.pt{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--accent);
-    letter-spacing:2px;margin-bottom:10px;text-transform:uppercase;}
-.conn-row{display:flex;gap:8px;margin-bottom:8px;}
-#espIp{flex:3;padding:10px 14px;background:#0d1117;border:1px solid var(--border);
-       border-radius:8px;color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:14px;}
-#connectBtn{flex:1;background:var(--accent);color:#000;border:none;border-radius:8px;font-weight:900;font-size:12px;cursor:pointer;}
-#cSt{padding:8px 14px;border-radius:8px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:1px;}
-.connected{background:rgba(0,255,136,0.15);color:var(--green);border:1px solid var(--green);}
-.disconnected{background:rgba(255,59,59,0.15);color:var(--red);border:1px solid var(--red);}
+body{background:var(--bg);font-family:'Exo 2',sans-serif;color:var(--tx);padding:10px;
+  background-image:radial-gradient(ellipse at 20% 20%,#0d2137 0%,transparent 50%),radial-gradient(ellipse at 80% 80%,#1a0d2e 0%,transparent 50%);}
+.W{max-width:520px;margin:0 auto;}
+h1{font-family:'Share Tech Mono',monospace;font-size:15px;color:var(--accent);text-align:center;padding:8px 0;letter-spacing:3px;text-shadow:0 0 20px rgba(0,212,255,0.4);}
+.P{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;position:relative;}
+.P::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);border-radius:12px 12px 0 0;}
+.pt{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--accent);letter-spacing:2px;margin-bottom:8px;text-transform:uppercase;}
+.cr{display:flex;gap:8px;margin-bottom:8px;}
+#eip{flex:3;padding:10px 14px;background:#0d1117;border:1px solid var(--border);border-radius:8px;color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:14px;}
+#cbtn{flex:1;background:var(--accent);color:#000;border:none;border-radius:8px;font-weight:900;font-size:12px;cursor:pointer;}
+#cs{padding:8px 14px;border-radius:8px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:1px;}
+.con{background:rgba(0,255,136,0.15);color:var(--g);border:1px solid var(--g);}
+.dis{background:rgba(255,59,59,0.15);color:var(--r);border:1px solid var(--r);}
 .tabs{display:flex;gap:4px;margin-bottom:10px;flex-wrap:wrap;}
-.tab{flex:1;padding:7px 3px;background:#0d1117;border:1px solid var(--border);border-radius:8px;
-     color:var(--muted);font-size:8px;font-family:'Share Tech Mono',monospace;
-     cursor:pointer;text-align:center;transition:all 0.15s;min-width:48px;}
-.tab.active{background:rgba(0,212,255,0.15);color:var(--accent);border-color:var(--accent);}
-.tc{display:none;}.tc.active{display:block;}
-.cam{position:relative;width:100%;height:260px;background:#000;border-radius:10px;
-     overflow:hidden;border:1px solid var(--border);margin-bottom:10px;}
-#video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;}
-#canvas{position:absolute;top:0;left:0;width:100%;height:100%;z-index:10;cursor:crosshair;}
-.cbadge{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.75);border:1px solid var(--yellow);
-        border-radius:6px;padding:4px 10px;font-family:'Share Tech Mono',monospace;font-size:11px;
-        color:var(--yellow);z-index:20;pointer-events:none;}
-.row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
-button{flex:1;padding:10px;border:none;border-radius:8px;font-weight:700;font-size:11px;
-       cursor:pointer;min-width:48px;font-family:'Exo 2',sans-serif;transition:all 0.15s;}
+.tab{flex:1;padding:7px 3px;background:#0d1117;border:1px solid var(--border);border-radius:8px;color:var(--mu);font-size:8px;font-family:'Share Tech Mono',monospace;cursor:pointer;text-align:center;transition:all 0.15s;min-width:46px;}
+.tab.A{background:rgba(0,212,255,0.15);color:var(--accent);border-color:var(--accent);}
+.tc{display:none;}.tc.A{display:block;}
+.cam{position:relative;width:100%;height:260px;background:#000;border-radius:10px;overflow:hidden;border:1px solid var(--border);margin-bottom:10px;}
+#vid{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;}
+#cnv{position:absolute;top:0;left:0;width:100%;height:100%;z-index:10;cursor:crosshair;}
+.cbg{position:absolute;bottom:8px;left:8px;background:rgba(0,0,0,0.75);border:1px solid var(--y);border-radius:6px;padding:4px 10px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--y);z-index:20;pointer-events:none;}
+.row{display:flex;gap:7px;margin-bottom:8px;flex-wrap:wrap;}
+button{flex:1;padding:10px;border:none;border-radius:8px;font-weight:700;font-size:11px;cursor:pointer;min-width:46px;font-family:'Exo 2',sans-serif;transition:all 0.15s;}
 button:active{transform:scale(0.96);}
 .bc{background:rgba(0,212,255,0.15);color:var(--accent);border:1px solid var(--accent);}
-.bg{background:rgba(0,255,136,0.15);color:var(--green);border:1px solid var(--green);}
-.br{background:rgba(255,59,59,0.15);color:var(--red);border:1px solid var(--red);}
-.by{background:rgba(255,214,0,0.15);color:var(--yellow);border:1px solid var(--yellow);}
-.bp{background:rgba(168,85,247,0.15);color:var(--purple);border:1px solid var(--purple);}
-.bo{background:rgba(255,107,53,0.15);color:var(--accent2);border:1px solid var(--accent2);}
-.bsg{background:var(--green);color:#000;border:none;}
-.bsr{background:var(--red);color:#fff;border:none;}
+.bg{background:rgba(0,255,136,0.15);color:var(--g);border:1px solid var(--g);}
+.br{background:rgba(255,59,59,0.15);color:var(--r);border:1px solid var(--r);}
+.by{background:rgba(255,214,0,0.15);color:var(--y);border:1px solid var(--y);}
+.bp{background:rgba(168,85,247,0.15);color:var(--p);border:1px solid var(--p);}
+.bo{background:rgba(255,107,53,0.15);color:var(--a2);border:1px solid var(--a2);}
+.bsg{background:var(--g);color:#000;border:none;}
+.bsr{background:var(--r);color:#fff;border:none;}
 .bsc{background:var(--accent);color:#000;border:none;}
-.bsy{background:var(--yellow);color:#000;border:none;}
-.ba{background:var(--accent)!important;color:#000!important;border-color:var(--accent)!important;}
-.ibar{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;margin:8px 0;}
+.bsy{background:var(--y);color:#000;border:none;}
+.BA{background:var(--accent)!important;color:#000!important;border-color:var(--accent)!important;}
+.ib{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:5px;margin:6px 0;}
 .ic{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:5px;text-align:center;}
-.ic span{display:block;font-size:8px;color:var(--muted);font-family:'Share Tech Mono',monospace;}
+.ic span{display:block;font-size:8px;color:var(--mu);font-family:'Share Tech Mono',monospace;}
 .ic b{font-size:12px;color:var(--accent);font-family:'Share Tech Mono',monospace;}
-.ic.ok b{color:var(--green);}
-.prog{width:100%;height:6px;background:#0d1117;border-radius:3px;margin:6px 0;overflow:hidden;border:1px solid var(--border);}
-.pf{height:100%;background:linear-gradient(90deg,var(--accent),var(--green));width:0%;transition:width 0.3s;}
+.ic.ok b{color:var(--g);}
+.pg{width:100%;height:6px;background:#0d1117;border-radius:3px;margin:6px 0;overflow:hidden;border:1px solid var(--border);}
+.pf{height:100%;background:linear-gradient(90deg,var(--accent),var(--g));width:0%;transition:width 0.3s;}
 .pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
-.pb{aspect-ratio:1;font-size:20px;background:#0d1117;border:1px solid var(--border)!important;
-    border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.pb{aspect-ratio:1;font-size:20px;background:#0d1117;border:1px solid var(--border)!important;border-radius:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .pb:active{background:rgba(0,212,255,0.2)!important;border-color:var(--accent)!important;transform:scale(0.93);}
-.sg{background:#0d1117;border:1px solid var(--yellow);border-radius:8px;padding:10px;
-    margin-bottom:10px;font-family:'Share Tech Mono',monospace;font-size:11px;}
-.sg .s{padding:3px 0;}
-.sg .s.done{color:var(--green);}.sg .s.act{color:var(--yellow);}.sg .s.pend{color:var(--muted);}
-.scard{background:#0d1117;border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;}
-.slabel{font-size:10px;color:var(--muted);font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
-.sval{font-size:20px;font-weight:900;color:var(--accent);margin:6px 0;font-family:'Share Tech Mono',monospace;}
-.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.log{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:10px;
-     font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);
-     max-height:90px;overflow-y:auto;margin-top:8px;}
-.log .ok{color:var(--green);}.log .w{color:var(--yellow);}
-.log .e{color:var(--red);}.log .i{color:var(--accent);}
-.rbar{width:100%;height:22px;background:#0d1117;border-radius:11px;margin:8px 0;
-      overflow:hidden;position:relative;border:1px solid var(--border);}
-.rf{height:100%;background:linear-gradient(90deg,var(--red),var(--accent2),var(--green));width:0%;transition:width 0.3s;}
-.rt{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;
-    font-weight:bold;font-size:11px;font-family:'Share Tech Mono',monospace;text-shadow:1px 1px 3px black;z-index:2;}
-.stbox{background:#0d1117;border:1px solid var(--border);border-radius:8px;
-       padding:10px 14px;font-family:'Share Tech Mono',monospace;font-size:12px;
-       color:var(--muted);margin-top:8px;text-align:center;}
-.ninput{flex:1;padding:8px 12px;background:#0d1117;border:1px solid var(--border);
-        border-radius:8px;color:var(--yellow);font-family:'Share Tech Mono',monospace;font-size:14px;text-align:center;}
-.lrow{display:flex;gap:8px;align-items:center;margin-bottom:8px;}
-.lrow label{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);white-space:nowrap;}
-.lbar{width:100%;height:26px;background:#0d1117;border-radius:13px;overflow:hidden;
-      position:relative;border:1px solid var(--border);margin:8px 0;}
-.lfill{height:100%;background:linear-gradient(90deg,#1a0d2e,#ffd600,#fff);transition:width 0.4s;width:0%;}
-.ltext{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;
-       font-weight:bold;font-size:12px;font-family:'Share Tech Mono',monospace;text-shadow:1px 1px 3px black;z-index:2;}
-#scanCanvas{display:block;margin:10px auto;border-radius:50%;border:1px solid var(--border);}
-/* CALIBRATION */
-.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
-.cbtn{background:#0d1117;border:1px solid var(--border);border-radius:10px;
-      padding:12px 6px;text-align:center;cursor:pointer;transition:all 0.15s;}
-.cbtn:active{border-color:var(--accent);background:rgba(0,212,255,0.1);}
-.cbtn .ci{font-size:18px;margin-bottom:4px;}
-.cbtn .cl{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent);}
-.cbtn .cs{font-size:10px;color:var(--muted);margin-top:2px;}
-.fbbox{background:#0d1117;border:2px solid var(--yellow);border-radius:12px;
-       padding:14px;margin:10px 0;text-align:center;display:none;}
-.fbbox.show{display:block;}
-.fbq{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--yellow);margin-bottom:12px;line-height:1.6;}
-.fbbts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
-.fbb{padding:12px 6px;border:none;border-radius:8px;font-weight:700;font-size:11px;
-     cursor:pointer;font-family:'Share Tech Mono',monospace;}
-.fbb:active{transform:scale(0.95);}
-.fbslow{background:rgba(255,107,53,0.2);color:var(--accent2);border:1px solid var(--accent2);}
-.fbok  {background:rgba(0,255,136,0.2);color:var(--green);  border:1px solid var(--green);}
-.fbfast{background:rgba(0,212,255,0.2);color:var(--accent);  border:1px solid var(--accent);}
-.vdisp{background:#0d1117;border:1px solid var(--border);border-radius:10px;padding:10px;margin:8px 0;}
-.vrow{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--border);}
-.vrow:last-child{border-bottom:none;}
-.vlabel{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--muted);}
-.vnum{font-family:'Share Tech Mono',monospace;font-size:15px;color:var(--accent);font-weight:900;}
-.vnum.saved{color:var(--green);}
-.svbanner{background:rgba(0,255,136,0.15);border:1px solid var(--green);border-radius:8px;
-          padding:10px;text-align:center;font-family:'Share Tech Mono',monospace;
-          font-size:12px;color:var(--green);margin:8px 0;display:none;}
-.svbanner.show{display:block;}
+.sg{background:#0d1117;border:1px solid var(--y);border-radius:8px;padding:10px;margin-bottom:10px;font-family:'Share Tech Mono',monospace;font-size:11px;}
+.sg .s{padding:3px 0;}.sg .s.dn{color:var(--g);}.sg .s.ac{color:var(--y);}.sg .s.pe{color:var(--mu);}
+.sc{background:#0d1117;border:1px solid var(--border);border-radius:10px;padding:12px;text-align:center;}
+.sl{font-size:10px;color:var(--mu);font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
+.sv{font-size:20px;font-weight:900;color:var(--accent);margin:6px 0;font-family:'Share Tech Mono',monospace;}
+.sg2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.log{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:10px;font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--mu);max-height:90px;overflow-y:auto;margin-top:8px;}
+.log .ok{color:var(--g);}.log .w{color:var(--y);}.log .e{color:var(--r);}.log .i{color:var(--accent);}
+.rb{width:100%;height:22px;background:#0d1117;border-radius:11px;margin:8px 0;overflow:hidden;position:relative;border:1px solid var(--border);}
+.rf{height:100%;background:linear-gradient(90deg,var(--r),var(--a2),var(--g));width:0%;transition:width 0.3s;}
+.rt{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;font-weight:bold;font-size:11px;font-family:'Share Tech Mono',monospace;text-shadow:1px 1px 3px black;z-index:2;}
+.stb{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--mu);margin-top:8px;text-align:center;}
+.ni{flex:1;padding:8px 12px;background:#0d1117;border:1px solid var(--border);border-radius:8px;color:var(--y);font-family:'Share Tech Mono',monospace;font-size:14px;text-align:center;}
+.lr{display:flex;gap:8px;align-items:center;margin-bottom:8px;}
+.lr label{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--mu);white-space:nowrap;}
+.lb{width:100%;height:26px;background:#0d1117;border-radius:13px;overflow:hidden;position:relative;border:1px solid var(--border);margin:6px 0;}
+.lf{height:100%;background:linear-gradient(90deg,#1a0d2e,#ffd600,#fff);transition:width 0.4s;width:0%;}
+.lt{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;font-weight:bold;font-size:11px;font-family:'Share Tech Mono',monospace;text-shadow:1px 1px 3px black;z-index:2;}
+#scanC{display:block;margin:8px auto;border-radius:50%;border:1px solid var(--border);}
+/* CALIB */
+.cg{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px;}
+.cb{background:#0d1117;border:1px solid var(--border);border-radius:10px;padding:10px 6px;text-align:center;cursor:pointer;transition:all 0.15s;}
+.cb:active{border-color:var(--accent);background:rgba(0,212,255,0.1);}
+.ci{font-size:17px;margin-bottom:3px;}
+.cl{font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--accent);}
+.cs{font-size:10px;color:var(--mu);margin-top:2px;}
+.fbx{background:#0d1117;border:2px solid var(--y);border-radius:12px;padding:12px;margin:10px 0;text-align:center;display:none;}
+.fbx.sh{display:block;}
+.fbq{font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--y);margin-bottom:10px;line-height:1.6;}
+.fbb{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;}
+.fb{padding:12px 5px;border:none;border-radius:8px;font-weight:700;font-size:11px;cursor:pointer;font-family:'Share Tech Mono',monospace;}
+.fb:active{transform:scale(0.95);}
+.fs{background:rgba(255,107,53,0.2);color:var(--a2);border:1px solid var(--a2);}
+.fk{background:rgba(0,255,136,0.2);color:var(--g);border:1px solid var(--g);}
+.ff{background:rgba(0,212,255,0.2);color:var(--accent);border:1px solid var(--accent);}
+.vd{background:#0d1117;border:1px solid var(--border);border-radius:10px;padding:10px;margin:6px 0;}
+.vr{display:flex;justify-content:space-between;align-items:center;padding:4px 0;border-bottom:1px solid var(--border);}
+.vr:last-child{border-bottom:none;}
+.vl{font-family:'Share Tech Mono',monospace;font-size:11px;color:var(--mu);}
+.vn{font-family:'Share Tech Mono',monospace;font-size:14px;color:var(--accent);font-weight:900;}
+.vn.sv{color:var(--g);}
+.sbn{background:rgba(0,255,136,0.15);border:1px solid var(--g);border-radius:8px;padding:10px;text-align:center;font-family:'Share Tech Mono',monospace;font-size:12px;color:var(--g);margin:6px 0;display:none;}
+.sbn.sh{display:block;}
+/* AI PATH SEGMENTS */
+.seg-list{background:#0d1117;border:1px solid var(--border);border-radius:8px;padding:8px;margin:8px 0;max-height:120px;overflow-y:auto;}
+.seg-item{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--border);font-family:'Share Tech Mono',monospace;font-size:11px;}
+.seg-item:last-child{border-bottom:none;}
+.seg-icon{font-size:14px;}
+.seg-txt{flex:1;color:var(--tx);}
+.seg-del{background:none;border:none;color:var(--r);cursor:pointer;font-size:14px;padding:2px 6px;min-width:auto;flex:0;}
 </style>
 </head>
 <body>
-<div class="container">
-<h1>⟨ ROBOT CONTROLLER ⟩</h1>
+<div class="W">
+<h1>⟨ ROBOT CONTROLLER v6 ⟩</h1>
 
 <!-- CONNECTION -->
-<div class="panel">
-  <div class="pt">◈ ESP CONNECTION</div>
-  <div class="conn-row">
-    <input type="text" id="espIp" value="192.168.43.1" placeholder="ESP IP">
-    <button id="connectBtn" onclick="connectESP()">LINK</button>
+<div class="P">
+  <div class="pt">◈ CONNECTION</div>
+  <div class="cr">
+    <input type="text" id="eip" value="192.168.43.1" placeholder="ESP IP">
+    <button id="cbtn" onclick="conn()">LINK</button>
   </div>
-  <div id="cSt" class="disconnected">◉ DISCONNECTED</div>
+  <div id="cs" class="dis">◉ DISCONNECTED</div>
 </div>
 
-<!-- TABS — 6 tabs total -->
+<!-- TABS -->
 <div class="tabs">
-  <div class="tab active" onclick="ST('manual')">🎮 CTRL</div>
+  <div class="tab A" onclick="ST('ctrl')">🎮 CTRL</div>
   <div class="tab" onclick="ST('ai')">🤖 PATH</div>
-  <div class="tab" onclick="ST('light')">🔦 LIGHT</div>
-  <div class="tab" onclick="ST('explore')">🔍 AUTO</div>
+  <div class="tab" onclick="ST('light')">🔦 LDR</div>
+  <div class="tab" onclick="ST('auto')">🔍 AUTO</div>
   <div class="tab" onclick="ST('calib')">📐 CALIB</div>
-  <div class="tab" onclick="ST('sensors')">📡 DATA</div>
+  <div class="tab" onclick="ST('data')">📡 DATA</div>
 </div>
 
-<!-- ══ MANUAL ══ -->
-<div id="tab-manual" class="tc active">
-<div class="panel">
+<!-- ══ CTRL ══ -->
+<div id="tab-ctrl" class="tc A">
+<div class="P">
   <div class="pt">◈ MANUAL CONTROL</div>
   <div class="pad">
     <div></div>
@@ -183,71 +154,132 @@ button:active{transform:scale(0.96);}
 
 <!-- ══ AI PATH ══ -->
 <div id="tab-ai" class="tc">
-<div class="panel">
-  <div class="pt">◈ AI PATH — ROBOT AS RULER</div>
-  <div class="lrow">
+<div class="P">
+  <div class="pt">◈ AI PATH — SMART NAVIGATION</div>
+
+  <!-- Mode selector -->
+  <div class="row">
+    <button class="bsc" id="mAI" onclick="setPathMode('ai')">🤖 AI MEASURE</button>
+    <button class="bc"  id="mMN" onclick="setPathMode('manual')">✏️ MANUAL CM</button>
+  </div>
+  <div id="modeDesc" style="font-size:11px;color:var(--mu);margin-bottom:10px;font-family:'Share Tech Mono',monospace;">
+    // AI measures distance from photo using robot size as ruler
+  </div>
+
+  <!-- Robot length input (for AI mode) -->
+  <div class="lr" id="rlRow">
     <label>ROBOT LENGTH (cm):</label>
-    <input type="number" class="ninput" id="rlInput" value="15" min="5" max="100">
+    <input type="number" class="ni" id="rlIn" value="15" min="5" max="100">
     <button class="by" style="flex:0;padding:8px 10px;" onclick="updateRL()">SET</button>
   </div>
+
+  <!-- Step guide -->
   <div class="sg">
-    <div class="s act"  id="sg1">① LIVE → FREEZE photo</div>
-    <div class="s pend" id="sg2">② 🔴 FRONT → tap front of robot</div>
-    <div class="s pend" id="sg3">③ 🔵 BACK → tap back of robot</div>
-    <div class="s pend" id="sg4">④ ✏️ PATH → draw path to goal</div>
-    <div class="s pend" id="sg5">⑤ CALCULATE → EXECUTE</div>
+    <div class="s ac" id="sg1">① LIVE → FREEZE photo</div>
+    <div class="s pe" id="sg2">② 🔴 FRONT → 🔵 BACK (calibrate)</div>
+    <div class="s pe" id="sg3">③ Draw segments + add turns</div>
+    <div class="s pe" id="sg4">④ CALCULATE → EXECUTE</div>
   </div>
+
+  <!-- Camera -->
   <div class="cam">
-    <video id="video" autoplay playsinline muted></video>
-    <canvas id="canvas"></canvas>
-    <div class="cbadge" id="cbadge">📏 NOT CALIBRATED</div>
+    <video id="vid" autoplay playsinline muted></video>
+    <canvas id="cnv"></canvas>
+    <div class="cbg" id="cbg">📏 NOT CALIBRATED</div>
   </div>
+
   <div class="row">
-    <button class="bg" onclick="startLive()" id="liveBtn">📷 LIVE</button>
-    <button class="bo" onclick="freezeImg()" id="frzBtn">❄️ FREEZE</button>
+    <button class="bg" onclick="startLive()" id="lbtn">📷 LIVE</button>
+    <button class="bo" onclick="frzImg()"    id="fbtn">❄️ FREEZE</button>
     <button class="br" onclick="clearAll()">🗑️ CLEAR</button>
   </div>
-  <div class="row">
-    <button class="by" onclick="setMode('rf')" id="frontBtn">🔴 FRONT</button>
-    <button class="by" onclick="setMode('rb')" id="backBtn">🔵 BACK</button>
-    <button class="bc" onclick="setMode('draw')" id="drawBtn">✏️ PATH</button>
+
+  <!-- AI MODE controls -->
+  <div id="aiControls">
+    <div class="row">
+      <button class="by" onclick="setMode('rf')" id="fnBtn">🔴 FRONT</button>
+      <button class="by" onclick="setMode('rb')" id="bkBtn">🔵 BACK</button>
+      <button class="bc" onclick="setMode('draw')" id="dwBtn">✏️ DRAW</button>
+    </div>
   </div>
-  <div class="ibar">
-    <div class="ic" id="ccell"><span>CALIB</span><b id="caliSt">--</b></div>
-    <div class="ic"><span>PX/CM</span><b id="pxcm">--</b></div>
-    <div class="ic"><span>POINTS</span><b id="ptcnt">0</b></div>
-    <div class="ic"><span>MODE</span><b id="modeSt">--</b></div>
+
+  <!-- MANUAL MODE controls -->
+  <div id="manControls" style="display:none;">
+    <div class="pt" style="margin-top:4px;">◈ ADD SEGMENT MANUALLY</div>
+    <div class="lr">
+      <label>DISTANCE (cm):</label>
+      <input type="number" class="ni" id="manDist" value="30" min="1" max="500">
+      <button class="bsg" style="flex:0;padding:8px 10px;" onclick="addManSeg()">+ ADD</button>
+    </div>
   </div>
+
+  <!-- Turn buttons (both modes) -->
+  <div class="pt" style="margin-top:6px;">◈ ADD TURN AFTER LAST SEGMENT</div>
   <div class="row">
+    <button class="bo" onclick="addTurn('L',45)">↩ L 45°</button>
+    <button class="bo" onclick="addTurn('L',90)">↩ L 90°</button>
+    <button class="bc" onclick="addTurn('R',45)">↪ R 45°</button>
+    <button class="bc" onclick="addTurn('R',90)">↪ R 90°</button>
+  </div>
+
+  <!-- Info bar -->
+  <div class="ib">
+    <div class="ic" id="ccl"><span>CALIB</span><b id="cst">--</b></div>
+    <div class="ic"><span>PX/CM</span><b id="pcm">--</b></div>
+    <div class="ic"><span>SEGS</span><b id="scnt">0</b></div>
+    <div class="ic"><span>MODE</span><b id="mst">--</b></div>
+  </div>
+
+  <!-- Segment list -->
+  <div class="pt">◈ PATH SEGMENTS</div>
+  <div class="seg-list" id="segList">
+    <div style="color:var(--mu);font-family:'Share Tech Mono',monospace;font-size:11px;">// No segments yet</div>
+  </div>
+
+  <!-- Actions -->
+  <div class="row" style="margin-top:8px;">
     <button class="bsc" style="flex:2" onclick="calcPath()">📐 CALCULATE</button>
     <button class="bsg" style="flex:2" onclick="execPath()">▶️ EXECUTE</button>
     <button class="bsr" style="flex:1" onclick="eStop()">⏹</button>
   </div>
-  <div class="prog"><div class="pf" id="pbar"></div></div>
-  <div class="log" id="plog"><span class="i">// LIVE → FREEZE → mark robot → draw path</span></div>
+  <div class="pg"><div class="pf" id="pb"></div></div>
+  <div class="log" id="plog"><span class="i">// Select mode → add segments → calculate → execute</span></div>
 </div>
 </div>
 
-<!-- ══ LIGHT ══ -->
+<!-- ══ LDR ══ -->
 <div id="tab-light" class="tc">
-<div class="panel">
-  <div class="pt">◈ LIGHT SEEKER — LDR</div>
-  <p style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;">
-    Scans 360° to find darkest area and moves toward it automatically.
+<div class="P">
+  <div class="pt">◈ LIGHT SEEKER — LDR (NO RESISTOR)</div>
+  <p style="font-size:11px;color:var(--mu);margin-bottom:10px;line-height:1.5;">
+    LDR connected directly to A0 + GND. Dark = LOW value. Black paper = lowest value = goal.
   </p>
-  <div class="pt">◈ LIVE LDR</div>
-  <div class="lbar"><div class="lfill" id="ldrFill"></div><div class="ltext" id="ldrTxt">-- / 1023</div></div>
-  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-family:'Share Tech Mono',monospace;margin-bottom:8px;">
-    <span>⬛ DARK</span><span>░ MED</span><span>⬜ BRIGHT</span>
+  <div class="pt">◈ LIVE LDR (auto calibrates range)</div>
+  <div class="lb"><div class="lf" id="ldrF"></div><div class="lt" id="ldrT">-- / 1023</div></div>
+  <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--mu);font-family:'Share Tech Mono',monospace;margin-bottom:8px;">
+    <span>⬛ DARK (goal)</span><span>░ MED</span><span>⬜ BRIGHT</span>
   </div>
-  <div class="lrow">
+  <div class="vd" id="ldrInfo">
+    <div class="vr"><span class="vl">RAW VALUE</span><span class="vn" id="ldrRaw">--</span></div>
+    <div class="vr"><span class="vl">MIN SEEN (darkest)</span><span class="vn" id="ldrMin">--</span></div>
+    <div class="vr"><span class="vl">MAX SEEN (brightest)</span><span class="vn" id="ldrMax">--</span></div>
+    <div class="vr"><span class="vl">THRESHOLD</span><span class="vn" id="ldrThrDisp">--</span></div>
+  </div>
+  <div class="pt" style="margin-top:6px;">◈ SET THRESHOLD</div>
+  <p style="font-size:11px;color:var(--mu);margin-bottom:8px;line-height:1.5;">
+    Place LDR on black paper → note raw value → set threshold slightly above that value.
+  </p>
+  <div class="lr">
     <label>THRESHOLD:</label>
-    <input type="number" class="ninput" id="thrInput" value="300" min="0" max="1023">
-    <button class="by" style="flex:0;padding:8px 10px;" onclick="setThr()">SET</button>
+    <input type="number" class="ni" id="thrIn" value="200" min="0" max="1023">
+    <button class="by" style="flex:0;padding:8px 10px;" onclick="setThr()">SAVE</button>
   </div>
-  <div class="pt">◈ 360° SCAN</div>
-  <canvas id="scanCanvas" width="180" height="180"></canvas>
-  <div id="scanRes" class="stbox">⏸ Press SCAN to find darkest direction</div>
+  <div class="row">
+    <button class="bc" onclick="resetLDRRange()">🔄 RESET LDR RANGE</button>
+  </div>
+  <div class="pt" style="margin-top:6px;">◈ 360° SCAN</div>
+  <canvas id="scanC" width="180" height="180"></canvas>
+  <div id="scanR" class="stb">⏸ Press SCAN to find darkest direction</div>
   <div class="row" style="margin-top:8px;">
     <button class="bsy" style="flex:2" onclick="doScan()" id="scanBtn">🔄 SCAN 360°</button>
     <button class="bsr" style="flex:1" onclick="eStop()">⏹</button>
@@ -256,425 +288,527 @@ button:active{transform:scale(0.96);}
     <button class="bsg" style="flex:2" onclick="startSeek()" id="seekBtn">🔦 START SEEKING</button>
     <button class="bsr" style="flex:1" onclick="stopSeek()">⏹</button>
   </div>
-  <div class="stbox" id="seekSt">⏸ Light seeker: OFF</div>
+  <div class="stb" id="seekSt">⏸ Light seeker: OFF</div>
 </div>
 </div>
 
-<!-- ══ EXPLORE / FOLLOW ══ -->
-<div id="tab-explore" class="tc">
-<div class="panel">
+<!-- ══ AUTO ══ -->
+<div id="tab-auto" class="tc">
+<div class="P">
   <div class="pt">◈ AUTO EXPLORE</div>
-  <p style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.5;">Random movement with obstacle avoidance.</p>
+  <p style="font-size:11px;color:var(--mu);margin-bottom:8px;line-height:1.5;">
+    Random movement. Ultrasonic stops at 50cm. If stuck in loop → rotates 180° and finds new path.
+  </p>
   <div class="row">
     <button class="bsg" style="flex:2" onclick="startExp()" id="expBtn">▶️ START</button>
     <button class="bsr" style="flex:1" onclick="stopExp()">⏹ STOP</button>
   </div>
-  <div class="stbox" id="expSt">⏸ Explore: OFF</div>
-  <div style="margin-top:14px;" class="pt">◈ WIFI FOLLOW (RSSI GRADIENT)</div>
-  <p style="font-size:11px;color:var(--muted);margin-bottom:8px;line-height:1.5;">Tests F/L/R and moves toward strongest signal.</p>
+  <div class="stb" id="expSt">⏸ Explore: OFF</div>
+
+  <div style="margin-top:14px;" class="pt">◈ WIFI FOLLOW — SPIN & TRACK</div>
+  <p style="font-size:11px;color:var(--mu);margin-bottom:8px;line-height:1.5;">
+    Robot spins slowly to find strongest signal direction then moves toward it. Repeats continuously.
+  </p>
   <div class="row">
     <button class="bp" style="flex:2" onclick="togFol()" id="folBtn">▶️ FOLLOW</button>
     <button class="br" style="flex:1" onclick="stopFol()">⏹</button>
   </div>
-  <div class="rbar"><div class="rf" id="rssiF"></div><div class="rt" id="rssiV">-- dBm</div></div>
-  <div class="stbox" id="folSt">⏸ Follow: OFF</div>
+  <div class="rb"><div class="rf" id="rssiF"></div><div class="rt" id="rssiV">-- dBm</div></div>
+  <div class="stb" id="folSt">⏸ Follow: OFF</div>
 </div>
 </div>
 
-<!-- ══ CALIBRATION ══ -->
+<!-- ══ CALIB ══ -->
 <div id="tab-calib" class="tc">
-<div class="panel">
+<div class="P">
   <div class="pt">◈ INTERACTIVE CALIBRATION</div>
-  <p style="font-size:11px;color:var(--muted);margin-bottom:10px;line-height:1.5;">
-    Click a test. Robot performs it. You say if it was correct, too short/slow or too long/fast.
-    App automatically finds the perfect value using binary search and saves to ESP flash!
+  <p style="font-size:11px;color:var(--mu);margin-bottom:10px;line-height:1.5;">
+    Robot performs the test. You say too short / perfect / too long.
+    App adjusts smartly — UNLIMITED tries until you click PERFECT!
+    Step size shrinks each attempt for finer accuracy.
   </p>
-
-  <!-- Sub tabs for distance / turning -->
-  <div class="row" style="margin-bottom:12px;">
-    <button class="bsc" id="cdBtn" onclick="showCalib('dist')">📏 DISTANCE</button>
-    <button class="bc"  id="ctBtn" onclick="showCalib('turn')">🔄 TURNING</button>
+  <div class="row">
+    <button class="bsc" id="cdBtn" onclick="showC('d')">📏 DISTANCE</button>
+    <button class="bc"  id="ctBtn" onclick="showC('t')">🔄 TURNING</button>
   </div>
 
-  <!-- DISTANCE CALIBRATION -->
+  <!-- DISTANCE -->
   <div id="cdiv">
     <div class="pt">◈ DISTANCE TESTS</div>
-    <div class="cgrid">
-      <div class="cbtn" onclick="testDist('F',10)"><div class="ci">➡️</div><div class="cl">FWD 10cm</div><div class="cs">short test</div></div>
-      <div class="cbtn" onclick="testDist('F',20)"><div class="ci">➡️</div><div class="cl">FWD 20cm</div><div class="cs">medium</div></div>
-      <div class="cbtn" onclick="testDist('F',30)"><div class="ci">➡️</div><div class="cl">FWD 30cm</div><div class="cs">recommended ✓</div></div>
-      <div class="cbtn" onclick="testDist('F',50)"><div class="ci">➡️</div><div class="cl">FWD 50cm</div><div class="cs">most accurate</div></div>
-      <div class="cbtn" onclick="testDist('B',10)"><div class="ci">⬅️</div><div class="cl">BWD 10cm</div><div class="cs">reverse</div></div>
-      <div class="cbtn" onclick="testDist('B',30)"><div class="ci">⬅️</div><div class="cl">BWD 30cm</div><div class="cs">reverse</div></div>
+    <div class="cg">
+      <div class="cb" onclick="tD('F',10)"><div class="ci">➡️</div><div class="cl">FWD 10cm</div><div class="cs">quick test</div></div>
+      <div class="cb" onclick="tD('F',20)"><div class="ci">➡️</div><div class="cl">FWD 20cm</div></div>
+      <div class="cb" onclick="tD('F',30)"><div class="ci">➡️</div><div class="cl">FWD 30cm</div><div class="cs">recommended ✓</div></div>
+      <div class="cb" onclick="tD('F',50)"><div class="ci">➡️</div><div class="cl">FWD 50cm</div><div class="cs">most accurate</div></div>
+      <div class="cb" onclick="tD('B',10)"><div class="ci">⬅️</div><div class="cl">BWD 10cm</div></div>
+      <div class="cb" onclick="tD('B',30)"><div class="ci">⬅️</div><div class="cl">BWD 30cm</div></div>
     </div>
-    <div class="vdisp">
-      <div class="vrow"><span class="vlabel">CURRENT MS/CM</span><span class="vnum" id="dMPC">80</span></div>
-      <div class="vrow"><span class="vlabel">TEST DISTANCE</span><span class="vnum" id="dTest">--</span></div>
-      <div class="vrow"><span class="vlabel">EXPECTED TIME</span><span class="vnum" id="dTime">--</span></div>
-      <div class="vrow"><span class="vlabel">ATTEMPT #</span><span class="vnum" id="dAtt">0</span></div>
+    <div class="vd">
+      <div class="vr"><span class="vl">CURRENT MS/CM</span><span class="vn" id="dV">80</span></div>
+      <div class="vr"><span class="vl">TEST</span><span class="vn" id="dTst">--</span></div>
+      <div class="vr"><span class="vl">TIME SENT</span><span class="vn" id="dTm">--</span></div>
+      <div class="vr"><span class="vl">ATTEMPT #</span><span class="vn" id="dAt">0</span></div>
+      <div class="vr"><span class="vl">STEP SIZE</span><span class="vn" id="dStp">20</span></div>
     </div>
-    <div class="prog"><div class="pf" id="dProg" style="width:0%"></div></div>
-    <div class="fbbox" id="dFB">
-      <div class="fbq" id="dFBQ">Did robot travel correct distance?</div>
-      <div class="fbbts">
-        <button class="fbb fbslow" onclick="dFeed('slow')">📏 TOO SHORT<br><small>went less</small></button>
-        <button class="fbb fbok"   onclick="dFeed('ok')">✅ PERFECT!<br><small>exactly right</small></button>
-        <button class="fbb fbfast" onclick="dFeed('fast')">📏 TOO LONG<br><small>went more</small></button>
+    <div class="pg"><div class="pf" id="dPg" style="width:50%"></div></div>
+    <!-- Feedback -->
+    <div class="fbx" id="dFB">
+      <div class="fbq" id="dFQ">Did robot travel correct distance?</div>
+      <div class="fbb">
+        <button class="fb fs" onclick="dFd('s')">📏 TOO SHORT<br><small>went less</small></button>
+        <button class="fb fk" onclick="dFd('ok')">✅ PERFECT!<br><small>save it!</small></button>
+        <button class="fb ff" onclick="dFd('f')">📏 TOO LONG<br><small>went more</small></button>
       </div>
     </div>
-    <div class="svbanner" id="dSaved">✅ MS/CM CALIBRATED & SAVED TO ESP FLASH!</div>
-    <div class="row"><button class="br" onclick="resetDist()">🔄 RESET DISTANCE</button></div>
-    <div class="log" id="dLog"><span class="i">// Pick a distance to start</span></div>
+    <div class="sbn" id="dSv">✅ MS/CM SAVED TO ESP FLASH!</div>
+    <div class="row"><button class="br" onclick="rstD()">🔄 RESET</button></div>
+    <div class="log" id="dLog"><span class="i">// Pick a distance to begin</span></div>
   </div>
 
-  <!-- TURNING CALIBRATION -->
+  <!-- TURNING -->
   <div id="ctdiv" style="display:none;">
     <div class="pt">◈ TURNING TESTS</div>
-    <div class="cgrid">
-      <div class="cbtn" onclick="testTurn('R',45)"><div class="ci">↪️</div><div class="cl">RIGHT 45°</div><div class="cs">quarter turn</div></div>
-      <div class="cbtn" onclick="testTurn('R',90)"><div class="ci">↪️</div><div class="cl">RIGHT 90°</div><div class="cs">recommended ✓</div></div>
-      <div class="cbtn" onclick="testTurn('R',180)"><div class="ci">↪️</div><div class="cl">RIGHT 180°</div><div class="cs">u-turn</div></div>
-      <div class="cbtn" onclick="testTurn('R',360)"><div class="ci">🔄</div><div class="cl">RIGHT 360°</div><div class="cs">full spin</div></div>
-      <div class="cbtn" onclick="testTurn('L',45)"><div class="ci">↩️</div><div class="cl">LEFT 45°</div><div class="cs">quarter turn</div></div>
-      <div class="cbtn" onclick="testTurn('L',90)"><div class="ci">↩️</div><div class="cl">LEFT 90°</div><div class="cs">recommended ✓</div></div>
+    <div class="cg">
+      <div class="cb" onclick="tT('R',45)"><div class="ci">↪️</div><div class="cl">RIGHT 45°</div></div>
+      <div class="cb" onclick="tT('R',90)"><div class="ci">↪️</div><div class="cl">RIGHT 90°</div><div class="cs">recommended ✓</div></div>
+      <div class="cb" onclick="tT('R',180)"><div class="ci">↪️</div><div class="cl">RIGHT 180°</div></div>
+      <div class="cb" onclick="tT('R',360)"><div class="ci">🔄</div><div class="cl">360° spin</div></div>
+      <div class="cb" onclick="tT('L',45)"><div class="ci">↩️</div><div class="cl">LEFT 45°</div></div>
+      <div class="cb" onclick="tT('L',90)"><div class="ci">↩️</div><div class="cl">LEFT 90°</div><div class="cs">recommended ✓</div></div>
     </div>
-    <div class="vdisp">
-      <div class="vrow"><span class="vlabel">CURRENT MS/DEGREE</span><span class="vnum" id="tMPD">12</span></div>
-      <div class="vrow"><span class="vlabel">CURRENT KICK MS</span><span class="vnum" id="tKick">80</span></div>
-      <div class="vrow"><span class="vlabel">TEST ANGLE</span><span class="vnum" id="tTest">--</span></div>
-      <div class="vrow"><span class="vlabel">EXPECTED TIME</span><span class="vnum" id="tTime">--</span></div>
-      <div class="vrow"><span class="vlabel">ATTEMPT #</span><span class="vnum" id="tAtt">0</span></div>
+    <div class="vd">
+      <div class="vr"><span class="vl">CURRENT MS/DEGREE</span><span class="vn" id="tV">12</span></div>
+      <div class="vr"><span class="vl">KICK MS</span><span class="vn" id="tK">80</span></div>
+      <div class="vr"><span class="vl">TEST</span><span class="vn" id="tTst">--</span></div>
+      <div class="vr"><span class="vl">TIME SENT</span><span class="vn" id="tTm">--</span></div>
+      <div class="vr"><span class="vl">ATTEMPT #</span><span class="vn" id="tAt">0</span></div>
+      <div class="vr"><span class="vl">STEP SIZE</span><span class="vn" id="tStp">5</span></div>
     </div>
-    <div class="prog"><div class="pf" id="tProg" style="width:0%"></div></div>
-    <div class="fbbox" id="tFB">
-      <div class="fbq" id="tFBQ">Did robot turn correct angle?</div>
-      <div class="fbbts">
-        <button class="fbb fbslow" onclick="tFeed('less')">📐 TOO LITTLE<br><small>turned less</small></button>
-        <button class="fbb fbok"   onclick="tFeed('ok')">✅ PERFECT!<br><small>exactly right</small></button>
-        <button class="fbb fbfast" onclick="tFeed('more')">📐 TOO MUCH<br><small>turned more</small></button>
+    <div class="pg"><div class="pf" id="tPg" style="width:50%"></div></div>
+    <div class="fbx" id="tFB">
+      <div class="fbq" id="tFQ">Did robot turn correct angle?</div>
+      <div class="fbb">
+        <button class="fb fs" onclick="tFd('l')">📐 TOO LITTLE<br><small>turned less</small></button>
+        <button class="fb fk" onclick="tFd('ok')">✅ PERFECT!<br><small>save it!</small></button>
+        <button class="fb ff" onclick="tFd('m')">📐 TOO MUCH<br><small>turned more</small></button>
       </div>
     </div>
-    <div class="svbanner" id="tSaved">✅ MS/DEGREE CALIBRATED & SAVED TO ESP FLASH!</div>
-    <div class="pt" style="margin-top:10px;">◈ KICK TUNING</div>
-    <p style="font-size:11px;color:var(--muted);margin-bottom:8px;">Motors twitch/shake → increase kick. Turns overshoot → decrease kick.</p>
-    <div class="lrow">
+    <div class="sbn" id="tSv">✅ MS/DEGREE SAVED TO ESP FLASH!</div>
+    <div class="pt" style="margin-top:8px;">◈ KICK TUNING</div>
+    <p style="font-size:11px;color:var(--mu);margin-bottom:6px;">Twitch/shake → increase. Overshoot → decrease.</p>
+    <div class="lr">
       <label>KICK MS:</label>
-      <input type="number" class="ninput" id="kickInput" value="80" min="0" max="200">
+      <input type="number" class="ni" id="kIn" value="80" min="0" max="200">
       <button class="by" style="flex:0;padding:8px 10px;" onclick="setKick()">SAVE</button>
     </div>
-    <div class="row"><button class="br" onclick="resetTurn()">🔄 RESET TURNING</button></div>
-    <div class="log" id="tLog"><span class="i">// Pick an angle to start</span></div>
+    <div class="row"><button class="br" onclick="rstT()">🔄 RESET</button></div>
+    <div class="log" id="tLog"><span class="i">// Pick an angle to begin</span></div>
   </div>
 
-  <!-- Current saved values summary -->
-  <div style="margin-top:10px;" class="pt">◈ SAVED VALUES ON ESP</div>
-  <div class="vdisp" id="summaryVals">
-    <div class="vrow"><span class="vlabel">MS/CM (distance)</span><span class="vnum saved" id="svMPC">--</span></div>
-    <div class="vrow"><span class="vlabel">MS/DEGREE (turn)</span><span class="vnum saved" id="svMPD">--</span></div>
-    <div class="vrow"><span class="vlabel">KICK MS</span><span class="vnum saved" id="svKick">--</span></div>
-    <div class="vrow"><span class="vlabel">LEFT SPEED</span><span class="vnum saved" id="svLeft">--</span></div>
-    <div class="vrow"><span class="vlabel">RIGHT SPEED</span><span class="vnum saved" id="svRight">--</span></div>
+  <!-- Saved values -->
+  <div style="margin-top:10px;" class="pt">◈ SAVED ON ESP</div>
+  <div class="vd">
+    <div class="vr"><span class="vl">MS/CM</span><span class="vn sv" id="sMPC">--</span></div>
+    <div class="vr"><span class="vl">MS/DEGREE</span><span class="vn sv" id="sMPD">--</span></div>
+    <div class="vr"><span class="vl">KICK MS</span><span class="vn sv" id="sKick">--</span></div>
+    <div class="vr"><span class="vl">LEFT/RIGHT SPEED</span><span class="vn sv" id="sSpd">--</span></div>
   </div>
   <div class="row">
-    <button class="bsc" onclick="loadCalibData()">🔄 REFRESH FROM ESP</button>
-    <button class="bsr" onclick="factReset()">⚠️ FACTORY RESET</button>
+    <button class="bsc" onclick="loadCD()">🔄 REFRESH</button>
+    <button class="bsr" onclick="factR()">⚠️ FACTORY RESET</button>
   </div>
 </div>
 </div>
 
-<!-- ══ SENSORS ══ -->
-<div id="tab-sensors" class="tc">
-<div class="panel">
+<!-- ══ DATA ══ -->
+<div id="tab-data" class="tc">
+<div class="P">
   <div class="pt">◈ LIVE SENSOR DATA</div>
-  <div class="sgrid">
-    <div class="scard">
-      <div class="slabel">ULTRASONIC</div>
-      <div class="sval" id="usVal">--</div>
-      <div id="obsW" style="color:var(--red);font-size:11px;min-height:16px;"></div>
-    </div>
-    <div class="scard">
-      <div class="slabel">LDR VALUE</div>
-      <div class="sval" id="ldrVal">--</div>
-      <div id="darkW" style="color:var(--yellow);font-size:11px;min-height:16px;"></div>
-    </div>
+  <div class="sg2">
+    <div class="sc"><div class="sl">ULTRASONIC</div><div class="sv" id="usV">--</div><div id="obsW" style="color:var(--r);font-size:11px;min-height:14px;"></div></div>
+    <div class="sc"><div class="sl">LDR VALUE</div><div class="sv" id="ldrV">--</div><div id="drkW" style="color:var(--y);font-size:11px;min-height:14px;"></div></div>
   </div>
   <button class="bsc" style="width:100%;margin-top:10px;" onclick="togSen()" id="senBtn">▶ START READING</button>
 </div>
 </div>
 
-</div><!-- container -->
+</div><!-- W -->
 <script>
 // ═══════════════════════════════════════════════
-//  CORE STATE
+//  CORE
 // ═══════════════════════════════════════════════
-let espIP='192.168.43.1', espOK=false;
-let video=document.getElementById('video');
-let canvas=document.getElementById('canvas');
-let ctx=canvas.getContext('2d');
-let sctx=document.getElementById('scanCanvas').getContext('2d');
+let eip='192.168.43.1', ok=false;
+let vid=document.getElementById('vid');
+let cnv=document.getElementById('cnv');
+let ctx=cnv.getContext('2d');
+let sctx=document.getElementById('scanC').getContext('2d');
 let frozenImg=null, isLive=false, curMode=null, isDrw=false;
-let rFront=null, rBack=null, RLEN=15, pxcm=null;
-let rawPts=[], pathPts=[], cmds=[];
-const MIN_PX=15, MIN_ANG=15;
-// Timing values (synced with ESP)
+let rF=null, rB=null, RLEN=15, pxcm=null;
+let rawPts=[], pathPts=[];
 let MPC=80, MPD=12, KICK=80;
+const MIN_PX=15;
+
+// Path segments (unified AI + manual)
+// Each: {type:'fwd'|'turn', cm:N, dir:'L'|'R', deg:N, pts:[]}
+let segments=[];
+let pathMode='ai'; // 'ai' or 'manual'
+
+// Calibration — SMART STEP-BASED (unlimited trials)
+// Distance
+let dCur=80, dStep=20, dCm=30, dDir='F', dAtt=0;
+// Turning
+let tCur=12, tStep=5,  tDeg=90, tDir='R', tAtt=0;
+
 let isExp=false, isFol=false, isSeek=false;
 let folIv=null, senIv=null, senOn=false, ldrIv=null;
-let ldrThr=300;
+let ldrThr=200;
 
-// Calibration binary search state
-let dLow=20, dHigh=300, dMid=80, dCm=30, dDir='F', dAtt=0, dDone=false;
-let tLow=2,  tHigh=80,  tMid=12, tDeg=90, tDir='R', tAtt=0, tDone=false;
+// ─── WiFi follow: spin-and-track ──────────────
+let folSpinning=false;
+let bestRSSI=-99, bestAngle=0, currentAngle=0;
+const SPIN_STEP_DEG=30, SPIN_STEP_MS=300;
 
 // ═══════════════════════════════════════════════
 //  TABS
 // ═══════════════════════════════════════════════
 function ST(n){
-  const ns=['manual','ai','light','explore','calib','sensors'];
-  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',ns[i]===n));
-  document.querySelectorAll('.tc').forEach(c=>c.classList.remove('active'));
-  document.getElementById('tab-'+n).classList.add('active');
-  if(n==='light'&&espOK)startLDRP(); else stopLDRP();
-  if(n==='calib'&&espOK)loadCalibData();
+  const ns=['ctrl','ai','light','auto','calib','data'];
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('A',ns[i]===n));
+  document.querySelectorAll('.tc').forEach(c=>c.classList.remove('A'));
+  document.getElementById('tab-'+n).classList.add('A');
+  if(n==='light'&&ok) startLDRP(); else stopLDRP();
+  if(n==='calib'&&ok) loadCD();
 }
 
 // ═══════════════════════════════════════════════
 //  CONNECTION
 // ═══════════════════════════════════════════════
-function connectESP(){
-  espIP=document.getElementById('espIp').value.trim();
-  fetch(`http://${espIP}/ping`,{signal:AbortSignal.timeout(3000)})
-    .then(r=>r.text()).then(()=>{espOK=true;setSt('connected','◉ CONNECTED — '+espIP);loadCalibData();})
-    .catch(()=>{espOK=false;setSt('disconnected','◉ DISCONNECTED');});
+function conn(){
+  eip=document.getElementById('eip').value.trim();
+  fetch(`http://${eip}/ping`,{signal:AbortSignal.timeout(3000)})
+    .then(r=>r.text()).then(()=>{ok=true;setSt('con','◉ CONNECTED — '+eip);loadCD();})
+    .catch(()=>{ok=false;setSt('dis','◉ DISCONNECTED');});
 }
-function setSt(c,t){const e=document.getElementById('cSt');e.className=c;e.innerText=t;}
-function sc(s){if(!espOK){console.log('CMD:',s);return Promise.resolve();}
-  return fetch(`http://${espIP}/?State=${s}`).catch(()=>{});}
+function setSt(c,t){const e=document.getElementById('cs');e.className=c;e.innerText=t;}
+function sc(s){if(!ok){console.log('CMD:',s);return Promise.resolve();}return fetch(`http://${eip}/?State=${s}`).catch(()=>{});}
 function pc(s){sc(s);}
-function sserial(cmd){if(!espOK)return Promise.resolve();
-  return fetch(`http://${espIP}/serial?cmd=${encodeURIComponent(cmd)}`).catch(()=>{});}
+function ssl(cmd){if(!ok)return Promise.resolve();return fetch(`http://${eip}/serial?cmd=${encodeURIComponent(cmd)}`).catch(()=>{});}
 
 // ═══════════════════════════════════════════════
-//  CALIB SUB TABS
+//  PATH MODE
 // ═══════════════════════════════════════════════
-function showCalib(t){
-  document.getElementById('cdiv').style.display  = t==='dist'?'block':'none';
-  document.getElementById('ctdiv').style.display = t==='turn'?'block':'none';
-  document.getElementById('cdBtn').className = t==='dist'?'bsc':'bc';
-  document.getElementById('ctBtn').className = t==='turn'?'bsc':'bc';
-}
-
-// ═══════════════════════════════════════════════
-//  DISTANCE CALIBRATION
-// ═══════════════════════════════════════════════
-async function testDist(dir,cm){
-  if(!espOK){alert('Connect ESP first!');return;}
-  dCm=cm; dDir=dir; await runDistTest();
-}
-
-async function runDistTest(){
-  dAtt++;
-  document.getElementById('dAtt').innerText  = dAtt;
-  document.getElementById('dTest').innerText = dCm+'cm '+(dDir==='F'?'fwd':'bwd');
-  document.getElementById('dMPC').innerText  = dMid;
-  const ms=dCm*dMid;
-  document.getElementById('dTime').innerText = ms+'ms';
-  document.getElementById('dProg').style.width = Math.max(0,100-((dHigh-dLow)/2.8))+'%';
-  dlog(`// Test #${dAtt}: ${dDir==='F'?'Forward':'Backward'} ${dCm}cm @ ${dMid}ms/cm = ${ms}ms`,'i');
-  document.getElementById('dFB').classList.remove('show');
-  document.getElementById('dSaved').classList.remove('show');
-  await sserial(`mpc=${dMid}`); await dl(300);
-  await sc(dDir); await dl(ms); await sc('S'); await dl(500);
-  document.getElementById('dFBQ').innerHTML=
-    `Robot moved ${dDir==='F'?'<b>forward</b>':'<b>backward</b>'} <b>${dCm}cm</b><br>
-     At <b>${dMid}ms/cm</b> = <b>${ms}ms</b><br><br>
-     Did it travel the <b>correct distance</b>?`;
-  document.getElementById('dFB').classList.add('show');
-}
-
-function dFeed(r){
-  document.getElementById('dFB').classList.remove('show');
-  if(r==='ok'){
-    MPC=dMid; dDone=true; sserial(`mpc=${dMid}`);
-    dlog(`✅ PERFECT! MS/CM=${dMid} saved to flash!`,'ok');
-    document.getElementById('dProg').style.width='100%';
-    document.getElementById('dSaved').classList.add('show');
-    document.getElementById('dMPC').className='vnum saved';
-    loadCalibData(); return;
-  }
-  if(r==='slow'){dLow=dMid; dlog(`Too short → increasing. L=${dLow} H=${dHigh}`,'w');}
-  else           {dHigh=dMid;dlog(`Too long  → decreasing. L=${dLow} H=${dHigh}`,'w');}
-  dMid=Math.round((dLow+dHigh)/2);
-  dlog(`// Next: ${dMid}ms/cm`,'i');
-  if(dHigh-dLow<=2){
-    dDone=true; MPC=dMid; sserial(`mpc=${dMid}`);
-    document.getElementById('dSaved').classList.add('show');
-    document.getElementById('dProg').style.width='100%';
-    dlog(`// Converged! MS/CM=${dMid}`,'ok'); loadCalibData(); return;
-  }
-  document.getElementById('dMPC').innerText=dMid;
-  setTimeout(()=>runDistTest(),800);
-}
-
-function resetDist(){
-  dLow=20;dHigh=300;dMid=80;dAtt=0;dDone=false;
-  ['dAtt','dTest','dTime'].forEach(id=>document.getElementById(id).innerText='--');
-  document.getElementById('dMPC').innerText='80';
-  document.getElementById('dMPC').className='vnum';
-  document.getElementById('dProg').style.width='0%';
-  document.getElementById('dFB').classList.remove('show');
-  document.getElementById('dSaved').classList.remove('show');
-  dlog('// Reset. Pick a distance to start.','i');
-}
-
-function dlog(m,t='i'){
-  const l=document.getElementById('dLog');
-  const d=document.createElement('div');d.className=t;d.innerText=m;
-  l.appendChild(d);l.scrollTop=l.scrollHeight;
-  while(l.children.length>25)l.removeChild(l.firstChild);
+function setPathMode(m){
+  pathMode=m;
+  document.getElementById('mAI').className=m==='ai'?'bsc':'bc';
+  document.getElementById('mMN').className=m==='manual'?'bsc':'bc';
+  document.getElementById('aiControls').style.display=m==='ai'?'block':'none';
+  document.getElementById('manControls').style.display=m==='manual'?'block':'none';
+  document.getElementById('rlRow').style.display=m==='ai'?'flex':'none';
+  document.getElementById('modeDesc').innerText=m==='ai'
+    ?'// AI measures distance from photo using robot size as ruler'
+    :'// You enter exact distance in cm for each straight segment';
+  document.getElementById('mst').innerText=m==='ai'?'AI':'MANUAL';
 }
 
 // ═══════════════════════════════════════════════
-//  TURNING CALIBRATION
+//  SEGMENT MANAGEMENT
 // ═══════════════════════════════════════════════
-async function testTurn(dir,deg){
-  if(!espOK){alert('Connect ESP first!');return;}
-  tDeg=deg; tDir=dir; await runTurnTest();
+function addManSeg(){
+  const cm=parseFloat(document.getElementById('manDist').value);
+  if(!cm||cm<=0){alert('Enter valid cm');return;}
+  segments.push({type:'fwd',cm:cm,label:`→ FWD ${cm}cm`});
+  renderSegList();
+  plog(`// Added: FWD ${cm}cm`,'ok');
 }
 
-async function runTurnTest(){
-  tAtt++;
-  document.getElementById('tAtt').innerText  = tAtt;
-  document.getElementById('tTest').innerText = (tDir==='R'?'RIGHT ':'LEFT ')+tDeg+'°';
-  document.getElementById('tMPD').innerText  = tMid;
-  const ms=tDeg*tMid;
-  document.getElementById('tTime').innerText = ms+'ms';
-  document.getElementById('tProg').style.width = Math.max(0,100-((tHigh-tLow)/0.78))+'%';
-  tlog(`// Test #${tAtt}: ${tDir==='R'?'RIGHT':'LEFT'} ${tDeg}° @ ${tMid}ms/deg = ${ms}ms`,'i');
-  document.getElementById('tFB').classList.remove('show');
-  document.getElementById('tSaved').classList.remove('show');
-  await sserial(`td=${tMid}`); await dl(300);
-  await sc(tDir); await dl(ms+KICK); await sc('S'); await dl(600);
-  document.getElementById('tFBQ').innerHTML=
-    `Robot turned <b>${tDir==='R'?'RIGHT':'LEFT'} ${tDeg}°</b><br>
-     At <b>${tMid}ms/deg</b> = <b>${ms}ms</b><br><br>
-     Did it rotate the <b>correct angle</b>?`;
-  document.getElementById('tFB').classList.add('show');
+function addTurn(dir,deg){
+  if(segments.length===0){plog('// Add a forward segment first!','e');return;}
+  segments.push({type:'turn',dir:dir,deg:deg,label:`${dir==='L'?'↩':'↪'} ${dir} ${deg}°`});
+  renderSegList();
+  plog(`// Added: TURN ${dir} ${deg}°`,'ok');
 }
 
-function tFeed(r){
-  document.getElementById('tFB').classList.remove('show');
-  if(r==='ok'){
-    MPD=tMid; tDone=true; sserial(`td=${tMid}`);
-    tlog(`✅ PERFECT! MS/DEG=${tMid} saved to flash!`,'ok');
-    document.getElementById('tProg').style.width='100%';
-    document.getElementById('tSaved').classList.add('show');
-    document.getElementById('tMPD').className='vnum saved';
-    loadCalibData(); return;
-  }
-  if(r==='less'){tLow=tMid; tlog(`Too little → increasing. L=${tLow} H=${tHigh}`,'w');}
-  else           {tHigh=tMid;tlog(`Too much  → decreasing. L=${tLow} H=${tHigh}`,'w');}
-  tMid=Math.round((tLow+tHigh)/2);
-  tlog(`// Next: ${tMid}ms/deg`,'i');
-  if(tHigh-tLow<=1){
-    tDone=true; MPD=tMid; sserial(`td=${tMid}`);
-    document.getElementById('tSaved').classList.add('show');
-    document.getElementById('tProg').style.width='100%';
-    tlog(`// Converged! MS/DEG=${tMid}`,'ok'); loadCalibData(); return;
-  }
-  document.getElementById('tMPD').innerText=tMid;
-  setTimeout(()=>runTurnTest(),800);
+function delSeg(i){
+  segments.splice(i,1);
+  renderSegList();
 }
 
-async function setKick(){
-  const v=parseInt(document.getElementById('kickInput').value);
-  if(v>=0&&v<=200){KICK=v; await sserial(`k=${v}`);document.getElementById('tKick').innerText=v;tlog(`// Kick=${v}ms saved`,'ok');}
+function renderSegList(){
+  const el=document.getElementById('segList');
+  if(segments.length===0){el.innerHTML='<div style="color:var(--mu);font-family:\'Share Tech Mono\',monospace;font-size:11px;">// No segments yet</div>';document.getElementById('scnt').innerText='0';return;}
+  el.innerHTML=segments.map((s,i)=>`
+    <div class="seg-item">
+      <span class="seg-icon">${s.type==='fwd'?'➡️':'↪️'}</span>
+      <span class="seg-txt">${s.label}</span>
+      <button class="seg-del" onclick="delSeg(${i})">✕</button>
+    </div>`).join('');
+  document.getElementById('scnt').innerText=segments.length;
 }
 
-function resetTurn(){
-  tLow=2;tHigh=80;tMid=12;tAtt=0;tDone=false;
-  ['tAtt','tTest','tTime'].forEach(id=>document.getElementById(id).innerText='--');
-  document.getElementById('tMPD').innerText='12';
-  document.getElementById('tMPD').className='vnum';
-  document.getElementById('tProg').style.width='0%';
-  document.getElementById('tFB').classList.remove('show');
-  document.getElementById('tSaved').classList.remove('show');
-  tlog('// Reset. Pick an angle to start.','i');
-}
-
-function tlog(m,t='i'){
-  const l=document.getElementById('tLog');
-  const d=document.createElement('div');d.className=t;d.innerText=m;
-  l.appendChild(d);l.scrollTop=l.scrollHeight;
-  while(l.children.length>25)l.removeChild(l.firstChild);
-}
-
-async function loadCalibData(){
-  if(!espOK)return;
+// ═══════════════════════════════════════════════
+//  CAMERA
+// ═══════════════════════════════════════════════
+async function startLive(){
   try{
-    const r=await fetch(`http://${espIP}/calibdata`,{signal:AbortSignal.timeout(2000)});
-    const d=await r.json();
-    MPC=d.mpc; MPD=d.mpd; KICK=d.kick;
-    document.getElementById('svMPC').innerText  = d.mpc;
-    document.getElementById('svMPD').innerText  = d.mpd;
-    document.getElementById('svKick').innerText = d.kick;
-    document.getElementById('svLeft').innerText = d.left;
-    document.getElementById('svRight').innerText= d.right;
-    document.getElementById('kickInput').value  = d.kick;
-    document.getElementById('tKick').innerText  = d.kick;
-  }catch(e){}
+    if(vid.srcObject)vid.srcObject.getTracks().forEach(t=>t.stop());
+    const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
+    vid.srcObject=s; isLive=true; frozenImg=null;
+    vid.onloadedmetadata=()=>{cnv.width=vid.videoWidth;cnv.height=vid.videoHeight;ctx.clearRect(0,0,cnv.width,cnv.height);};
+    document.getElementById('lbtn').classList.add('BA');
+    document.getElementById('fbtn').classList.remove('BA');
+    sg4(1); plog('// Camera ready. Press FREEZE.','i');
+  }catch(e){alert('Camera: '+e.message);}
 }
 
-async function factReset(){
-  if(!confirm('Reset ALL values to defaults?'))return;
-  await sserial('rst'); MPC=80;MPD=12;KICK=80;
-  dDone=false;tDone=false;resetDist();resetTurn();
-  await loadCalibData();
+function frzImg(){
+  if(!vid.srcObject){alert('Press LIVE first!');return;}
+  ctx.drawImage(vid,0,0,cnv.width,cnv.height);
+  frozenImg=ctx.getImageData(0,0,cnv.width,cnv.height);
+  vid.srcObject.getTracks().forEach(t=>t.stop());
+  vid.srcObject=null; isLive=false;
+  document.getElementById('fbtn').classList.add('BA');
+  document.getElementById('lbtn').classList.remove('BA');
+  sg4(2); plog('// Frozen! Tap 🔴 FRONT then robot front.','i');
+  setMode('rf');
+}
+
+function setMode(m){
+  if(isLive){alert('Freeze first!');return;}
+  if(!frozenImg&&m!==null){alert('LIVE then FREEZE first!');return;}
+  curMode=m;
+  document.getElementById('fnBtn').classList.toggle('BA',m==='rf');
+  document.getElementById('bkBtn').classList.toggle('BA',m==='rb');
+  document.getElementById('dwBtn').classList.toggle('BA',m==='draw');
+  const lb={rf:'FRONT',rb:'BACK',draw:'DRAW'};
+  document.getElementById('mst').innerText=lb[m]||pathMode.toUpperCase();
+}
+
+function gp(e){
+  const r=cnv.getBoundingClientRect();
+  const sx=cnv.width/r.width,sy=cnv.height/r.height;
+  if(e.touches)return{x:(e.touches[0].clientX-r.left)*sx,y:(e.touches[0].clientY-r.top)*sy};
+  return{x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy};
+}
+function dst(a,b){const dx=b.x-a.x,dy=b.y-a.y;return Math.sqrt(dx*dx+dy*dy);}
+
+cnv.addEventListener('mousedown',e=>{e.preventDefault();if(isLive)return;isDrw=true;tap(e);});
+cnv.addEventListener('mousemove',e=>{e.preventDefault();if(isDrw&&!isLive&&curMode==='draw')dmv(e);});
+cnv.addEventListener('mouseup',()=>{isDrw=false;if(curMode==='draw')finP();});
+cnv.addEventListener('mouseleave',()=>{isDrw=false;});
+cnv.addEventListener('touchstart',e=>{e.preventDefault();e.stopPropagation();if(isLive)return;isDrw=true;tap(e);},{passive:false});
+cnv.addEventListener('touchmove',e=>{e.preventDefault();e.stopPropagation();if(isDrw&&!isLive&&curMode==='draw')dmv(e);},{passive:false});
+cnv.addEventListener('touchend',e=>{e.stopPropagation();isDrw=false;if(curMode==='draw')finP();},{passive:false});
+
+function tap(e){
+  const{x,y}=gp(e);
+  if(curMode==='rf'){rF={x,y};redraw();plog('// FRONT marked! Tap 🔵 BACK.','i');sg4(2);setMode('rb');}
+  else if(curMode==='rb'){rB={x,y};doCalib();redraw();plog('// Calibrated! Draw segments or add manually.','ok');sg4(3);setMode('draw');}
+  else if(curMode==='draw'){
+    if(!pxcm&&pathMode==='ai'){alert('Mark FRONT and BACK first!');return;}
+    if(rawPts.length===0)rawPts.push(rF||{x,y});
+    rawPts.push({x,y});redraw();
+  }
+}
+
+function dmv(e){
+  const{x,y}=gp(e);
+  const last=rawPts[rawPts.length-1]||{x:0,y:0};
+  if(dst(last,{x,y})>=MIN_PX){rawPts.push({x,y});redraw();}
+}
+
+function finP(){
+  if(rawPts.length<2||pathMode!=='ai')return;
+  // Convert drawn segment to segment entry using pxcm
+  const pts=simplify(rawPts);
+  let totPx=0;
+  for(let i=1;i<pts.length;i++)totPx+=dst(pts[i-1],pts[i]);
+  const cm=pxcm?totPx/pxcm:0;
+  if(cm>0){
+    segments.push({type:'fwd',cm:parseFloat(cm.toFixed(1)),pts:pts,label:`→ FWD ${cm.toFixed(1)}cm (AI)`});
+    renderSegList();
+    plog(`// AI segment: ${cm.toFixed(1)}cm`,'ok');
+  }
+  rawPts=[];redraw();
+}
+
+function simplify(pts,eps=8){
+  if(pts.length<=2)return pts;
+  let md=0,mi=0;const s=pts[0],e=pts[pts.length-1];
+  for(let i=1;i<pts.length-1;i++){const d=ptld(pts[i],s,e);if(d>md){md=d;mi=i;}}
+  if(md>eps){const l=simplify(pts.slice(0,mi+1),eps),r=simplify(pts.slice(mi),eps);return[...l.slice(0,-1),...r];}
+  return[s,e];
+}
+function ptld(p,a,b){const dx=b.x-a.x,dy=b.y-a.y,len=Math.sqrt(dx*dx+dy*dy);if(len===0)return dst(p,a);return Math.abs(dy*p.x-dx*p.y+b.x*a.y-b.y*a.x)/len;}
+
+function updateRL(){const v=parseFloat(document.getElementById('rlIn').value);if(v>0&&v<300){RLEN=v;if(rF&&rB)doCalib();}}
+function doCalib(){
+  if(!rF||!rB)return;
+  const dx=rB.x-rF.x,dy=rB.y-rF.y;
+  const pl=Math.sqrt(dx*dx+dy*dy);
+  pxcm=pl/RLEN;
+  document.getElementById('pcm').innerText=pxcm.toFixed(2);
+  document.getElementById('cst').innerText='OK';
+  document.getElementById('ccl').className='ic ok';
+  document.getElementById('cbg').innerText=`📏 ${pxcm.toFixed(2)}px/cm`;
+  document.getElementById('cbg').style.borderColor='var(--g)';
+  document.getElementById('cbg').style.color='var(--g)';
+  plog(`// Calibrated: ${pl.toFixed(0)}px=${RLEN}cm → ${pxcm.toFixed(2)}px/cm`,'ok');
+}
+
+function redraw(){
+  ctx.clearRect(0,0,cnv.width,cnv.height);
+  if(frozenImg)ctx.putImageData(frozenImg,0,0);
+  // Raw drawing in progress
+  if(rawPts.length>1){
+    ctx.strokeStyle='rgba(255,107,53,0.4)';ctx.lineWidth=2;ctx.setLineDash([3,3]);
+    ctx.beginPath();rawPts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
+    ctx.stroke();ctx.setLineDash([]);
+  }
+  // Draw all AI segments
+  segments.forEach(seg=>{
+    if(seg.pts&&seg.pts.length>1){
+      ctx.strokeStyle='#ff6b35';ctx.lineWidth=3;ctx.setLineDash([8,4]);
+      ctx.beginPath();seg.pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
+      ctx.stroke();ctx.setLineDash([]);
+      const last=seg.pts[seg.pts.length-1];
+      ctx.fillStyle='#00ff88';ctx.beginPath();ctx.arc(last.x,last.y,6,0,2*Math.PI);ctx.fill();
+    }
+  });
+  // Front/back markers
+  if(rF){ctx.fillStyle='#ff3b3b';ctx.beginPath();ctx.arc(rF.x,rF.y,9,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='white';ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('F',rF.x,rF.y);}
+  if(rB){ctx.fillStyle='#00d4ff';ctx.beginPath();ctx.arc(rB.x,rB.y,9,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='white';ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('B',rB.x,rB.y);}
+  if(rF&&rB){ctx.strokeStyle='#ffd600';ctx.lineWidth=1.5;ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(rF.x,rF.y);ctx.lineTo(rB.x,rB.y);ctx.stroke();ctx.setLineDash([]);const mx=(rF.x+rB.x)/2,my=(rF.y+rB.y)/2;ctx.fillStyle='#ffd600';ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText(`${RLEN}cm`,mx,my-4);}
+}
+
+function clearAll(){
+  frozenImg=null;ctx.clearRect(0,0,cnv.width,cnv.height);
+  rF=null;rB=null;pxcm=null;rawPts=[];segments=[];
+  ['cst','pcm','mst'].forEach(id=>document.getElementById(id).innerText='--');
+  document.getElementById('ccl').className='ic';
+  document.getElementById('cbg').innerText='📏 NOT CALIBRATED';
+  document.getElementById('cbg').style.borderColor='var(--y)';
+  document.getElementById('cbg').style.color='var(--y)';
+  document.getElementById('pb').style.width='0%';
+  ['fnBtn','bkBtn','dwBtn','fbtn','lbtn'].forEach(id=>document.getElementById(id).classList.remove('BA'));
+  renderSegList();sg4(1);
+  plog('// Cleared.','w');
+}
+
+function sg4(a){
+  for(let i=1;i<=4;i++){
+    const e=document.getElementById('sg'+i);
+    if(e) e.className=i<a?'s dn':i===a?'s ac':'s pe';
+  }
 }
 
 // ═══════════════════════════════════════════════
-//  LDR POLLING
+//  PATH CALCULATE & EXECUTE
+// ═══════════════════════════════════════════════
+function calcPath(){
+  if(segments.length===0){alert('Add segments first!');return;}
+  plog(`// Calculating ${segments.length} segments...`,'i');
+  let total=0;
+  segments.forEach(s=>{
+    if(s.type==='fwd'){total+=s.cm;plog(`   → FWD ${s.cm}cm (${(s.cm*MPC).toFixed(0)}ms)`,'w');}
+    else plog(`   ${s.dir==='L'?'↩':'↪'} TURN ${s.dir} ${s.deg}° (${(s.deg*MPD).toFixed(0)}ms)`,'w');
+  });
+  plog(`// Total forward: ${total.toFixed(1)}cm`,'ok');
+  sg4(4);
+}
+
+function execPath(){
+  if(segments.length===0){alert('Add segments first!');return;}
+  if(!ok){alert('Connect ESP first!');return;}
+  if(isExp)stopExp();
+  plog('// Executing path...','ok');
+  exSeg(0);
+}
+
+async function exSeg(i){
+  if(i>=segments.length){await sc('S');document.getElementById('pb').style.width='0%';plog('// Path complete!','ok');return;}
+  const seg=segments[i];
+  const pct=((i+1)/segments.length*100);
+  document.getElementById('pb').style.width=pct+'%';
+
+  if(seg.type==='fwd'){
+    const ms=seg.cm*MPC;
+    plog(`// Seg ${i+1}: FWD ${seg.cm}cm (${ms.toFixed(0)}ms)`,'w');
+    await sc('F'); await dl(ms); await sc('S'); await dl(150);
+  } else {
+    const ms=seg.deg*MPD;
+    plog(`// Seg ${i+1}: TURN ${seg.dir} ${seg.deg}° (${ms.toFixed(0)}ms)`,'w');
+    await sc(seg.dir); await dl(ms+KICK); await sc('S'); await dl(200);
+  }
+  await exSeg(i+1);
+}
+
+function eStop(){sc('S');stopExp();stopFol();stopSeek();if(senIv)clearInterval(senIv);document.getElementById('pb').style.width='0%';plog('// EMERGENCY STOP','e');}
+function plog(m,t='w'){const l=document.getElementById('plog');const d=document.createElement('div');d.className=t;d.innerText=m;l.appendChild(d);l.scrollTop=l.scrollHeight;while(l.children.length>40)l.removeChild(l.firstChild);}
+
+// ═══════════════════════════════════════════════
+//  LDR LIVE
 // ═══════════════════════════════════════════════
 function startLDRP(){
   if(ldrIv)return;
   ldrIv=setInterval(async()=>{
-    try{const r=await fetch(`http://${espIP}/sensors`,{signal:AbortSignal.timeout(800)});
-      const d=await r.json();updLDR(d.ldr,d.threshold||ldrThr);}catch(e){}
+    try{
+      const r=await fetch(`http://${eip}/sensors`,{signal:AbortSignal.timeout(800)});
+      const d=await r.json();
+      updLDR(d.ldr,d.ldrPct,d.ldrMin,d.ldrMax,d.threshold);
+    }catch(e){}
   },400);
 }
 function stopLDRP(){if(ldrIv){clearInterval(ldrIv);ldrIv=null;}}
-function updLDR(v,thr){
-  const pct=(v/1023)*100;
-  document.getElementById('ldrFill').style.width=pct+'%';
-  const f=document.getElementById('ldrFill');
-  if(v<thr){f.style.background='linear-gradient(90deg,#1a0d2e,#ff3b3b)';document.getElementById('ldrTxt').innerText=v+' ⬛ DARK!';}
-  else{f.style.background='linear-gradient(90deg,#1a0d2e,#ffd600,#fff)';document.getElementById('ldrTxt').innerText=v+' / 1023';}
+
+function updLDR(raw,pct,mn,mx,thr){
+  // bar width based on percentage (0=dark, 100=bright)
+  document.getElementById('ldrF').style.width=(pct||0)+'%';
+  const f=document.getElementById('ldrF');
+  const isDark=raw<(thr||ldrThr);
+  if(isDark){
+    f.style.background='linear-gradient(90deg,#1a0d2e,#ff3b3b)';
+    document.getElementById('ldrT').innerText=raw+' ⬛ DARK!';
+  } else {
+    f.style.background='linear-gradient(90deg,#1a0d2e,#ffd600,#fff)';
+    document.getElementById('ldrT').innerText=raw+' ('+pct+'%)';
+  }
+  document.getElementById('ldrRaw').innerText  = raw;
+  document.getElementById('ldrMin').innerText  = mn!==undefined?mn:'--';
+  document.getElementById('ldrMax').innerText  = mx!==undefined?mx:'--';
+  document.getElementById('ldrThrDisp').innerText = thr||ldrThr;
 }
+
 function setThr(){
-  const v=parseInt(document.getElementById('thrInput').value);
-  if(v>=0&&v<=1023){ldrThr=v;sserial(`lt=${v}`);document.getElementById('seekSt').innerText=`// Threshold=${v} saved to ESP flash`;}
+  const v=parseInt(document.getElementById('thrIn').value);
+  if(v>=0&&v<=1023){ldrThr=v;ssl(`lt=${v}`);document.getElementById('ldrThrDisp').innerText=v;document.getElementById('seekSt').innerText=`// Threshold=${v} saved to ESP flash`;}
+}
+
+function resetLDRRange(){
+  ssl('ldreset');
+  document.getElementById('ldrMin').innerText='--';
+  document.getElementById('ldrMax').innerText='--';
 }
 
 // ═══════════════════════════════════════════════
 //  360° SCAN
 // ═══════════════════════════════════════════════
 async function doScan(){
-  if(!espOK){alert('Connect ESP first!');return;}
+  if(!ok){alert('Connect ESP first!');return;}
   document.getElementById('scanBtn').innerText='⏳ SCANNING...';
-  document.getElementById('scanRes').innerText='// Scanning 360°... (~15 sec)';
-  document.getElementById('scanRes').style.color='var(--accent)';
+  document.getElementById('scanR').innerText='// Scanning 360°... (~15 sec)';
+  document.getElementById('scanR').style.color='var(--accent)';
   try{
-    const r=await fetch(`http://${espIP}/scan`,{signal:AbortSignal.timeout(35000)});
+    const r=await fetch(`http://${eip}/scan`,{signal:AbortSignal.timeout(35000)});
     const d=await r.json();
     drawRadar(d.readings,d.bestAngle);
-    document.getElementById('scanRes').innerText=`✅ Best: ${d.bestAngle}° LDR=${d.bestLight}`;
-    document.getElementById('scanRes').style.color='var(--green)';
-  }catch(e){document.getElementById('scanRes').innerText='❌ Failed: '+e.message;document.getElementById('scanRes').style.color='var(--red)';}
+    document.getElementById('scanR').innerText=`✅ Darkest: ${d.bestAngle}° LDR=${d.bestLight}`;
+    document.getElementById('scanR').style.color='var(--g)';
+  }catch(e){document.getElementById('scanR').innerText='❌ '+e.message;document.getElementById('scanR').style.color='var(--r)';}
   document.getElementById('scanBtn').innerText='🔄 SCAN 360°';
 }
 
 function drawRadar(readings,best){
-  const c=document.getElementById('scanCanvas');
+  const c=document.getElementById('scanC');
   const cx=c.width/2,cy=c.height/2,r=78;
   sctx.clearRect(0,0,c.width,c.height);
   sctx.fillStyle='#0d1117';sctx.beginPath();sctx.arc(cx,cy,r+6,0,2*Math.PI);sctx.fill();
@@ -684,206 +818,370 @@ function drawRadar(readings,best){
   const steps=readings.length,dpS=360/steps;
   sctx.beginPath();
   readings.forEach((v,i)=>{const a=(i*dpS-90)*Math.PI/180;const nr=1-((v-mn)/rng);const rd=12+nr*(r-12);const x=cx+rd*Math.cos(a),y=cy+rd*Math.sin(a);i===0?sctx.moveTo(x,y):sctx.lineTo(x,y);});
-  sctx.closePath();sctx.fillStyle='rgba(0,212,255,0.2)';sctx.strokeStyle='#00d4ff';sctx.lineWidth=1.5;sctx.fill();sctx.stroke();
-  const bi=best/dpS,ba=(bi*dpS-90)*Math.PI/180;
-  const bnr=1-((readings[Math.round(bi)]-mn)/rng);const brd=12+bnr*(r-12);
+  sctx.closePath();sctx.fillStyle='rgba(0,212,255,0.15)';sctx.strokeStyle='#00d4ff';sctx.lineWidth=1.5;sctx.fill();sctx.stroke();
+  const bi=Math.round(best/dpS),ba=(bi*dpS-90)*Math.PI/180;
+  const bnr=readings[bi]!==undefined?1-((readings[bi]-mn)/rng):0.5;
+  const brd=12+bnr*(r-12);
   const bx=cx+brd*Math.cos(ba),by=cy+brd*Math.sin(ba);
   sctx.beginPath();sctx.moveTo(cx,cy);sctx.lineTo(bx,by);sctx.strokeStyle='#00ff88';sctx.lineWidth=2;sctx.stroke();
   sctx.fillStyle='#00ff88';sctx.beginPath();sctx.arc(bx,by,5,0,2*Math.PI);sctx.fill();
   sctx.fillStyle='#ffd600';sctx.beginPath();sctx.arc(cx,cy,7,0,2*Math.PI);sctx.fill();
   sctx.fillStyle='#000';sctx.font='bold 8px monospace';sctx.textAlign='center';sctx.textBaseline='middle';sctx.fillText('R',cx,cy);
+  sctx.fillStyle='#64748b';sctx.font='9px monospace';
+  sctx.textAlign='center';sctx.fillText('0°',cx,cy-r-3);sctx.fillText('180°',cx,cy+r+11);
+  sctx.textAlign='right';sctx.fillText('270°',cx-r-3,cy+3);
+  sctx.textAlign='left';sctx.fillText('90°',cx+r+3,cy+3);
 }
 
 // ═══════════════════════════════════════════════
 //  LIGHT SEEKER
 // ═══════════════════════════════════════════════
 async function startSeek(){
-  if(!espOK){alert('Connect ESP first!');return;}
+  if(!ok){alert('Connect ESP first!');return;}
   if(isExp)stopExp();if(isFol)stopFol();isSeek=true;
-  await fetch(`http://${espIP}/lightseek?cmd=start`).catch(()=>{});
+  await fetch(`http://${eip}/lightseek?cmd=start`).catch(()=>{});
   document.getElementById('seekBtn').innerText='🔦 SEEKING...';
-  document.getElementById('seekSt').style.color='var(--green)';
+  document.getElementById('seekSt').style.color='var(--g)';
   const p=setInterval(async()=>{
     if(!isSeek){clearInterval(p);return;}
-    try{const r=await fetch(`http://${espIP}/sensors`,{signal:AbortSignal.timeout(800)});
-      const d=await r.json();updLDR(d.ldr,ldrThr);
+    try{
+      const r=await fetch(`http://${eip}/sensors`,{signal:AbortSignal.timeout(800)});
+      const d=await r.json();
+      updLDR(d.ldr,d.ldrPct,d.ldrMin,d.ldrMax,d.threshold);
       document.getElementById('seekSt').innerText=`🔦 LDR:${d.ldr} | Dist:${d.ultrasonic}cm`;
-      if(d.isDark){isSeek=false;clearInterval(p);document.getElementById('seekBtn').innerText='🔦 START SEEKING';document.getElementById('seekSt').innerText='🎯 GOAL FOUND!';}}
-    catch(e){}
+      if(d.isDark){isSeek=false;clearInterval(p);document.getElementById('seekBtn').innerText='🔦 START SEEKING';document.getElementById('seekSt').innerText='🎯 GOAL FOUND! Dark area reached!';}
+    }catch(e){}
   },500);
 }
 async function stopSeek(){
-  isSeek=false;await fetch(`http://${espIP}/lightseek?cmd=stop`).catch(()=>{});
+  isSeek=false;
+  await fetch(`http://${eip}/lightseek?cmd=stop`).catch(()=>{});
   document.getElementById('seekBtn').innerText='🔦 START SEEKING';
   document.getElementById('seekSt').innerText='⏸ Light seeker: OFF';
-  document.getElementById('seekSt').style.color='var(--muted)';
+  document.getElementById('seekSt').style.color='var(--mu)';
 }
-
-// ═══════════════════════════════════════════════
-//  CAMERA & PATH
-// ═══════════════════════════════════════════════
-async function startLive(){
-  try{
-    if(video.srcObject)video.srcObject.getTracks().forEach(t=>t.stop());
-    const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});
-    video.srcObject=s;isLive=true;frozenImg=null;
-    video.onloadedmetadata=()=>{canvas.width=video.videoWidth;canvas.height=video.videoHeight;ctx.clearRect(0,0,canvas.width,canvas.height);};
-    document.getElementById('liveBtn').classList.add('ba');document.getElementById('frzBtn').classList.remove('ba');
-    sg(1);plog('// Camera ready. Press FREEZE.','i');
-  }catch(e){alert('Camera: '+e.message);}
-}
-function freezeImg(){
-  if(!video.srcObject){alert('Press LIVE first!');return;}
-  ctx.drawImage(video,0,0,canvas.width,canvas.height);
-  frozenImg=ctx.getImageData(0,0,canvas.width,canvas.height);
-  video.srcObject.getTracks().forEach(t=>t.stop());video.srcObject=null;isLive=false;
-  document.getElementById('frzBtn').classList.add('ba');document.getElementById('liveBtn').classList.remove('ba');
-  sg(2);plog('// Frozen! Tap 🔴 FRONT.','i');setMode('rf');
-}
-function setMode(m){
-  if(isLive){alert('Freeze first!');return;}
-  if(!frozenImg&&m!==null){alert('LIVE then FREEZE first!');return;}
-  curMode=m;
-  document.getElementById('frontBtn').classList.toggle('ba',m==='rf');
-  document.getElementById('backBtn').classList.toggle('ba',m==='rb');
-  document.getElementById('drawBtn').classList.toggle('ba',m==='draw');
-  const lb={rf:'FRONT',rb:'BACK',draw:'DRAW'};
-  document.getElementById('modeSt').innerText=lb[m]||'--';
-}
-function gp(e){const rect=canvas.getBoundingClientRect();const sx=canvas.width/rect.width,sy=canvas.height/rect.height;if(e.touches)return{x:(e.touches[0].clientX-rect.left)*sx,y:(e.touches[0].clientY-rect.top)*sy};return{x:(e.clientX-rect.left)*sx,y:(e.clientY-rect.top)*sy};}
-function dst(a,b){const dx=b.x-a.x,dy=b.y-a.y;return Math.sqrt(dx*dx+dy*dy);}
-canvas.addEventListener('mousedown',e=>{e.preventDefault();if(isLive)return;isDrw=true;tap(e);});
-canvas.addEventListener('mousemove',e=>{e.preventDefault();if(isDrw&&!isLive&&curMode==='draw')dmv(e);});
-canvas.addEventListener('mouseup',()=>{isDrw=false;if(curMode==='draw')finP();});
-canvas.addEventListener('mouseleave',()=>{isDrw=false;});
-canvas.addEventListener('touchstart',e=>{e.preventDefault();e.stopPropagation();if(isLive)return;isDrw=true;tap(e);},{passive:false});
-canvas.addEventListener('touchmove',e=>{e.preventDefault();e.stopPropagation();if(isDrw&&!isLive&&curMode==='draw')dmv(e);},{passive:false});
-canvas.addEventListener('touchend',e=>{e.stopPropagation();isDrw=false;if(curMode==='draw')finP();},{passive:false});
-function tap(e){
-  const{x,y}=gp(e);
-  if(curMode==='rf'){rFront={x,y};redraw();plog('// FRONT marked! Tap 🔵 BACK.','i');sg(3);setMode('rb');}
-  else if(curMode==='rb'){rBack={x,y};doCalib();redraw();plog('// Calibrated! Tap ✏️ PATH.','ok');sg(4);setMode('draw');}
-  else if(curMode==='draw'){if(!pxcm){alert('Calibrate first!');return;}rawPts=[rFront,{x,y}];redraw();}
-}
-function dmv(e){if(!pxcm)return;const{x,y}=gp(e);const last=rawPts[rawPts.length-1];if(dst(last,{x,y})>=MIN_PX){rawPts.push({x,y});redraw();document.getElementById('ptcnt').innerText=rawPts.length-1;}}
-function finP(){if(rawPts.length<2)return;pathPts=simplify(rawPts);redraw();plog(`// ${rawPts.length}→${pathPts.length} pts`,'ok');document.getElementById('ptcnt').innerText=pathPts.length-1;}
-function simplify(pts,eps=8){if(pts.length<=2)return pts;let md=0,mi=0;const s=pts[0],e=pts[pts.length-1];for(let i=1;i<pts.length-1;i++){const d=ptld(pts[i],s,e);if(d>md){md=d;mi=i;}}if(md>eps){const l=simplify(pts.slice(0,mi+1),eps),r=simplify(pts.slice(mi),eps);return[...l.slice(0,-1),...r];}return[s,e];}
-function ptld(p,a,b){const dx=b.x-a.x,dy=b.y-a.y,len=Math.sqrt(dx*dx+dy*dy);if(len===0)return dst(p,a);return Math.abs(dy*p.x-dx*p.y+b.x*a.y-b.y*a.x)/len;}
-function updateRL(){const v=parseFloat(document.getElementById('rlInput').value);if(v>0&&v<300){RLEN=v;if(rFront&&rBack)doCalib();}}
-function doCalib(){if(!rFront||!rBack)return;const dx=rBack.x-rFront.x,dy=rBack.y-rFront.y;const pl=Math.sqrt(dx*dx+dy*dy);pxcm=pl/RLEN;document.getElementById('pxcm').innerText=pxcm.toFixed(2);document.getElementById('caliSt').innerText='OK';document.getElementById('ccell').className='ic ok';document.getElementById('cbadge').innerText=`📏 ${pxcm.toFixed(2)}px/cm`;document.getElementById('cbadge').style.borderColor='var(--green)';document.getElementById('cbadge').style.color='var(--green)';plog(`// Calibrated: ${pl.toFixed(0)}px=${RLEN}cm`,'ok');}
-function redraw(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  if(frozenImg)ctx.putImageData(frozenImg,0,0);
-  if(rawPts.length>1&&curMode==='draw'){ctx.strokeStyle='rgba(255,107,53,0.3)';ctx.lineWidth=2;ctx.setLineDash([3,3]);ctx.beginPath();rawPts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));ctx.stroke();ctx.setLineDash([]);}
-  const pts=pathPts.length>1?pathPts:rawPts;
-  if(pts.length>1){ctx.strokeStyle='#ff6b35';ctx.lineWidth=3;ctx.setLineDash([8,4]);ctx.beginPath();pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));ctx.stroke();ctx.setLineDash([]);for(let i=1;i<pts.length;i++){ctx.fillStyle=i===pts.length-1?'#00ff88':'#ff6b35';ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,5,0,2*Math.PI);ctx.fill();}}
-  if(rFront){ctx.fillStyle='#ff3b3b';ctx.beginPath();ctx.arc(rFront.x,rFront.y,9,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='white';ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('F',rFront.x,rFront.y);}
-  if(rBack){ctx.fillStyle='#00d4ff';ctx.beginPath();ctx.arc(rBack.x,rBack.y,9,0,2*Math.PI);ctx.fill();ctx.strokeStyle='white';ctx.lineWidth=2;ctx.stroke();ctx.fillStyle='white';ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('B',rBack.x,rBack.y);}
-  if(rFront&&rBack){ctx.strokeStyle='#ffd600';ctx.lineWidth=1.5;ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(rFront.x,rFront.y);ctx.lineTo(rBack.x,rBack.y);ctx.stroke();ctx.setLineDash([]);const mx=(rFront.x+rBack.x)/2,my=(rFront.y+rBack.y)/2;ctx.fillStyle='#ffd600';ctx.font='bold 10px monospace';ctx.textAlign='center';ctx.textBaseline='bottom';ctx.fillText(`${RLEN}cm`,mx,my-4);}
-}
-function clearAll(){
-  frozenImg=null;ctx.clearRect(0,0,canvas.width,canvas.height);
-  rFront=null;rBack=null;pxcm=null;rawPts=[];pathPts=[];cmds=[];curMode=null;
-  ['caliSt','pxcm','ptcnt','modeSt'].forEach(id=>document.getElementById(id).innerText='--');
-  document.getElementById('ccell').className='ic';
-  document.getElementById('cbadge').innerText='📏 NOT CALIBRATED';
-  document.getElementById('cbadge').style.borderColor='var(--yellow)';
-  document.getElementById('cbadge').style.color='var(--yellow)';
-  document.getElementById('pbar').style.width='0%';
-  ['frontBtn','backBtn','drawBtn','frzBtn','liveBtn'].forEach(id=>document.getElementById(id).classList.remove('ba'));
-  sg(1);plog('// Cleared. LIVE→FREEZE to restart.','w');
-}
-function sg(a){for(let i=1;i<=5;i++){const e=document.getElementById('sg'+i);e.className=i<a?'s done':i===a?'s act':'s pend';}}
-
-// PATH CALC & EXECUTE
-function calcPath(){
-  if(!pxcm){alert('Calibrate robot size first!');return;}
-  const pts=pathPts.length>1?pathPts:rawPts;
-  if(pts.length<2){alert('Draw path first!');return;}
-  cmds=[];let tot=0,prev=null;
-  for(let i=1;i<pts.length;i++){
-    const p1=pts[i-1],p2=pts[i];
-    const dx=p2.x-p1.x,dy=p2.y-p1.y;
-    const ang=Math.atan2(dy,dx)*180/Math.PI;
-    const cm=Math.sqrt(dx*dx+dy*dy)/pxcm;
-    tot+=cm;
-    if(prev!==null){let df=ang-prev;if(df>180)df-=360;if(df<-180)df+=360;
-      const tms=Math.abs(df)*MPD;
-      if(Math.abs(df)>MIN_ANG&&tms>=250)cmds.push({t:df>0?'R':'L',ms:tms,lb:`TURN ${df>0?'RIGHT':'LEFT'} ${Math.abs(df).toFixed(0)}°`});}
-    if(cm>2)cmds.push({t:'F',ms:cm*MPC,lb:`FWD ${cm.toFixed(1)}cm`});
-    prev=ang;
-  }
-  sg(5);plog(`// ${pxcm.toFixed(2)}px/cm — ${tot.toFixed(1)}cm — ${cmds.length} steps`,'i');
-  cmds.forEach(c=>plog(`   ${c.lb}`,'w'));
-}
-function execPath(){
-  if(!pxcm){alert('Calibrate first!');return;}
-  if(cmds.length===0)calcPath();
-  if(cmds.length===0)return;
-  if(!espOK){alert('Connect ESP first!');return;}
-  if(isExp)stopExp();
-  plog('// Executing...','ok');exStep(0);
-}
-async function exStep(i){
-  if(i>=cmds.length){await sc('S');document.getElementById('pbar').style.width='0%';plog('// Done!','ok');return;}
-  const c=cmds[i];
-  document.getElementById('pbar').style.width=(((i+1)/cmds.length)*100)+'%';
-  plog(`// ${i+1}/${cmds.length}: ${c.lb}`,'w');
-  await sc(c.t);await dl(c.ms);await sc('S');await dl(150);await exStep(i+1);
-}
-function eStop(){sc('S');stopExp();stopFol();stopSeek();if(senIv)clearInterval(senIv);document.getElementById('pbar').style.width='0%';plog('// EMERGENCY STOP','e');}
-function plog(m,t='w'){const l=document.getElementById('plog');const d=document.createElement('div');d.className=t;d.innerText=m;l.appendChild(d);l.scrollTop=l.scrollHeight;while(l.children.length>40)l.removeChild(l.firstChild);}
 
 // ═══════════════════════════════════════════════
 //  EXPLORE
 // ═══════════════════════════════════════════════
 const eMv=['F','F','F','F','L','R','B'];
+let expStuckCount=0, expLastDir='F';
 async function expStep(){
   if(!isExp)return;
-  try{const r=await fetch(`http://${espIP}/sensors`,{signal:AbortSignal.timeout(1000)});const d=await r.json();
-    if(d.ultrasonic<20){document.getElementById('expSt').innerText=`⚠️ ${d.ultrasonic}cm`;await sc('S');await dl(200);await sc(Math.random()>0.5?'L':'R');await dl(400+Math.random()*400);await sc('S');await dl(200);}
-    else{const m=eMv[Math.floor(Math.random()*eMv.length)];const t=300+Math.random()*500;document.getElementById('expSt').innerText=`🔵 ${m} ${t.toFixed(0)}ms`;await sc(m);await dl(t);await sc('S');await dl(150);}
+  try{
+    const r=await fetch(`http://${eip}/sensors`,{signal:AbortSignal.timeout(1000)});
+    const d=await r.json();
+    if(d.obstacle){
+      expStuckCount++;
+      document.getElementById('expSt').innerText=`⚠️ Obstacle ${d.ultrasonic}cm (stuck:${expStuckCount})`;
+      await sc('S');await dl(200);
+      if(expStuckCount>=3){
+        // Stuck in loop — rotate 180°
+        expStuckCount=0;
+        document.getElementById('expSt').innerText='🔄 STUCK! Rotating 180°...';
+        await sc('R');await dl(180*MPD+KICK);await sc('S');await dl(300);
+        expLastDir=expLastDir==='R'?'L':'R';
+      } else {
+        const t=Math.random()>0.5?'L':'R';
+        await sc(t);await dl(400+Math.random()*400);await sc('S');await dl(200);
+      }
+    } else {
+      expStuckCount=0;
+      const m=eMv[Math.floor(Math.random()*eMv.length)];
+      const t=300+Math.random()*500;
+      document.getElementById('expSt').innerText=`🔵 ${m} ${t.toFixed(0)}ms`;
+      await sc(m);await dl(t);await sc('S');await dl(150);
+    }
   }catch(e){document.getElementById('expSt').innerText='🔴 Lost...';await dl(500);}
   if(isExp)expStep();
 }
-function startExp(){if(!espOK){alert('Connect ESP first!');return;}if(isFol)stopFol();if(isSeek)stopSeek();isExp=true;document.getElementById('expBtn').innerText='⏸ EXPLORING...';document.getElementById('expSt').style.color='var(--accent)';expStep();}
-function stopExp(){isExp=false;sc('S');document.getElementById('expBtn').innerText='▶️ START';document.getElementById('expSt').innerText='⏸ Explore: OFF';document.getElementById('expSt').style.color='var(--muted)';}
+function startExp(){if(!ok){alert('Connect ESP first!');return;}if(isFol)stopFol();if(isSeek)stopSeek();isExp=true;expStuckCount=0;document.getElementById('expBtn').innerText='⏸ EXPLORING...';document.getElementById('expSt').style.color='var(--accent)';expStep();}
+function stopExp(){isExp=false;sc('S');document.getElementById('expBtn').innerText='▶️ START';document.getElementById('expSt').innerText='⏸ Explore: OFF';document.getElementById('expSt').style.color='var(--mu)';}
 
 // ═══════════════════════════════════════════════
-//  FOLLOW
+//  WIFI FOLLOW — SPIN & TRACK (fixed direction logic)
+//  Robot slowly spins, measures RSSI at each step,
+//  then turns to face strongest signal direction
 // ═══════════════════════════════════════════════
-async function folStep(){
+async function doFollow(){
   if(!isFol)return;
   try{
-    const r0=await gRSSI();updR(r0);
-    if(r0>-45){await sc('S');document.getElementById('folSt').innerText='📱 Very close';await dl(800);if(isFol)folStep();return;}
-    await sc('F');await dl(400);await sc('S');await dl(200);const rF=await gRSSI();
-    if(rF>r0+2){document.getElementById('folSt').innerText='⬆️ Forward';await sc('F');await dl(500);await sc('S');await dl(200);if(isFol)folStep();return;}
-    await sc('B');await dl(400);await sc('S');await dl(200);
-    await sc('R');await dl(300);await sc('S');await dl(200);const rR=await gRSSI();
-    await sc('L');await dl(600);await sc('S');await dl(200);const rL=await gRSSI();
-    await sc('R');await dl(300);await sc('S');await dl(200);
-    const best=Math.max(r0,rF,rR,rL);
-    if(best===rR){document.getElementById('folSt').innerText='➡️ Right';await sc('R');await dl(250);await sc('S');await dl(150);}
-    else if(best===rL){document.getElementById('folSt').innerText='⬅️ Left';await sc('L');await dl(250);await sc('S');await dl(150);}
-    else if(best===rF){document.getElementById('folSt').innerText='⬆️ Forward';await sc('F');await dl(400);await sc('S');await dl(150);}
-    else{document.getElementById('folSt').innerText='🔄 Turning';await sc('R');await dl(800);await sc('S');await dl(200);}
-  }catch(e){document.getElementById('folSt').innerText='🔴 Lost...';await dl(500);}
-  if(isFol)folStep();
+    // Phase 1: Spin 360° and record RSSI at each angle
+    document.getElementById('folSt').innerText='🔄 Scanning signal...';
+    let bestR=-999, bestA=0;
+    const steps=12; // 30° each
+    const stepMs=SPIN_STEP_MS;
+    const readings=[];
+
+    for(let i=0;i<steps;i++){
+      if(!isFol)return;
+      await sc('R');
+      await dl(30*MPD+KICK); // turn 30°
+      await sc('S');
+      await dl(200);
+      const rssi=await gRSSI();
+      readings.push({angle:i*30,rssi:rssi});
+      updR(rssi);
+      document.getElementById('folSt').innerText=`🔄 Scanning ${i*30}°... RSSI=${rssi}dBm`;
+      if(rssi>bestR){bestR=rssi;bestA=i*30;}
+    }
+    // Now facing back at 0° (completed 360)
+
+    if(!isFol)return;
+    updR(bestR);
+
+    // Phase 2: If very close — stop
+    if(bestR>-45){
+      await sc('S');
+      document.getElementById('folSt').innerText='📱 Very close — stopped';
+      await dl(2000);
+      if(isFol)doFollow();
+      return;
+    }
+
+    // Phase 3: Turn to face best angle
+    document.getElementById('folSt').innerText=`⬆️ Best: ${bestA}° RSSI=${bestR}dBm — turning...`;
+    if(bestA<=180){
+      await sc('R');
+      await dl(bestA*MPD+KICK);
+    } else {
+      await sc('L');
+      await dl((360-bestA)*MPD+KICK);
+    }
+    await sc('S');await dl(200);
+
+    // Phase 4: Move forward toward signal
+    document.getElementById('folSt').innerText=`▶️ Moving toward signal (${bestR}dBm)`;
+    await sc('F');await dl(800);await sc('S');await dl(300);
+
+    // Phase 5: Check if signal improved
+    const newRSSI=await gRSSI();
+    updR(newRSSI);
+    if(newRSSI>bestR){
+      document.getElementById('folSt').innerText=`✅ Signal improved ${bestR}→${newRSSI}dBm`;
+    } else {
+      document.getElementById('folSt').innerText=`↩️ Signal weaker — rescanning`;
+    }
+    await dl(500);
+  }catch(e){
+    document.getElementById('folSt').innerText='🔴 Lost connection...';
+    await dl(500);
+  }
+  if(isFol)doFollow();
 }
-async function gRSSI(){try{const r=await fetch(`http://${espIP}/rssi`,{signal:AbortSignal.timeout(800)});return parseInt(await r.text());}catch(e){return -90;}}
-function updR(v){document.getElementById('rssiV').innerText=v+' dBm';let p=100-((v+90)*100/60);p=Math.max(0,Math.min(100,p));document.getElementById('rssiF').style.width=p+'%';}
-function togFol(){if(!espOK){alert('Connect ESP first!');return;}isFol?stopFol():startFol();}
-function startFol(){if(isExp)stopExp();if(isSeek)stopSeek();isFol=true;document.getElementById('folBtn').innerText='⏸ FOLLOWING...';document.getElementById('folSt').style.color='var(--accent)';folStep();}
-function stopFol(){isFol=false;sc('S');document.getElementById('folBtn').innerText='▶️ FOLLOW';document.getElementById('folSt').innerText='⏸ Follow: OFF';document.getElementById('folSt').style.color='var(--muted)';document.getElementById('rssiF').style.width='0%';document.getElementById('rssiV').innerText='-- dBm';}
+
+async function gRSSI(){
+  try{const r=await fetch(`http://${eip}/rssi`,{signal:AbortSignal.timeout(800)});return parseInt(await r.text());}
+  catch(e){return -90;}
+}
+function updR(v){
+  document.getElementById('rssiV').innerText=v+' dBm';
+  let p=100-((v+90)*100/60);p=Math.max(0,Math.min(100,p));
+  document.getElementById('rssiF').style.width=p+'%';
+}
+function togFol(){if(!ok){alert('Connect ESP first!');return;}isFol?stopFol():startFol();}
+function startFol(){if(isExp)stopExp();if(isSeek)stopSeek();isFol=true;document.getElementById('folBtn').innerText='⏸ FOLLOWING...';document.getElementById('folSt').style.color='var(--accent)';doFollow();}
+function stopFol(){isFol=false;sc('S');document.getElementById('folBtn').innerText='▶️ FOLLOW';document.getElementById('folSt').innerText='⏸ Follow: OFF';document.getElementById('folSt').style.color='var(--mu)';document.getElementById('rssiF').style.width='0%';document.getElementById('rssiV').innerText='-- dBm';}
 
 // ═══════════════════════════════════════════════
-//  SENSORS TAB
+//  SMART CALIBRATION — UNLIMITED TRIALS
+//  Step-based: step starts large, shrinks each attempt
+//  Never converges forcibly — user clicks PERFECT
+// ═══════════════════════════════════════════════
+function showC(t){
+  document.getElementById('cdiv').style.display=t==='d'?'block':'none';
+  document.getElementById('ctdiv').style.display=t==='t'?'block':'none';
+  document.getElementById('cdBtn').className=t==='d'?'bsc':'bc';
+  document.getElementById('ctBtn').className=t==='t'?'bsc':'bc';
+}
+
+// ── DISTANCE ──────────────────────────────────
+async function tD(dir,cm){
+  if(!ok){alert('Connect ESP first!');return;}
+  dDir=dir; dCm=cm; await runD();
+}
+
+async function runD(){
+  dAtt++;
+  document.getElementById('dAt').innerText=dAtt;
+  document.getElementById('dTst').innerText=dCm+'cm '+(dDir==='F'?'fwd':'bwd');
+  document.getElementById('dV').innerText=dCur;
+  document.getElementById('dStp').innerText=dStep;
+  const ms=dCm*dCur;
+  document.getElementById('dTm').innerText=ms+'ms';
+  // Progress shows convergence (step size getting small = more accurate)
+  const prog=Math.max(10,100-(dStep/20*100));
+  document.getElementById('dPg').style.width=prog+'%';
+  dlog(`// Test #${dAtt}: ${dDir==='F'?'FWD':'BWD'} ${dCm}cm @ ${dCur}ms/cm = ${ms}ms (step=${dStep})`,'i');
+  document.getElementById('dFB').classList.remove('sh');
+  document.getElementById('dSv').classList.remove('sh');
+  await ssl(`mpc=${dCur}`); await dl(300);
+  await sc(dDir); await dl(ms); await sc('S'); await dl(500);
+  document.getElementById('dFQ').innerHTML=
+    `Robot ${dDir==='F'?'moved forward':'moved backward'} <b>${dCm}cm</b><br>`+
+    `Using <b>${dCur}ms/cm</b> = <b>${ms}ms</b><br><br>`+
+    `How was it? (Attempt #${dAtt} — step=${dStep})`;
+  document.getElementById('dFB').classList.add('sh');
+}
+
+function dFd(r){
+  document.getElementById('dFB').classList.remove('sh');
+  if(r==='ok'){
+    // PERFECT — save and done
+    MPC=dCur; ssl(`mpc=${dCur}`);
+    dlog(`✅ PERFECT! MS/CM=${dCur} — saved to flash!`,'ok');
+    document.getElementById('dPg').style.width='100%';
+    document.getElementById('dSv').classList.add('sh');
+    document.getElementById('dV').className='vn sv';
+    loadCD(); return;
+  }
+  // NOT perfect — adjust and retry (step-based, unlimited)
+  if(r==='s'){
+    // Too short — need more ms
+    dCur=dCur+dStep;
+    dlog(`Too short → increasing by ${dStep} → now ${dCur}ms/cm`,'w');
+  } else {
+    // Too long — need less ms
+    dCur=Math.max(10,dCur-dStep);
+    dlog(`Too long → decreasing by ${dStep} → now ${dCur}ms/cm`,'w');
+  }
+  // Shrink step each attempt for finer tuning
+  // Step: 20→16→13→10→8→6→5→4→3→2→1 (never below 1)
+  dStep=Math.max(1,Math.floor(dStep*0.8));
+  document.getElementById('dV').innerText=dCur;
+  dlog(`// Retry with ${dCur}ms/cm (step now ${dStep})...`,'i');
+  setTimeout(()=>runD(),600);
+}
+
+function rstD(){
+  dCur=80; dStep=20; dAtt=0;
+  ['dAt','dTst','dTm'].forEach(id=>document.getElementById(id).innerText='--');
+  document.getElementById('dV').innerText='80';
+  document.getElementById('dV').className='vn';
+  document.getElementById('dPg').style.width='50%';
+  document.getElementById('dFB').classList.remove('sh');
+  document.getElementById('dSv').classList.remove('sh');
+  dlog('// Reset. Pick a distance to start.','i');
+}
+
+function dlog(m,t='i'){const l=document.getElementById('dLog');const d=document.createElement('div');d.className=t;d.innerText=m;l.appendChild(d);l.scrollTop=l.scrollHeight;while(l.children.length>25)l.removeChild(l.firstChild);}
+
+// ── TURNING ───────────────────────────────────
+async function tT(dir,deg){
+  if(!ok){alert('Connect ESP first!');return;}
+  tDir=dir; tDeg=deg; await runT();
+}
+
+async function runT(){
+  tAtt++;
+  document.getElementById('tAt').innerText=tAtt;
+  document.getElementById('tTst').innerText=(tDir==='R'?'RIGHT ':'LEFT ')+tDeg+'°';
+  document.getElementById('tV').innerText=tCur;
+  document.getElementById('tStp').innerText=tStep;
+  const ms=tDeg*tCur;
+  document.getElementById('tTm').innerText=ms+'ms + '+KICK+'ms kick';
+  const prog=Math.max(10,100-(tStep/5*100));
+  document.getElementById('tPg').style.width=prog+'%';
+  tlog(`// Test #${tAtt}: ${tDir==='R'?'RIGHT':'LEFT'} ${tDeg}° @ ${tCur}ms/deg = ${ms}ms (step=${tStep})`,'i');
+  document.getElementById('tFB').classList.remove('sh');
+  document.getElementById('tSv').classList.remove('sh');
+  await ssl(`td=${tCur}`); await dl(300);
+  await sc(tDir); await dl(ms+KICK); await sc('S'); await dl(600);
+  document.getElementById('tFQ').innerHTML=
+    `Robot turned <b>${tDir==='R'?'RIGHT':'LEFT'} ${tDeg}°</b><br>`+
+    `Using <b>${tCur}ms/deg</b> = <b>${ms}ms</b> + kick<br><br>`+
+    `How was it? (Attempt #${tAtt} — step=${tStep})`;
+  document.getElementById('tFB').classList.add('sh');
+}
+
+function tFd(r){
+  document.getElementById('tFB').classList.remove('sh');
+  if(r==='ok'){
+    MPD=tCur; ssl(`td=${tCur}`);
+    tlog(`✅ PERFECT! MS/DEG=${tCur} — saved to flash!`,'ok');
+    document.getElementById('tPg').style.width='100%';
+    document.getElementById('tSv').classList.add('sh');
+    document.getElementById('tV').className='vn sv';
+    loadCD(); return;
+  }
+  if(r==='l'){
+    // Too little — need more ms
+    tCur=tCur+tStep;
+    tlog(`Too little → increasing by ${tStep} → now ${tCur}ms/deg`,'w');
+  } else {
+    // Too much — need less ms
+    tCur=Math.max(1,tCur-tStep);
+    tlog(`Too much → decreasing by ${tStep} → now ${tCur}ms/deg`,'w');
+  }
+  tStep=Math.max(1,Math.floor(tStep*0.8));
+  document.getElementById('tV').innerText=tCur;
+  tlog(`// Retry with ${tCur}ms/deg (step now ${tStep})...`,'i');
+  setTimeout(()=>runT(),600);
+}
+
+function rstT(){
+  tCur=12; tStep=5; tAtt=0;
+  ['tAt','tTst','tTm'].forEach(id=>document.getElementById(id).innerText='--');
+  document.getElementById('tV').innerText='12';
+  document.getElementById('tV').className='vn';
+  document.getElementById('tPg').style.width='50%';
+  document.getElementById('tFB').classList.remove('sh');
+  document.getElementById('tSv').classList.remove('sh');
+  tlog('// Reset. Pick an angle to start.','i');
+}
+
+async function setKick(){
+  const v=parseInt(document.getElementById('kIn').value);
+  if(v>=0&&v<=200){KICK=v;await ssl(`k=${v}`);document.getElementById('tK').innerText=v;tlog(`// Kick=${v}ms saved`,'ok');}
+}
+
+function tlog(m,t='i'){const l=document.getElementById('tLog');const d=document.createElement('div');d.className=t;d.innerText=m;l.appendChild(d);l.scrollTop=l.scrollHeight;while(l.children.length>25)l.removeChild(l.firstChild);}
+
+async function loadCD(){
+  if(!ok)return;
+  try{
+    const r=await fetch(`http://${eip}/calibdata`,{signal:AbortSignal.timeout(2000)});
+    const d=await r.json();
+    MPC=d.mpc; MPD=d.mpd; KICK=d.kick;
+    document.getElementById('sMPC').innerText  = d.mpc;
+    document.getElementById('sMPD').innerText  = d.mpd;
+    document.getElementById('sKick').innerText = d.kick;
+    document.getElementById('sSpd').innerText  = d.left+'/'+d.right;
+    document.getElementById('kIn').value        = d.kick;
+    document.getElementById('tK').innerText    = d.kick;
+    document.getElementById('dV').innerText    = d.mpc;
+    document.getElementById('tV').innerText    = d.mpd;
+    dCur=d.mpc; tCur=d.mpd; KICK=d.kick;
+    if(d.ldrNow!==undefined)updLDR(d.ldrNow,d.ldrPct,d.ldrMin,d.ldrMax,d.ldr);
+  }catch(e){}
+}
+
+async function factR(){
+  if(!confirm('Reset ALL values to defaults?'))return;
+  await ssl('rst'); MPC=80;MPD=12;KICK=80;dCur=80;tCur=12;
+  rstD();rstT();await loadCD();
+}
+
+// ═══════════════════════════════════════════════
+//  DATA TAB SENSORS
 // ═══════════════════════════════════════════════
 function togSen(){
-  if(!senOn){if(!espOK){alert('Connect ESP first!');return;}senOn=true;document.getElementById('senBtn').innerText='⏹ STOP';
-    senIv=setInterval(async()=>{try{const r=await fetch(`http://${espIP}/sensors`,{signal:AbortSignal.timeout(1000)});const d=await r.json();document.getElementById('usVal').innerText=d.ultrasonic+' cm';document.getElementById('ldrVal').innerText=d.ldr;document.getElementById('obsW').innerText=d.ultrasonic<20?'⚠️ OBSTACLE!':'';document.getElementById('darkW').innerText=d.isDark?'⬛ DARK AREA!':'';}catch(e){}},500);
-  }else{senOn=false;clearInterval(senIv);document.getElementById('senBtn').innerText='▶ START READING';}
+  if(!senOn){
+    if(!ok){alert('Connect ESP first!');return;}
+    senOn=true;document.getElementById('senBtn').innerText='⏹ STOP';
+    senIv=setInterval(async()=>{
+      try{
+        const r=await fetch(`http://${eip}/sensors`,{signal:AbortSignal.timeout(1000)});
+        const d=await r.json();
+        document.getElementById('usV').innerText=d.ultrasonic+' cm';
+        document.getElementById('ldrV').innerText=d.ldr+' ('+d.ldrPct+'%)';
+        document.getElementById('obsW').innerText=d.obstacle?'⚠️ OBSTACLE (50cm)!':'';
+        document.getElementById('drkW').innerText=d.isDark?'⬛ DARK AREA!':'';
+      }catch(e){}
+    },500);
+  } else {
+    senOn=false;clearInterval(senIv);document.getElementById('senBtn').innerText='▶ START READING';
+  }
 }
 
 // ═══════════════════════════════════════════════
@@ -891,8 +1189,9 @@ function togSen(){
 // ═══════════════════════════════════════════════
 function dl(ms){return new Promise(r=>setTimeout(r,ms));}
 
-// Init calibration sub tab
-showCalib('dist');
+// Init
+showC('d');
+setPathMode('ai');
 </script>
 </body>
 </html>
